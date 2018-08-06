@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通编辑资料</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div id="mpcenter" style="width: 100%;">
+    	<div class="menu1"><span>个人资料</span></div>
+
+        <ul class="person">
+            <form id="imgform" enctype='multipart/form-data'  class='ui-form' method='post'>
+                <input type="hidden" id="tel" name="tel" th:value="${tel}"/>
+                <li><label>上传头像</label>
+                    <div class="uploadImg3" id="ud1">
+                        <input type="file" class="file3" id="file1" name="file1" onchange="imgChange(1)" size="1" />
+                        <a href="#" id="ut1" class="uptext3">上传</a>
+                    </div>
+                </li>
+                <li><label>学历</label><input id="edu" name="edu" style="height:32px;" class="txt1" type="text" th:value="${edu}"/></li>
+                <li><label>专业</label><input id="professional" name="professional" style="height:32px;" class="txt1" type="text" th:value="${professional}"/></li>
+                <li><label>邮箱</label><input id="email" name="email" style="height:32px;" class="txt1" type="text" th:value="${email}"/></li>
+                <li><label>QQ</label><input id="qq" name="qq" class="txt1" style="height:32px;" type="text" th:value="${qq}"/></li>
+                <li><label>所在地区</label>
+                    <select class="txt1" id="province" name="province">
+                        <option value="0">省</option>
+                    </select>
+                    <select class="txt1 ml10" id="city" name="city">
+                        <option value="0">市</option>
+                    </select></li>
+                <input type="hidden" id="provinceName" name="provinceName"/>
+                <input type="hidden" id="cityName" name="cityName"/>
+            </form>
+            <li class="mt20" style="margin-left:120px;"><a class="btn btn-warning btn-lg" th:href="@{/handApp/my_person.shtml}">取消</a><a class="btn btn-primary btn-lg ml10" onclick="saveVipInfo()">保存</a></li>
+        </ul>
+    </div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        var hei=$("#mpcenter").height();
+        $("#pinfodiv" , parent.document).height(hei);
+        $("#pinfo" , parent.document).height(hei);
+
+        var hei1=$("#centerdiv" , parent.document).height();
+        $("#tabs" , parent.parent.document).height(hei1);
+        $("#ifWd" , parent.parent.document).height(hei1);
+        getVipInfo();
+        $("#province").change(function(){
+            var pid = $("#province").val();
+            if(pid =='' || pid ==0){
+                $("#city").empty();
+                $("#city").append("<option value='0'>市</option>");
+                return;
+            }
+            $.ajax({
+                url:'/handApp/selectPRDept.do',
+                async:false,
+                type:'post',
+                data:{parentId:pid},
+                success:function(data){
+                    var datalist=data.data;
+                    var t2 = $("#city").empty();
+                    t2.append("<option value='0'>市</option>");
+                    for ( var i = 0; i < datalist.length; i++) {
+                        t2.append("<option value='"+datalist[i].deptId+"'>"+ datalist[i].name+"</option>");
+                    }
+                }
+            })
+        });
+    });
+    function getVipInfo(){
+        var tel=$("#tel").val();
+        $.ajax({
+            url :'/handApp/getVipInfo.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                tel:tel
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist[0]!=null){
+                    $("#edu").val(datalist[0].edu);
+                    $("#professional").val(datalist[0].professional);
+                    $("#email").val(datalist[0].email);
+                    $("#qq").val(datalist[0].qq);
+                    selectPRDept(0,"province");
+                    selectPRDept(datalist[0].province,"city");
+                    $("#province").val(datalist[0].province);
+                    $("#city").val(datalist[0].city);
+                }
+            }
+        });
+    }
+    function saveVipInfo(){
+        $("#provinceName").val($("#province").find("option:selected").text());
+        $("#cityName").val($("#city").find("option:selected").text());
+        var filepath1=$("#file1").val();
+        if(filepath1!=null && filepath1!=""){
+            var extStart=filepath1.lastIndexOf(".");
+            var ext=filepath1.substring(extStart,filepath1.length).toUpperCase();
+            if(ext!=".BMP"&&ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG"){
+                $.messager.alert("提示","图片格式不正确，请重新上传！", "info");
+                return false;
+            }
+        }
+        if($("#imgform").form('validate')){
+            $("#imgform").form('submit',{
+                url:'/handApp/saveVipInfo.do',
+                success:function(data){
+                    var c = jQuery.parseJSON(data);
+                    layer.alert(c.result_msg, {
+                        // skin: 'layui-layer-molv',
+                        closeBtn: 1,
+                        anim: 1,
+                        btn: ['确定'],
+                        //icon: 6,
+                        yes:function(){
+                            $("#ifWd" , parent.parent.document).attr("src","/handApp/person_main.shtml");
+                        }
+                    });
+                }
+            });
+        }
+    }
+    function selectPRDept(parentId,seId){
+        $.ajax({
+            url :'/handApp/selectPRDept.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                parentId:parentId
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist.length>0){
+                    for(var i=0;i<datalist.length;i++){
+                        $("#"+seId).append("<option value='"+datalist[i].deptId+"'>"+datalist[i].name+"</option>");
+                    }
+                }
+            }
+        });
+    }
+    function imgChange(type){
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+                url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        var path = getObjectURL(document.getElementById("file"+type).files[0]);
+        $("#ut"+type).css('background',"url("+path+")");
+        $("#ut"+type).css('background-size',"cover");
+    }
+    /*]]>*/
+</script>
+</html>

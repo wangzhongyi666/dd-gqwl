@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通退保审核</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/insurance/untread.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="rightIframe  pull-right">
+    <div class="sopen" id="sopen"></div>
+        <div class="menu fontS20">退保审核</div>
+        <div class="search">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-3 search_list">
+                        <input type="text" class="form-control" id="name" placeholder="姓名、身份证号、参保编号"/>
+                        <span class="fa fa-search"></span>
+                    </div>
+                    <label class="col-md-1 control-label">退保月份</label>
+                    <div class="col-md-2">
+                        <input type="text" class="laydate-icon form-control" value="" id="demo"/>
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                </div>
+                <div class="form-group mt10">
+                    <label class="col-md-1 control-label">参保类型</label>
+                    <div class="col-md-2">
+                        <select class="form-control" id="insuranceType">
+                            <option th:value="0">全部</option>
+                            <option th:value="1">养老</option>
+                            <option th:value="2">医疗</option>
+                        </select>
+                    </div>
+                    <label class="col-md-1 control-label">审核状态</label>
+                    <div class="col-md-2">
+                        <select class="form-control" id="audit">
+                            <option th:value="0">全部</option>
+                            <option th:value="11">待财务审核</option>
+                            <option th:value="21">财务已审核(待城市经理审核)</option>
+                            <option th:value="22">财务已驳回</option>
+                            <option th:value="31">城市经理已审核</option>
+                            <option th:value="32">城市经理已驳回</option>
+                            <option th:value="41">财务已打款</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="clearfix">
+            <a style="width:100px;" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="shadboxFun('add')">导出</a>
+        </div>
+    <div id="tabdiv" style="overflow:auto">
+        <table class="table table-bordered table-striped text-center mt20" style="min-width:2671px;">
+            <thead>
+            <tr>
+                <th style="width:200px;">参保编号</th>
+                <th style="width:200px;">社保号</th>
+                <th style="width:170px;">用户姓名</th>
+                <th style="width:200px;">身份证号</th>
+                <th style="width:170px;">参保类型</th>
+                <th style="width:170px;">退保月份</th>
+                <th style="width:170px;">顺延月份</th>
+                <th style="width:170px;" title="退保月数=退保月份数-顺延月份数">退保月数</th>
+                <th style="width:170px;">退保金额</th>
+                <th style="width:170px;">退保积分</th>
+                <th style="width:170px;">积分差额</th>
+                <th style="width:170px;">现金抵扣积分（元）</th>
+                <th style="width:170px;">实际退款</th>
+                <th style="width:170px;">申请时间</th>
+                <th style="width:170px;">财务状态</th>
+                <th style="width:170px;">城市经理状态</th>
+                <th style="width:200px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="audittab">
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="pageSizeInp"/>
+    <div>
+        <div class="box" id="box">
+        </div>
+    </div>
+
+    </div>
+
+<!--弹出框-->
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="add">
+        <div class="popbox-body" style="min-width:680px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">信息导出</span>
+            </div>
+            <div class="detail_box">
+                <form class="form-horizontal" role="form" th:action="@{/insurance/exportquitList.do}" >
+                    <div class="form-group"><label class="col-md-3 col-xs-3 control-label">按申请日期导出</label></div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-3 control-label">选择您要导出的日期</label>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" name="subTime1" id="demo5" readonly="readonly"/>
+                        </div>
+                        <em class="pull-left" style="margin-top:8px;">至</em>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" name="subTime2" id="demo6" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt50">
+                        <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                            <input type="submit" class="btn btn-primary btn-lg btn-radius" style="width:50%;" onclick="return checkDate(this);" value="导出" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="mid"/>
+    <input type="hidden" id="vipid"/>
+    <input type="hidden" id="kcjf"/>
+    <input type="hidden" id="integration_diff"/>
+    <input type="hidden" id="orderNumInp"/>
+    <input type="hidden" id="qtType"/>
+    <div class="popbox-wrapper safebox" id="qt1">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">提示</span>
+            </div>
+            <div class="safe_box text-center">
+                <p class="mt20">确认通过吗？</p>
+                <div class="safe_btn clearfix">
+                    <input type="button" class="btn btn-primary btn-lg btn-radius pull-left" onclick="upQuit(1)" style="width:48%;" value="确认"/>
+                    <input type="button" class="btn btn-warning btn-lg btn-radius pull-right popbox-close" style="width:48%;" value="取消"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="qt2">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">提示</span>
+            </div>
+            <div class="safe_box text-center">
+                <p class="mt20">确认驳回吗？</p>
+                <div class="safe_btn clearfix">
+                    <input type="button" class="btn btn-primary btn-lg btn-radius pull-left" onclick="upQuit(2)" style="width:48%;" value="确认">
+                    <input type="button" class="btn btn-warning btn-lg btn-radius pull-right popbox-close" href="#" style="width:48%;" value="取消"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="qt3">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">提示</span>
+            </div>
+            <div class="safe_box text-center">
+                <p class="mt20">确认打款吗？</p>
+                <div class="safe_btn clearfix">
+                    <input type="button" class="btn btn-primary btn-lg btn-radius pull-left" onclick="upQuitAudit(21)" style="width:48%;" value="确认"/>
+                    <input type="button" class="btn btn-warning btn-lg btn-radius pull-right popbox-close" style="width:48%;" value="取消"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    ;!function(){
+        laydate.render({
+            elem: '#demo',
+            type: 'month',
+            format: 'yyyy/MM',
+            show: false
+        });
+        laydate.render({
+            elem: '#demo2'
+            , type: 'month'
+            , format: 'yyyy/MM'
+            , show: false
+        });
+        laydate.render({
+            elem: '#demo5'
+        })
+        laydate.render({
+            elem: '#demo6'
+        })
+    }();
+</script>
+</body>
+</html>

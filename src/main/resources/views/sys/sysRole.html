@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通角色管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/sys/sysrole.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">角色管理</div>
+        <div class="search">
+        	<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-4 search_list">
+                      <input type="text" class="form-control" name="jname" id="jname" placeholder="角色名称"/>
+                      <span class="fa fa-search"></span>
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                </div>
+            </form>
+        </div>
+        <div class="clearfix">
+        	<a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="getTree(this)">添加角色</a>
+        </div>
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+                <thead>
+                <tr>
+                  <th style="width: 170px;">角色名称</th>
+                  <th style="width: 170px;">权限</th>
+                  <th style="width: 170px;">创建时间</th>
+                  <th style="width: 170px;">更新时间</th>
+                  <th style="width: 170px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="userDataList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+        
+    </div>
+    
+<!--弹出框-->
+<div class="popbox-container">
+	<div class="popbox-overlay"></div>
+    <input type="hidden" id="roleId"/>
+    <div class="popbox-wrapper safebox" id="add">
+        <div class="popbox-body" style="min-width:620px;">
+        	<div class="safe_nav">
+            	<span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">添加用户</span>
+            </div>
+            <div style="padding: 20px 30px;">
+            <form class="form-horizontal" role="form">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="col-md-3 col-xs-3 control-label">角色名称</label>
+                    <div class="col-md-8 col-xs-6">
+                      <input type="text" id="jnameinp" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="col-md-3 col-xs-3 control-label">分配权限</label>
+                    <div class="col-md-8 col-xs-6" style="height: 310px;overflow: auto;" id="tree">
+                    </div>
+                </div>
+                <div class="form-group text-center" style="margin-top: 10px;">
+                    <div class="col-md-offset-3 col-xs-offset-3 col-xs-6">
+                        <a class="btn btn-primary btn-lg btn-radius"  style="margin:0 auto;" onclick="saveMenu()" style="width:50%;">保存</a>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+	</div>
+    
+</div>
+</body>
+</html>

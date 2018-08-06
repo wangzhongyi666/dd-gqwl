@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../static/js/commons/jquery.min.js"></script>
+    <script src="../static/js/commons/bootstrap.min.js"></script>
+    <script src="../static/js/commons/common.js"></script>
+    <script src="../static/js/main/home.js"></script>
+    <!-- 引入 Bootstrap -->
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../static/css/css.css" rel="stylesheet" />
+
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="rightIframe rightboxbg pull-right">
+        <input type="hidden" id="jid" th:value="${jid}"/>
+        <div class="sopen" id="sopen"></div>
+        <div class="menu fontS20">待办事项</div>
+        <div class="wait clearfix">
+            <a id ="mk1" class="color1" th:href="@{/vip/vipaudit.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="sm" th:text="${sm}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待实名认证审核</p>
+            </a>
+            <a id ="mk2" class="color2" th:href="@{/insurance/insurance.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="cb" th:text="${cb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待参保审核</p>
+            </a>
+            <a id ="mk3" class="color2" th:href="@{/insurance/supple.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="bj" th:text="${bj}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待补缴审核</p>
+            </a>
+            <a id ="mk4" class="color3" th:href="@{/insuranceSet/insuranceInfo.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="xcb" th:text="${xcb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 新参保信息审核数</p>
+            </a>
+            <a id ="mk5" class="color4" th:href="@{/insurance/untread.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="tb" th:text="${tb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待退保审核</p>
+            </a>
+            <a id ="mk6" class="color5" th:href="@{/goods/sendgoods.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="fh" th:text="${fh}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待发货</p>
+            </a>
+            <a id ="mk7" class="color6" th:href="@{/insurance/adjustment.do}" style="margin-top: 20px;display: none;">
+                <!--<em></em>-->
+                <p class="fontS30"></p>
+                <p class="fontS18"><i id="sh" th:text="${sh}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 保单调整审核</p>
+            </a>
+        </div>
+    </div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(function(){
+        var jid=$("#jid").val();
+        switch (jid){
+            case "1":
+                $("#mk1").show();
+                $("#mk2").show();
+                $("#mk3").show();
+                $("#mk4").show();
+                $("#mk5").show();
+                $("#mk6").show();
+                break;
+            case "2" :
+                $("#mk1").show();
+                $("#mk4").show();
+                $("#mk6").show();
+                break;
+            case "3" :
+                $("#mk2").show();
+                $("#mk3").show();
+                $("#mk5").show();
+                $("#mk7").show();
+                break;
+            case "4" :
+                $("#mk2").show();
+                $("#mk3").show();
+                $("#mk5").show();
+                break;
+        }
+    })
+    /*]]>*/
+</script>
+</html>

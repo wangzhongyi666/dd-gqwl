@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../static/js/commons/jquery.min.js"></script>
+    <script src="../static/js/commons/bootstrap.min.js"></script>
+    <script src="../static/js/commons/common.js"></script>
+    <!-- 引入 Bootstrap -->
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../static/css/css.css" rel="stylesheet" />
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="head clearfix">
+    <span class="pull-left fontS24">36524灵活通后台管理系统</span>
+    <a class="pull-right ml30" th:href="@{/flexiblebe/logout.shtml}"><em class="icon2 mr5 pull-left"></em><i class="pull-left">退出</i></a>
+    <a class="pull-right" href="javascript:void(0);" th:onclick="'javascript:opentab(\''+${msUrl}+@{/flexiblebe/changepwd.shtml}+'\',\''+${msUrl}+'\')'">
+        <em class="icon1 mr5 pull-left"></em><i class="pull-left">修改密码</i>
+    </a>
+</div>
+
+<div class="contbox clearfix">
+
+    <div class="side pull-left">
+        <div class="sclose"></div>
+        <div class="clearfix pt25">
+            <div class="photo pull-left">
+                <img style="width:60px;height:60px;margin-left: 35px;" src="../static/images/photo.png" />
+            </div>
+            <ul class="name pull-left">
+                <li style="height:20px;"><i style="font-size:13px;" th:text="${nameRole}"></i></li>
+                <li style="height:20px;"><i style="font-size:13px;" th:text="${deptName}"></i></li>
+            </ul>
+        </div>
+        <div class="first">
+            <a class="cur" href="javascript:void(0);" th:onclick="'javascript:opentab(\''+${msUrl}+@{/flexiblebe/home.shtml}+'\',\''+${msUrl}+'\')'" >
+                <em class="pull-left"></em>首页
+            </a>
+        </div>
+        <dl class="navlist">
+            <div th:remove="tag" th:each="item,itemStat:${menuList}">
+                <dt><em th:class="${item.imgclass}"></em><span th:text="${item.text}"></span><i class="up"></i></dt>
+                <div th:remove="tag" th:each="node,nodeStat:${item.children}">
+                    <dd>
+                        <a href="javascript:void(0);" class="set_height" th:onclick="'javascript:opentab(\''+${msUrl}+${node.url}+'\',\''+${node.text}+'\')'" >
+                            <em></em><span th:if="${nodeStat.index}==0"></span><i th:text="${node.text}"></i>
+                        </a>
+                    </dd>
+                </div>
+            </div>
+        </dl>
+    </div>
+
+    <div id="tabs" style="overflow-x: hidden;">
+        <iframe id="ifWd" frameborder="0" th:src="@{/flexiblebe/home.shtml}" scrolling="no" onload="setIframeHeight(this)"></iframe>
+    </div>
+</div>
+<script>
+    $(function(){
+        $("#ifWd").width($("#tabs").width());
+/*        $(".set_height").on("click",function(){
+            var hei=$(".side").height();
+            $("#tabs" , document).height(hei);
+            $("#ifWd" , document).height(hei);
+        });*/
+        $(window).resize(function() {
+            $("#ifWd").width($("#tabs").width());
+            $("#ifWd").contents().find("#tabdiv").width($("#tabs").width());
+        });
+        $(".set_height").click(function(){
+            $(".cur").removeClass("cur");
+            $(this).addClass("cur");
+        });
+    });
+    function opentab(url,title){
+        var heig=$("#tabs").width();
+        $("#tabs").html();
+        var content = '<iframe id="ifWd"  frameborder="0" src="'+url+'" scrolling="no" style="min-width:'+heig+'px;" onload="setIframeHeight(this)"></iframe>';
+        $("#tabs").html(content);
+
+    }
+    function setIframeHeight(iframe) {
+        if (iframe) {
+            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+            if (iframeWin.document.body) {
+                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+            }
+        }
+    };
+
+</script>
+</body>
+</html>

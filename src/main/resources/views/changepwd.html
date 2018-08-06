@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../static/js/commons/jquery.min.js"></script>
+    <script src="../static/js/commons/bootstrap.min.js"></script>
+    <script src="../static/js/commons/common.js"></script>
+
+    <script src="../static/js/commons/package.js"></script>
+    <script src="../static/js/commons/jquery.form.js"></script>
+    <script src="/static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../static/js/commons/base.js"></script>
+
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+    <script src="../static/js/layer/layer.js"></script>
+    <script src="../static/js/main/modifyPwd.js"></script>
+    <!-- 引入 Bootstrap -->
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../static/css/css.css" rel="stylesheet" />
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .error{
+            color:red;
+            font-family: "Microsoft Yahei";
+            font-size: 12px;
+        }
+    </style>
+</head>
+    <body>
+        <div class="rightIframe rightboxbg pull-right">
+            <div class="sopen"></div>
+            <div class="menu fontS20">修改密码</div>
+            <form id="pwdForm" class="ui-form" th:action="@{/flexiblebe/modifyPwd.do}" method="post">
+                <ul class="change">
+                    <li><input class="form-control" type="password" name="oldpwd" placeholder="输入原密码" /></li>
+                    <li><input class="form-control" type="password" name="password" id="password" placeholder="输入新密码（6-20，数字，英文）" /></li>
+                    <li><input class="form-control" type="password" name="confirm_password" id="confirm_password" placeholder="确认密码"/></li>
+                    <li class="text-center"><input class="btn btn-primary btn-lg" style="width:50%;border-radius:30px;" type="submit" value="修改" /></li>
+                </ul>
+            </form>
+        </div>
+
+    </body>
+
+</html>

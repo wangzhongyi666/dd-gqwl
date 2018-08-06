@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通申请补贴</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/css/home.css" rel="stylesheet"/>
+    <script src="/static/js/commons/jquery.min.js"></script>
+
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background:#ecf0f1">
+<div class="info">
+<div class="container">
+	<div class="weizhi"><a th:href="@{/handApp/info.shtml}">政策资讯</a> > 申请补贴</div>
+    <div class="info_detail">
+    	<div class="title borbot text-center"><h4>灵活就业社保补贴</h4></div>
+        <div class="title">
+      		<p class="fontBold">一、补贴范围和补贴标准 ​​​​</p>
+            <p>依据《关于进一步加强就业专项资金管理有关问题的通知》（石财社〔2012〕16号）和《关于贯彻落实2014年普通高等学校毕业生就业创业工作实施意见的通知》（石人
+社字〔2014〕67号）政策执行。</p>
+            <p class="fontBold">二、申领程序</p>
+            <p>符合条件的就业困难人员和高校毕业生向户籍所在地街道（乡镇）办事处劳动保障事务所提出申请。申请时需携带以下资料： </p>
+            <p>（一）就业困难人员</p>
+            <p>1、《就业困难人员灵活就业证明》（见附件1）;</p>
+            <p>2、《灵活就业的就业困难人员申请社会保险补贴认定表》(见附件2)；</p>
+            <p>3、《身份证》、《户口本》原件及复印件；</p>
+            <p>4、《就业创业证》或《就业失业登记证》（加盖就业困难人员认定章，已登记“灵活就业”）原件及复印件；</p>
+            <p>5、社会保险缴费单据原件及复印件。</p>
+            <p>（二）高校毕业生</p>
+            <p>1、《高校毕业生灵活就业社会保险补贴审核认定表》（见附件3)；</p>
+            <p>2、《报到证》、《毕业证》、《身份证》原件及复印件；</p>
+            <p>3、《就业创业证》或《就业失业登记证》（已登记“灵活就业”）原件及复印件；</p>
+            <p>4、《高校毕业生灵活就业证明》（见附件4）；</p>
+            <p>5、社会保险费缴费单据原件及复印件。</p>
+            <p>就业困难人员和高校毕业生的申报、初审、审核、公示、统计等分类进行。劳动保障事务所对申报资料进行初审后报区人力资源和社会保障局审核公示，经市人力资源和社会保障局、财政局复核后，按规定将补贴资金直接发放给申请者本人。</p>
+            <p class="fontBold">三、注意事项</p>
+            <p>（一）养老保险缴费凭证以石家庄市地税局出具的基本养老保险收据为准；医疗保险以河北银行开据的医疗保险缴费存折划扣项复印件或银行网银体验机（多媒体自助一体机）打印的对账单为准。保险收据、对账单要求清晰，缴费期与申请期限一致。其他在人才交流中心、人才市场等单位代管档案的人员，依据代管单位出具的正式收据及保险经办机构出具的本人申请期限内的缴费证明。</p>
+            <p>（二）所有符合就业困难人员条件的灵活就业人员按规定办理就业登记手续后缴纳的社会保险费按补贴标准给予社会保险补贴。</p>
+            <p>（三）灵活就业人员社会保险补贴每半年申请一次，过期不补，按月累计享受社会保险补贴的年限。</p>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script>
+
+    $(document).ready(function() {
+        var hei=$(".info").height();
+        $("#tabs" , parent.document).height(hei);
+        $("#ifWd" , parent.document).height(hei);
+    });
+</script>
+</html>

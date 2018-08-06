@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通兑换管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-dialog.min.css"/>
+    <link rel="stylesheet" href="/static/css/css.css"/>
+    <link rel="stylesheet" href="/static/css/paging.css"/>
+    <link rel="stylesheet" href="/static/js/layer/layui.css" media="all"/>
+    <script src="/static/js/commons/jquery.min.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="/static/js/layer/layui.js"></script>
+
+    <script src="/static/js/commons/bootstrap.min.js"></script>
+    <script src="/static/js/commons/bootstrap-dialog.min.js"></script>
+    <script src="/static/js/commons/common.js"></script>
+    <script src="/static/js/commons/paging.js"></script>
+    <script src="/static/js/goods/redeem_code_check.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">提货码校对</div>
+        <div class="search">
+        	<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-3 search_list">
+                      <input type="text" class="form-control" name="goods_name" id="goods_name" placeholder="商品名称，提货码" />
+                      <span class="fa fa-search"></span>
+                    </div>
+                    <label class="col-md-1 control-label" >添加时间</label>
+                    <div class="col-md-2" style="width: 200px;">
+                      <input type="text" class="laydate-icon form-control" value="" name="startDate" id="startDate" />
+                    </div>
+                    <em class="pull-left" style="margin-top:8px;">至</em>
+                    <div class="col-md-2" style="width: 200px;">
+                        <input type="text" class="laydate-icon form-control" value="" name="endDate" id="endDate" />
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                    <label for="" class="col-md-1 control-label">状态</label>
+                    <div class="col-md-2">
+                        <select class="form-control" name="status" id="status">
+                            <option value="11" checked >全部</option>
+                            <option value="3">已使用</option>
+                            <option value="2">未使用</option>
+                        </select>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="clearfix">
+            <button type="button" class="layui-btn pull-right mr30 mt10" id="uploadCodes">
+                <i class="layui-icon">&#xe63c;</i>导入兑换码
+            </button>
+        </div>
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt10" style="width: 881px;">
+                <thead>
+                <tr>
+                    <th style="width:170px;">商品名称</th>
+                    <th style="width:200px;">兑换编码</th>
+                    <th style="width:170px;">店铺信息</th>
+                    <th style="width:170px;">状态</th>
+                    <th style="width:170px;">核销时间</th>
+                    <th style="width:170px;">消费状态</th>
+                    <th style="width:170px;">添加时间</th>
+                </tr>
+                </thead>
+                <tbody id="dataList" >
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+        
+    </div>
+</body>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadCodes' //绑定元素
+            ,url: '/goods/uploadEExcel.do' //上传接口
+            ,multiple: true
+            ,accept: 'file' //普通文件
+            ,exts: 'xlsx|xls' //只允许上传压缩文件
+            ,done: function(res){
+                //上传完毕回调
+                BootstrapDialog.show({
+                    title: '警告',
+                    message: res.msg
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+                BootstrapDialog.show({
+                    title: '警告',
+                    message: res.msg
+                });
+            }
+        });
+    });
+    ;!function(){
+        laydate.render({
+            elem: '#startDate'
+        });
+        laydate.render({
+            elem: '#endDate'
+        });
+    }();
+
+</script>
+</html>

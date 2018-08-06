@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通医疗保险</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入 Bootstrap -->
+    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/css/home.css" rel="stylesheet"/>
+    <script src="/static/js/commons/jquery.min.js"></script>
+    <script src="/static/js/commons/common.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="/static/js/h5/medical.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<div class="info">
+    <div class="container">
+        <div class="weizhi"><a th:href="@{/handApp/social.shtml}">社保服务</a> > 医疗保险</div>
+        <div class="box pb120">
+            <div class="menu1"><span>医疗保险缴纳</span></div>
+            <div class="ylbox">
+                <div class="menu2">选择您的参保周期</div>
+                <div style="margin-left: 20px;margin-top: 10px;font-size: 16px;color:#333;">本市基数调整月份：<em th:text="${adjustment_time_start}"></em></div>
+                <ul>
+                    <!--<li><label>开始月份</label><span id="insuStart" class="con1 cur"></span></li>-->
+                    <!--<li>
+                        <label>结束月份</label>
+                        <span id="insuEnd1" class="con">半年</span>
+                        <span id="insuEnd2" class="con">全年</span>
+
+                        <span id="custom" class="con2">自定义月份</span>
+                        <label>参保月份</label>
+                        <input type="text" id="customTime" placeholder="请选择日期" th:value="${}" class="demo-input" style="height:34px;"/>
+                    </li>-->
+                    <li>
+                        <label style="width: 80px;">开始月份</label>
+                        <input id="insuStart" type="text" placeholder="请选择日期" class="demo-input" readonly="" th:value="${insuStart}" style="height:30px;" />
+                        <input id="insuStart_S" type="hidden" th:value="${insuStart_S}" />
+                        <input id="insuStart_E" type="hidden" th:value="${insuStart_E}" />
+                    </li>
+                    <li class="mt20">
+                        <label style="width: 80px;">结束月份</label>
+                        <!--<span id="insuEnd1" class="con">半年</span> class="con1 cur"
+                        <span id="insuEnd2" class="con">全年</span>
+                        <span id="custom" class="con2">选择参保月份</span>
+                        <label>选择参保月份</label>-->
+                        <input type="text" id="insuEnd" placeholder="请选择日期" class="demo-input" readonly="" th:value="${insuEnd}" style="height:30px;"/>
+                        <input id="insuEnd_S" type="hidden" th:value="${insuEnd_S}" />
+                        <input id="insuEnd_E" type="hidden" th:value="${insuEnd_E}" />
+                    </li>
+                </ul>
+                <div class="menu2">选择您的缴费比例</div>
+                <ul>
+                    <li>本市的缴费基数为<i id="base" th:text="${base}"></i></li>
+                    <li class="mt20">
+                        <span class="con3 cur2">100%</span>
+                    </li>
+                </ul>
+                <div class="menu2">参保说明</div>
+                <ul>
+                    <li>1.选择周期包含当前月份之前的月份，则之前的月份按补缴一次性缴纳；%缴纳 </li>
+                    <li>2.根据国家政策每年的参保基数都会调整，参保周期的结束月份会按照参保基数调整月份来更改，具体请以每年参保基数相关政策文件为准</li>
+                    <li>3.参保月份大于等于6个月的订单可以获得积分奖励；</li>
+                    <!--<li>4.有问题请联系客服：0311-66686628</li>-->
+                </ul>
+                <div class="text-center"><input class="btn btn-primary btn-lg" onclick="sumbmit();" style="width:320px;" type="submit" value="计算费用"/></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $("#tabs",parent.document).css("height",$(".info").innerHeight());
+        $("#ifWd",parent.document).css("height",$(".info").innerHeight());
+
+        laydate.render(startDate);
+        laydate.render(endDate);
+
+        var startDate= laydate.render({//渲染开始时间选择
+            elem: '#insuStart'//通过id绑定html中插入的start
+            ,trigger: 'click'
+            ,type: 'month'
+            ,format:'yyyy/MM'
+            ,min:$("#insuStart_S").val()
+            ,max:$("#insuStart_E").val()//设置一个默认最大值
+            ,done: function (value,date) {
+                date.month = date.month !== 1 ? date.month - 1 : (date.year--, 12);//月份修正
+                endDate.config.min = date;//开始日选好后，重置结束日的最小日期
+                endDate.config.value = value;//将结束日的初始值设定为开始日
+            }
+        });
+        var endDate= laydate.render({//渲染结束时间选择
+            elem: '#insuEnd',//通过id绑定html中插入的end
+            trigger: 'click',
+            type: 'month',
+            format:'yyyy/MM',
+            min:$("#insuEnd_S").val(),//设置min默认最小值
+            max:$("#insuEnd_E").val(),
+            done: function (value, dates) {
+            }
+
+        });
+        endDate.config.min = startDate.config.max;
+    });
+</script>
+</html>

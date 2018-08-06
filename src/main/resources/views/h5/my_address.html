@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通个人资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="mpcenter" style="width: 100%;">
+    <div class="menu1"><span>地址管理</span></div>
+    <div class="mt20 ml30">
+        <a href="javascript:void(0)" onclick="window.parent.parent.shadboxFun('set4',this)" class="btn btn-primary btn-lg">新增收货地址</a>
+        <span class="ml10">新增收货地址最多可创建20个</span>
+    </div>
+    <div class="check" id="centdiv">
+    </div>
+    <input type="hidden" id="pageSizeInp"/>
+    <div style="margin-left:20px;height: 23px;">
+        <div class="box" id="box">
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        $('#pageSizeInp').val(3)
+        countAddresslist($('#pageSizeInp').val());
+        var hei=$("#mpcenter").height();
+        $("#pinfodiv" , parent.document).height(hei);
+        $("#pinfo" , parent.document).height(hei);
+
+        var hei1=$("#centerdiv" , parent.document).height();
+        $("#tabs" , parent.parent.document).height(hei1);
+        $("#ifWd" , parent.parent.document).height(hei1+20);
+    });
+    function countAddresslist(pageSize){
+        $.ajax({
+            url :'/handApp/countAddresslist.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                $('#box').paging({
+                    initPageNo: 1, // 初始页码
+                    totalPages: result.pageCount, //总页数
+                    totalCount: '合计' + result.allNum + '条数据', // 条目总数
+                    slideSpeed: 600, // 缓动速度。单位毫秒
+                    jump: true, //是否支持跳转
+                    callback: function(page) { // 回调函数
+                        getAddresslist(page,pageSize);
+                    }
+                });
+            }
+        });
+    }
+    function getAddresslist(pageNum,pageSize){
+        $.ajax({
+            url :'/handApp/getAddresslist.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist.length>0){
+                    var ulstr="";
+                    for(var i=0;i<datalist.length;i++){
+                        var address="";
+                        if(datalist[i].province_zh!=null && datalist[i].province_zh.length>0){
+                            address+=datalist[i].province_zh;
+                        }
+                        if(datalist[i].city_zh!=null && datalist[i].city_zh.length>0){
+                            address+=datalist[i].city_zh;
+                        }
+                        if(datalist[i].area_zh!=null && datalist[i].area_zh.length>0){
+                            address+=datalist[i].area_zh;
+                        }
+                        if(datalist[i].address!=null && datalist[i].address.length>0){
+                            address+=datalist[i].address;
+                        }
+                        if(datalist[i].is_default==1){
+                            ulstr+="<ul style=\"width:90%;\"> <li><span class=\"pull-right moren\">默认</span></li><li class=\"fontS18 fontBold mt20\">"+datalist[i].person_name+"</li>" +
+                                "<li class=\"mt20\">"+datalist[i].person_tel+"</li><li class=\"mt20\">"+address+"</li><li class=\"mt20 clearfix\">" +
+                                "<a class=\"pull-right btn btn-warning btn-lg ml10\" a1='"+datalist[i].id+"' onclick='deleteAddress(this)'>删除</a>" +
+                                "<a class=\"pull-right btn btn-primary btn-lg\" href=\"javascript:void(0)\" a1='"+datalist[i].id+"' a2='"+datalist[i].person_name+"' a3='"+datalist[i].person_tel+"'" +
+                                " a4='"+datalist[i].province+"' a5='"+datalist[i].city+"' a6='"+datalist[i].area+"' a7='"+datalist[i].address+"' onclick=\"window.parent.parent.shadboxFun('set3',this)\">修改</a></li></ul>";
+                        }else{
+                            ulstr+="<ul style=\"width:90%;\">  <li><a class=\"pull-right text-success\" a1='"+datalist[i].id+"' onclick='updateDefAddress(this)'>设置为默认</a></li>" +
+                                "<li class=\"fontS18 fontBold mt20\">"+datalist[i].person_name+"</li> <li class=\"mt20\">"+datalist[i].person_tel+"</li> <li class=\"mt20\">"+address+"</li>" +
+                                "<li class=\"mt20 clearfix\">  <a class=\"pull-right btn btn-warning btn-lg ml10\" a1='"+datalist[i].id+"' onclick='deleteAddress(this)'>删除</a>" +
+                                "<a class=\"pull-right btn btn-primary btn-lg\" href=\"javascript:void(0)\" a1='"+datalist[i].id+"'  a2='"+datalist[i].person_name+"' a3='"+datalist[i].person_tel+"'" +
+                                " a4='"+datalist[i].province+"' a5='"+datalist[i].city+"' a6='"+datalist[i].area+"' a7='"+datalist[i].address+"' onclick=\"window.parent.parent.shadboxFun('set3',this)\">修改</a> </li></ul>";
+                        }
+                    }
+                    $("#centdiv").html(ulstr);
+                }
+            }
+        });
+    }
+    function updateDefAddress(event){
+        var id=$(event).attr("a1");
+        $.ajax({
+            url :'/handApp/updateDefAddress.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                id:id
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg, {
+                    // skin: 'layui-layer-molv',
+                    closeBtn: 1,
+                    anim: 1,
+                    btn: ['确定'],
+                    //icon: 6,
+                    yes:function(){
+                        $("#pinfo" , parent.document).attr("src","/handApp/my_address.shtml");
+                    }
+                });
+            }
+        });
+    }
+    function deleteAddress(event){
+        var id=$(event).attr("a1");
+        $.ajax({
+            url :'/handApp/deleteAddress.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                id:id
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg, {
+                    // skin: 'layui-layer-molv',
+                    closeBtn: 1,
+                    anim: 1,
+                    btn: ['确定'],
+                    //icon: 6,
+                    yes:function(){
+                        $("#pinfo" , parent.document).attr("src","/handApp/my_address.shtml");
+                    }
+                });
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</html>

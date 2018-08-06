@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通添加商品</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link href="/static/css/bootstrapValidator.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="../../static/css/css.css"/>
+<script src="../../static/js/commons/jquery.min.js"></script>
+<script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+<script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="/static/js/commons/bootstrapValidator.js"></script>
+<script src="../../static/js/commons/common.js"></script>
+    <script src="/static/js/goods/add_goods.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+    <div class="rightIframe pull-right">
+        <div class="sopen" id="sopen"></div>
+        <div class="menu fontS20">添加商品</div>
+        <form id="imgform" class="form-inline" role="form" enctype='multipart/form-data' method='post'>
+		<ul class="addbox pb60">
+        	<li id="imgs" style="height: 160px;">
+                <span><em class="text-danger mr10">*</em>商品展示图片</span>
+                <div class="uploadImg1" style="height: 160px;margin-left: 20px;">
+                    <i>
+                        <em id="pic1"></em>
+                        <input type="file" class="webfile" name="file1" id="file1" onchange="upImg(this)" size="1" />
+                        <a id="pa1" target="view_window"  onclick="openpic(this)" href="">预览</a>
+                    </i>
+                </div>
+                <div class="uploadImg1" style="height: 160px;margin-left: 20px;">
+                    <i>
+                        <em id="pic2"></em>
+                        <input type="file" class="webfile" name="file2" id="file2" onchange="upImg(this)" size="1" />
+                        <a id="pa2" target="view_window" onclick="openpic(this)" href="">预览</a>
+                    </i>
+                </div>
+                <div class="uploadImg1" style="height: 160px;margin-left: 20px;">
+                    <i>
+                        <em id="pic3"></em>
+                        <input type="file" class="webfile" name="file3" id="file3" onchange="upImg(this)" size="1" />
+                        <a id="pa3" target="view_window" onclick="openpic(this)" href="">预览</a>
+                    </i>
+                </div>
+                <div class="uploadImg1" style="height: 160px;margin-left: 20px;">
+                    <i>
+                        <em id="pic4"></em>
+                        <input type="file" class="webfile" name="file4" id="file4" onchange="upImg(this)" size="1" />
+                        <a id="pa4" target="view_window" onclick="openpic(this)" href="">预览</a>
+                    </i>
+                </div>
+            </li>
+
+            <li style="margin-left:140px;"><em>注意：数字为前台图片的展示顺序<br/>图片要求：尺寸，大小 </em></li>
+
+                <!--<li>-->
+                    <!--<span><em class="text-danger mr10">*</em>商品编号</span>-->
+                    <!--<div class="form-group">-->
+                        <!--<input class="form-control txt txt1" type="text" id="number" name="number"/>-->
+                    <!--</div>-->
+                <!--</li>-->
+
+            <li>
+                <span><em class="text-danger mr10">*</em>商品名称</span>
+                <div class="form-group">
+                <input class="form-control txt txt1" type="text" id="gname" name="gname"/>
+                </div>
+            </li>
+            <li>
+                <span><em class="text-danger mr10">*</em>兑换积分</span>
+                <div class="form-group">
+                    <input class="form-control txt txt1" type="text" id="integral" name="integral"/>
+                </div>
+            </li>
+            <li id="stocks" style="display: none;">
+                <span><em class="text-danger mr10">*</em>库存数量</span>
+                <div class="form-group">
+                    <input class="form-control txt txt1" type="text" id="stock" name="stock"/>
+                </div>
+            </li>
+            <li>
+            <span><em class="text-danger mr10">*</em>兑换数量 </span>
+                <input type="radio" name="exchange" value="2"/><label class="ml10">每个用户id只能兑换一个</label>
+                <input type="radio" name="exchange" value="1" checked/><label class="ml10">不限制</label>
+            </li>
+            <li>
+                <span><em class="text-danger mr10">*</em>提货方式</span>
+                <input type="radio" name="take_type" value="1" checked/><label class="ml10 mr30">到店自提</label>
+                <input type="radio" name="take_type" value="2"/><label class="ml10">邮寄</label>
+            </li>
+
+            <!--<li>-->
+                <!--<span><em class="text-danger mr10">*</em>有效期</span>-->
+                <!--<div class="form-group">-->
+                    <!--<input type="text" class="laydate-icon form-control" style="width: 160px;" name="term_of_validity_start" id="term_of_validity_start" />-->
+                <!--</div>-->
+                <!--<label class="ml10 mr30">至</label>-->
+                <!--<div class="form-group">-->
+                    <!--<input type="text" class="laydate-icon form-control" style="width: 160px;" name="term_of_validity_end" id="term_of_validity_end" />-->
+                <!--</div>-->
+            <!--</li>-->
+            <li>
+                <span><em class="text-danger mr10">*</em>商品详情</span>
+                <div class="form-group">
+                    <textarea class="form-control txt txt2" id="info" name="info" style="resize: none;"></textarea>
+                </div>
+            </li>
+            <li>
+                <span>重要声明</span>
+                <div class="form-group">
+                    <textarea class="form-controltxt txt2" id="statement" name="statement" style="resize: none;"></textarea>
+                </div>
+            </li>
+            <li style="margin-left:140px;">
+            <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="button" onclick="addGoods();" value="保存" />
+            <input style="width:160px;" class="btn btn-warning btn-lg btn-radius" type="button" onclick="quxiao()" value="取消" />
+
+            </li>
+        </ul>
+        </form>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+            laydate.render({
+                elem: '#term_of_validity_start'
+            })
+            laydate.render({
+                elem: '#term_of_validity_end'
+            })
+        $('#imgform').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                number: {
+                    message: '输入商品编号不合法',
+                    validators: {
+                        notEmpty: {
+                            message: '商品编号不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 18,
+                            message: '商品编号长度必须在6到18位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '商品编号只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                },
+                gname: {
+                    validators: {
+                        notEmpty: {
+                            message: '商品名称不能为空'
+                        }
+                    }
+                },
+                integral: {
+                    validators: {
+                        notEmpty: {
+                            message: '积分不能为空'
+                        },
+                        numeric:{
+                            message:"积分只能填数字"
+                        }
+                    }
+                },
+                stock: {
+                    validators: {
+                        numeric:{
+                            message:"库存只能填数字"
+                        }
+                    }
+                },
+                term_of_validity_start: {
+                    validators: {
+                        notEmpty:{
+                            message:"时间不能为空"
+                        }
+                    }
+                },
+                term_of_validity_end: {
+                    validators: {
+                        notEmpty:{
+                            message:"时间不能为空"
+                        }
+                    }
+                }
+            }
+        });
+    });
+    /*var i = 2;
+    function upImg(obj){
+
+        if(i>5){
+            layer.alert("只能上传4张图片");
+            return;
+        }
+
+        var imgFile = obj.files[0];
+
+        var path = getObjectURL(imgFile);
+        console.log(imgFile);
+        var img = new Image();
+        var fr = new FileReader();
+        fr.onload = function(){
+            var htmlStr = '<div class="uploadImg1" size="1" style="margin-left: 2%;"><i>';
+            htmlStr += '<em id="pic'+i+'"></em>';
+            htmlStr += '<input type="file" class="webfile" name="file'+i+'" id="imgUrl'+i+'" onchange="upImg(this)"/>';
+            htmlStr += '<a id="pa'+i+'" target="view_window" onclick="openpic(this)" href="">'+i+'预览</a>';
+            htmlStr += '</i></div>';
+            if(i<=4){
+                $('#imgs').append(htmlStr);
+            }
+
+            $('#pic'+(i-1)).css('background',"url("+path+") center center no-repeat");
+            $('#pic'+(i-1)).css('background-size',"100% 100%");
+            $("#pa"+(i-1)).attr("href",path);
+            obj.value = '';
+            i++;
+        }
+        fr.readAsDataURL(imgFile);
+
+    }*/
+    function upImg(obj){
+
+        var imgFile = obj.files[0];
+        //console.log(imgFile)
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+                url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        var path = getObjectURL(imgFile);
+
+
+            $(obj).prev().css('background',"url("+path+") center center no-repeat");
+            console.log($(obj).prev());
+            $(obj).prev().css('background-size',"100% 100%");
+            $(obj).next().attr("href",path);
+
+    }
+
+    ;!function(){
+        laydate.render({
+            elem: '#term_of_validity_start'
+            , format: 'yyyy/MM/dd'
+        });
+        laydate.render({
+            elem: '#term_of_validity_end'
+            , format: 'yyyy/MM/dd'
+        });
+    }();
+</script>
+</html>

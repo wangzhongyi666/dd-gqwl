@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>资讯详情</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body style="background:#f1f1f1" onload="aaa()">
+<div class="container" id="mpcenter" style="margin:0 auto;padding:0;">
+    <input type="hidden" id="picurl2" th:value="${picurl2}"/>
+    <input type="hidden" id="picurl3" th:value="${picurl3}"/>
+    <div class="info_detail">
+    	<div class="title borbot">
+      		<h3 th:text="${title}"></h3>
+            <h5 th:text="${releTime}"></h5>
+        </div>
+        <div class="title">
+            <div id="pdiv2"></div>
+      		<p th:text="${cont}">​​​​</p>
+            <div id="pdiv3"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        creatpic();
+    });
+    function creatpic() {
+        var picurl2=$("#picurl2").val();
+        var picurl3=$("#picurl3").val();
+        var pa2=new Array();
+        var pa3=new Array();
+        if(picurl2!=null && picurl2.length>0){
+            pa2=picurl2.split(';');
+        }
+        if(picurl3!=null && picurl3.length>0){
+            pa3=picurl3.split(';');
+        }
+        if(pa2!=null && pa2.length>0){
+            for(var i=0;i<pa2.length;i++){
+                var picstr=" <div class=\"text-center mt10\"><img style=\"width:280px;height:186px;\" src=\""+pa2[i]+"\"/></div>";
+                $("#pdiv2").append(picstr);
+            }
+        }
+        if(pa3!=null && pa3.length>0){
+            for(var i=0;i<pa3.length;i++){
+                var picstr=" <div class=\"text-center mt10\"><img style=\"width:280px;height:186px;\" src=\""+pa3[i]+"\"/></div>";
+                $("#pdiv3").append(picstr);
+            }
+        }
+    }
+    function aaa(){
+        var hei=$("#mpcenter").height();
+        $("#tabs" , parent.document).height(hei);
+        $("#ifWd" , parent.document).height(hei);
+    }
+    /*]]>*/
+    </script>
+</html>

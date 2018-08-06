@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通参保信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <link rel="stylesheet" href="../../static/css/imgcss.css"/>
+    <!--<script src="../../static/js/commons/jquery.min.js"></script>-->
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="/static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="../../static/js/commons/jquery.jqprint-0.3.js"></script>
+    <script src="/static/js/insurance/insuredInfo.js"></script>
+    <script src="../../static/js/commons/content_zoom.js"></script>
+
+    <!-- 引入 Bootstrap -->
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+    <div class="rightIframe pull-right">
+        <input class="hidden" id="uid" value=""/>
+    	<div class="sopen"></div>
+        <div class="menu fontS20">参保信息</div>
+        <div class="search">
+        	<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-3 search_list">
+                      <input type="text" class="form-control" placeholder="手机号、姓名、身份证号、医保卡号" id="name" name="name"/>
+                      <span class="fa fa-search"></span>
+                    </div>
+                    <label class="col-md-1 control-label">参保周期</label>
+                    <div class="col-md-2">
+                      <input type="text" class="laydate-icon form-control" value="" id="insuStart" />
+                    </div>
+                    <em class="pull-left" style="margin-top:8px;">至</em>
+                    <div class="col-md-2">
+                      <input type="text" class="laydate-icon form-control" value="" id="insuEnd" />
+                    </div>
+                    <label class="col-md-1 control-label">提交时间</label>
+                    <div class="col-md-2">
+                        <input type="text" class="laydate-icon form-control" value="" id="subStartTime" name="subStartTime" />
+                    </div>
+                    <em class="pull-left" style="margin-top:8px;">至</em>
+                    <div class="col-md-2">
+                        <input type="text" class="laydate-icon form-control" value="" id="subEndTime" name="subEndTime" />
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr20" id="searchbtn" style="width:100px;" type="button" value="搜索"/>
+                </div>
+                <div class="form-group mt10">
+                    <label class="col-md-1 control-label">参保类型</label>
+                    <div class="col-md-2">
+                        <select class="form-control" id="insuranceType" name="insuranceType">
+                            <option value="0">全部</option>
+                            <option value="1">养老保险</option>
+                            <option value="2">医疗保险</option>
+                        </select>
+                    </div>
+                    <label class="col-md-1 control-label" style="width: 110px;">缴费比例</label>
+                    <div class="col-md-2">
+                      <select class="form-control" id="ratio" name="ratio">
+                          <option value="0">全部</option>
+                          <option value="60">60%</option>
+                          <option value="100">100%</option>
+                          <option value="200">200%</option>
+                          <option value="300">300%</option>
+                      </select>
+                    </div>
+                    <label class="col-md-1 control-label" style="width: 50px;">状态</label>
+                    <div class="col-md-2" style="width:180px;">
+                      <select class="form-control" id="audit" name="audit">
+                          <option value="0">全部</option>
+                          <option value="1">待审核</option>
+                          <option value="6">已审核</option>
+                          <option value="2">保单调整待审核</option>
+                          <option value="7">退保审核中</option>
+                          <option value="8">已退保</option>
+                      </select>
+                    </div>
+                    <label class="col-md-1 control-label" style="width: 50px;">标签</label>
+                    <div class="col-md-2">
+                      <select class="form-control" id="insuranceNature" name="insuranceNature">
+                          <option value="0">全部</option>
+                          <option value="3">未选择标签</option>
+                          <option value="1">初次参保</option>
+                          <option value="2">参保续接</option>
+                      </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix">
+        	<input style="width:100px;" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" type="button" id="daochu" onclick="shadboxFun('add')" value="导出"/>
+
+        </div>
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20"  style="min-width:3241px;min-height: 618px;">
+                <thead>
+                <tr>
+                    <th style="width:200px">参保订单</th>
+                    <th style="width:200px">社保号</th>
+                    <th style="width:170px">姓名</th>
+                    <th style="width:200px">身份证号</th>
+                    <th style="width:170px">手机号</th>
+                    <th style="width:170px">参保类型</th>
+                    <th style="width:170px">参保周期</th>
+                    <th style="width:170px">缴纳基数</th>
+                    <th style="width:170px">缴费比例</th>
+                    <th style="width:170px">缴费金额</th>
+                    <th style="width:170px" >用户参保标签</th>
+                    <th style="width:170px">首次参保时间</th>
+                    <th style="width:170px">户口所在地</th>
+                    <th style="width:170px">审核状态</th>
+                    <th style="width:170px">提交时间</th>
+                    <th style="width:200px;">备注</th>
+                    <th style="width:400px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="insuranceDateList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+        
+    </div>
+
+<!--弹出框-->
+<div class="popbox-container">
+	<div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="add">
+        <div class="popbox-body" style="min-width:680px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">信息导出</span>
+            </div>
+            <div class="detail_box">
+                <form class="form-horizontal" role="form" th:action="@{/insuranceSet/exportOrderList.do}">
+                    <div class="form-group"><label class="col-md-3 col-xs-3 control-label">按申请日期导出</label></div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-3 control-label">选择您要导出的日期</label>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" name="subStartTime" id="subStartTime1" readonly="readonly"/>
+                        </div>
+                        <em class="pull-left" style="margin-top:8px;">至</em>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" name="subEndTime" id="subEndTime1" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt50">
+                        <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                            <input type="submit" class="btn btn-primary btn-lg btn-radius" style="width:50%;" onclick="return checkDate(this);" value="导出"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popbox-wrapper safebox" id="detail1">
+        <div class="popbox-body">
+        	<div class="safe_nav">
+            	<span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">查看详情</span>
+            </div>
+            <ul class="detail_box" id="printul">
+                <li><label>姓名</label><em id="name1"></em></li>
+                <li><label>身份证号</label><em id="identNum"></em></li>
+                <li class="text-center"><a class="imga" href="#pic_one"><img id="identPicUrl1" style="width:240px;height: 160px;" /></a></li>
+                <li class="text-center">身份证正面</li>
+                <li class="text-center"><a class="imga" href="#pic_one"><img id="identPicUrl2" style="width:240px;height: 160px;" /></a></li>
+                <li class="text-center">身份证反面</li>
+                <li class="text-center"><a class="btn btn-primary btn-lg btn-radius" onclick="printp()" style="width:50%;">打印</a></li>
+            </ul>
+            <ul class="detail_box" id="printul1" style="display: none;">
+                <li class="text-center" style="margin-top: 120px;"><img id="identPicUrl3" style="width:380px;height: 220px;" /></li>
+                <li class="text-center" style="margin-top: 260px;"><img id="identPicUrl4" style="width:380px;height: 220px;" /></li>
+            </ul>
+        </div>
+	</div>
+    <div class="popbox-wrapper safebox" id="detail2">
+        <div class="popbox-body">
+        	<div class="safe_nav">
+            	<span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">查看详情</span>
+            </div>
+            <ul class="detail_box">
+                <li><label style="width:126px;">医保银行开户行</label><em id="bank1"></em></li>
+                <li><label style="width:126px;">医保银行卡卡号</label><em id="bankNum1"></em></li>
+                <li class="text-center"><a class="imga" href="#pic_one"><img id="bankPicUrl" src="" /></a></li>
+            </ul>
+        </div>
+	</div>
+
+    <div class="popbox-wrapper safebox" id="yluru">
+        <div class="popbox-body" style="min-width:580px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">养老信息录入</span>
+                <input class="hidden" id="yanglao_ins_id" value=""/>
+            </div>
+            <div class="detail_box">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10">*</em>社保号</label>
+                    <div class="col-md-8 col-xs-6">
+                        <input class="form-control" type="text" id="insuranceNum" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10">*</em>标签</label>
+                    <ul class="bx_set">
+                        <div class="col-md-4 col-xs-3">
+                            <li><input type="button" style="width:100%" id="ylao_f" class="btn1" value="初次参保"/></li>
+                        </div>
+                        <div class="col-md-4 col-xs-3">
+                            <li><input type="button" style="width:100%"  id="ylao_nf" class="btn1" value="参保续接"/></li>
+                        </div>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10">*</em>首次参保时间</label>
+                    <div class="col-md-4 col-xs-3">
+                        <input type="text" class="laydate-icon form-control" value="" id="firstTime" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><em class="text-danger mr10">*</em>户口所在地</label>
+                    <div class="col-md-3">
+                       <select class="form-control" id="sheng">
+                           <option>请选择</option>
+                       </select>
+                    </div>
+                    <div class="col-md-3">
+                      <select class="form-control" id="shi">
+                          <option>请选择</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <select class="form-control" id="qu">
+                          <option>请选择</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-8">
+                        <input class="form-control" id="registered" type="text" value="填写详细地址" />
+                    </div>
+                </div>
+                <div class="form-group text-center mt20">
+                    <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                        <input type="button" class="btn btn-primary btn-lg btn-radius" id="ylaoluru" style="width:50%;" onclick="updateInsurance(this);" value="保存" />
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popbox-wrapper safebox" id="lluru">
+        <div class="popbox-body" style="min-width:580px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">医疗信息录入</span>
+                <input class="hidden" id="yiliao_ins_id" value=""/>
+            </div>
+            <div class="detail_box">
+            <form class="form-horizontal" enctype="multipart/form-data" id="imgurl" method='post'>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10">*</em>医保银行卡号</label>
+                    <div class="col-md-8 col-xs-6">
+                        <input class="form-control" id="bankNum" name="bankNum" type="text" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10" >*</em>开户行</label>
+                    <div class="col-md-8 col-xs-6">
+                        <input class="form-control" id="bank" name="bank" type="text" readonly="readonly"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                   <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                       <div class="uploadImg_1">
+                           <!--<form class="form-horizontal" enctype="multipart/form-data" id="imgurl" method='post'>-->
+                               <input type="file" class="file_1" id="medicalUrl" name="file1" />
+
+                               <a href="#" style="width:50%;" class="btn btn-warning" onclick="uploadurl()">上传医保卡照片</a>
+                           <!--</form>-->
+                       </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label" style="margin-top: 20px;"><em class="text-danger mr10">*</em>标签</label>
+                    <ul class="bx_set">
+                        <div class="col-md-4 col-xs-3">
+                            <li><input type="button" style="width:100%" id="yliao_f" class="btn1" value="初次参保"/></li>
+                        </div>
+                        <div class="col-md-4 col-xs-3">
+                            <li><input type="button" style="width:100%" id="yliao_nf" class="btn1" value="参保续接"/></li>
+                        </div>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 col-xs-3 control-label"><em class="text-danger mr10">*</em>首次参保时间</label>
+                    <div class="col-md-4 col-xs-3">
+                        <input type="text" class="laydate-icon form-control" value="" id="firstTime1" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><em class="text-danger mr10">*</em>户口所在地</label>
+                    <div class="col-md-3">
+                        <select class="form-control" id="ylsheng">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="ylshi">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control" id="ylqu">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-8">
+                        <input class="form-control" type="text" id="ylregistered" value="填写详细地址" />
+                    </div>
+                </div>
+                <div class="form-group text-center mt20">
+                    <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                        <a class="btn btn-primary btn-lg btn-radius" onclick="updateyiliaoInsurance(this);" id="yliaosave" style="width:50%;" >保存</a>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popbox-wrapper safebox" id="time">
+        <div class="popbox-body" style="min-width:680px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">修改参保周期</span>
+            </div>
+            <div style="width:100%;">
+                <div style="margin-top: 20px;margin-left: 20px;">当前用户参保月份共计<em id="months"></em>个月</div>
+                <form class="form-horizontal" style="margin-top: 30px;" role="form">
+                    <div class="text-center" style="width: 100%;height: 20px;">
+                        <label class="col-md-3 col-xs-3 control-label" style="width: 20%;">参保周期</label>
+                        <input id="updateIns_id" class="hidden" value=""/>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="insuStart1" readonly="" />
+                            <input id="yl_insuStart_S" type="hidden" th:value="${yl_insuStart_S}"/>
+                            <input id="yl_insuStart_E" type="hidden" th:value="${yl_insuStart_E}"/>
+                            <input id="yb_insuStart_S" type="hidden" th:value="${yb_insuStart_S}"/>
+                            <input id="yb_insuStart_E" type="hidden" th:value="${yb_insuStart_E}"/>
+                        </div>
+                        <em class="pull-left" style="margin-top:8px;">至</em>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="insuEnd1" readonly="" />
+                            <input id="yl_insuEnd_S" type="hidden" th:value="${yl_insuEnd_S}"/>
+                            <input id="yl_insuEnd_E" type="hidden" th:value="${yl_insuEnd_E}"/>
+                            <input id="yb_insuEnd_S" type="hidden" th:value="${yb_insuEnd_S}"/>
+                            <input id="yb_insuEnd_E" type="hidden" th:value="${yb_insuEnd_E}"/>
+                        </div>
+                    </div>
+                </form>
+                <div style="margin-top: 20px;margin-left: 100px;width: 620px;">
+                    <p>可选月份顺延到调基最后的月份，最多往后顺延12个月最多选择月份为当前用户选择的月份个数，</p>
+                    <p>少选的月份则默认为该月份进行退款，再确认通过后该月份进入退保订单中至少需要保留一个月</p>
+                </div>
+                <div class="form-group text-center" style="margin-top: 50px;">
+                    <div>
+                        <input class="btn btn-primary btn-lg btn-radius" onclick="updateStartEnd(this);" id="insTime" style="width:100px;" type="button" value="修改"/>
+                        <input class="btn btn-primary btn-lg btn-radius" id="qxtime" onclick="qxtime(this);" style="width:100px;" type="button" value="取消"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popbox-wrapper safebox" id="mark">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">添加备注</span>
+            </div>
+            <div class="detail_box">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <input class="hidden" id="resmarks_ins_id"/>
+                    <textarea class="form-control" style="height:200px" id="remarks"></textarea>
+                </div>
+                <div class="form-group text-center mt20"><input class="btn btn-primary btn-lg btn-radius" type="button" onclick="updateRemarks(this);" style="width:50%;" value="备注" /> </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popbox-wrapper safebox" id="tishi1">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">提示</span>
+            </div>
+            <div class="safe_box text-center">
+                <p class="mt20">确认通过吗？</p>
+                <div class="safe_btn clearfix">
+                    <input class="hidden" id="pass_ins_id" value=""/>
+                    <input class="btn btn-primary btn-lg btn-radius pull-left" style="width:48%;" type="button" onclick="enterPass(this);" value="确认" />
+                    <input class="btn btn-warning btn-lg btn-radius pull-right popbox-close" style="width:48%;" value="取消" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="tishi2">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">提示</span>
+            </div>
+            <div class="safe_box text-center">
+                <p class="mt20">确认退保吗？</p>
+                <div class="safe_btn clearfix">
+                    <input class="btn btn-primary btn-lg btn-radius pull-left" href="" style="width:48%;" type="button" id="enter1" onclick="enterRefuse(this);"  value="确认" />
+                    <input class="btn btn-warning btn-lg btn-radius pull-right popbox-close" style="width:48%;" value="取消" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pic_one" style="display:none;"><img id="imga1" style="width:500px;height:auto;"/></div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.imga').fancyZoom({scaleImg: true, closeOnClick: true});
+        $('#zoom_word_1').fancyZoom({width:400, height:200});
+        $('#zoom_word_2').fancyZoom();
+        $('#zoom_flash').fancyZoom();
+    });
+;!function(){
+
+    laydate.render({
+        elem: '#insuStart'
+        , type: 'month'
+        , format: 'yyyy/MM'
+    });
+    laydate.render({
+        elem: '#insuEnd'
+        , type: 'month'
+        , format: 'yyyy/MM'
+    });
+    laydate.render({
+        elem: '#subStartTime',
+        format:'yyyy-MM-dd HH:mm:ss'
+    });
+    laydate.render({
+        elem: '#subEndTime',
+        format:'yyyy-MM-dd HH:mm:ss'
+
+    });
+    laydate.render({
+        elem: '#subStartTime1',
+        format:'yyyy-MM-dd HH:mm:ss'
+    });
+    laydate.render({
+        elem: '#subEndTime1',
+        format:'yyyy-MM-dd HH:mm:ss'
+
+    });
+    laydate.render({
+        elem: '#firstTime',
+        format:'yyyy-MM-dd HH:mm:ss'
+    });
+    laydate.render({
+        elem: '#firstTime1',
+        format:'yyyy-MM-dd HH:mm:ss'
+    });
+    // laydate.render({
+    //     elem: '#insuStart1',
+    //     type: 'month',
+    //     format:'yyyy/MM'
+    // });
+    // laydate.render({
+    //     elem: '#insuEnd1',
+    //     type: 'month',
+    //     format:'yyyy/MM'
+    // });
+}();
+</script>
+</body>
+</html>

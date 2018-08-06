@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通个人资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background:#f0f0f0">
+<div id="centerdiv" class="container mt10 mb10" style="min-height: 630px;">
+    <div class="sidebox pull-left">
+        <div class="clearfix myname">
+            <input type="hidden" id="headImgUrlinp" th:value="${headImgUrl}"/>
+            <div class="pull-left mypic"><img id="headImgUrl" src="../../static/images/h5/logo.png"/></div>
+            <div class="pull-left ml10 mt20">
+                <p class="fontS16" th:text="${tel}"></p>
+                <p class="text-danger" th:text="${audit}"></p>
+            </div>
+        </div>
+        <ul class="mynav">
+            <li class="con cur"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_person.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon1"></span>个人资料</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_medical.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon2"></span>医保卡</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_social.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon2"></span>参保订单</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_jifen.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon3"></span>积分余额</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_change.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon4"></span>我的兑换</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_address.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon5"></span>地址管理</a></li>
+            <li class="con"><a th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/my_set.shtml}+'\',\''+${msUrl}+'\')'"><span class="icon6"></span>设置</a></li>
+        </ul>
+    </div>
+    <div id="pinfodiv" class="contbox pull-right">
+        <iframe id="pinfo" frameborder="0" style="width:100%;" scrolling="no" th:src="@{${ifurl}}"></iframe>
+    </div>
+</div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        $(".con").on('click',function(){
+            $(".cur").removeClass("cur");
+            $(this).addClass("cur");
+        });
+        var hi=$("#headImgUrlinp").val()
+        if(hi!=null && hi.length>0){
+            $("#headImgUrl").attr("src",$("#headImgUrlinp").val());
+        }
+    });
+    function opentab(url,title){
+        $("#pinfodiv").html();
+        var content = '<iframe id="pinfo"  frameborder="0" scrolling="no"  src="'+url+'" style="width:100%;" ></iframe>';
+        $("#pinfodiv").html(content);
+    }
+    /*]]>*/
+</script>
+</html>

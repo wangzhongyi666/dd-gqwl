@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通养老计算器</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 引入 Bootstrap -->
+<link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/home.css" rel="stylesheet">
+<script src="../../static/js/commons/jquery.min.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body style="background:#f0f0f0">
+<div class="container">
+	<div class="weizhi"><a th:href="@{/handApp/social.shtml}">社保服务</a> > 养老计算器</div>
+    <div class="box pb120">
+    	<div class="menu1"><span>养老计算器</span></div>
+		<div class="ylbox">
+            <ul>
+            <li><input type="text" class="form-control" style="width:360px;" placeholder="请输入当地灵活就业的养老保险保险缴纳基数" id="base1"/></li>
+            <li class="mt20">
+                <select class="form-control" style="width:360px;" id="radio1">
+                    <option value="0">请选择缴费比例</option>
+                    <option value="0.6">60%</option>
+                    <option value="1">100%</option>
+                    <option value="2">200%</option>
+                    <option value="3">300%</option>
+                </select>
+            </li>
+            <li class="mt20"><input class="btn btn-primary btn-lg" style="width:360px;" type="submit" value="开始计算" id="counter" onclick="counter()"></li>
+            <li class="mt20 fontS12">注意：该计算器为灵活用工人员的养老保险缴纳费用估算，请以实际缴纳费用为准。</li>
+            </ul>
+            <div class="menu2">计算结果</div>
+            <ul>
+            <li>灵活就业养老保险缴费基数：<i class="ml30" id="base"></i></li>
+            <li>灵活就业养老保险缴费比例：<i class="ml30" id="radio"></i></li>
+            <li>灵活就业养老保险缴费金额：<i class="ml30" id="payment"></i></li>
+            </ul>  
+          <div class="text-center"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+function counter(){
+    var radio = $("#radio1").val();
+    var base = $("#base1").val();
+    $("#base").text(base);
+    $("#radio").text(radio*100+"%");
+    $("#payment").text(base*radio*0.2);
+}
+
+</script>
+</html>

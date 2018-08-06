@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通参保订单</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/jquery.qrcode.min.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body style="background:#f0f0f0">
+<input th:value="${orderNum}" id="orderNum" class="hidden"/>
+    <input id="overTime" type="hidden"/>
+	<div id="mpcenter" style="width: 100%;">
+    	<div class="menu1"><span>订单详情</span> <a class="btn btn-primary btn-lg" style="width:100px; float: right; margin-right: 20px;" href="/handApp/my_social.shtml">返回</a></div>
+
+        <div class="check_name">
+        	<span class="pull-right" id="audit">状态：参保中</span>
+        	<span id="orderNums"></span>
+        </div>
+        <div class="ylbox borbot">
+        	<div class="fontS16 fontBold"><img src="../../static/images/h5/mycb.png"/><i class="ml5" id="insuranceType">养老保险</i></div>
+            <ul>
+                <li><label>缴费月份</label><label id="insuStart" style="width:300px;"></label></li>
+                <li><label>缴费基数</label><label id="base" style="width:300px;"></label></li>
+                <li><label>缴费比例</label><label id="ratio" style="width:300px;"></label></li>
+                <li><label>已缴纳月份</label><label id="monthNum" style="width:300px;"></label></li>
+            </ul>    
+        </div>
+        <div class="ylbox borbot">
+        	<div class="fontS16 fontBold"><img src="../../static/images/h5/mycb.png"/><i class="ml5">缴费信息</i></div>
+            <ul>
+                <li><label>已缴纳金额</label><label id="allpay" style="width:300px;"></label></li>
+                <li><label>待缴纳金额</label><label id="dpay" style="width:300px;"></label></li>
+            </ul> 
+        </div>
+        <div class="ylbox borbot" id="tbdiv" style="display:none;">
+        	<div class="fontS16 fontBold"><img src="../../static/images/h5/mycb.png"/><i class="ml5">退保信息</i></div>
+            <ul>
+                <li><label>待退回积分</label><label id="quit_integration" style="width:300px;"></label></li>
+                <li><label>差额计费</label><label id="integration_diff" style="width:300px;"></label></li>
+                <li class="text-danger" id="textli" style="display: none">您的积分余额不足已本次扣除，所以剩余积分需要用退款进行相应的抵扣</li>
+                <li><label>现金抵扣积分</label><label id="payment_inte" style="width:300px;"></label></li>
+                <li><label>实退金额</label><label id="pra_payment" style="width:300px;"></label></li>
+            </ul>  
+        </div>
+        <ul class="cb_btn clearfix">
+        	<!--<li id="qx" style="display:none;" ><a class="btn btn-primary btn-lg" onclick="qxzf()">取消订单</a></li>-->
+            <!--<li><a class="btn btn-primary btn-lg" href="/handApp/my_social.shtml">返回</a></li>-->
+            <!--<li id="zf" style="display:none;"><a class="btn btn-primary btn-lg" onclick="wxzf()">微信支付</a><i id="sytime" class="fontS12"></i></li>-->
+            <!--<li id="gq" style="display:none;"><a class="btn btn-primary btn-lg" style="border-color:gray;" href="">支付已过期</a></li>-->
+        </ul>    
+        
+    </div>
+<div class="popbox-container" >
+    <div class="popbox-wrapper safebox" id="set1">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">扫码支付</span>
+            </div>
+            <div class="safe_box text-center" style="border: 1px solid rgb(233,233,233);">
+                <div id="qrcode" style="width: 200px;height:200px;margin:0 auto;"></div>
+                <div style="margin-top:10px;color:red;">请使用微信扫一扫</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    var toba=1;
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        getOrderByOrderNum();
+        var hei=$("#mpcenter").height();
+        $("#pinfodiv" , parent.document).height(hei);
+        $("#pinfo" , parent.document).height(hei);
+
+        var hei1=$("#centerdiv" , parent.document).height();
+        $("#tabs" , parent.parent.document).height(hei1);
+        $("#ifWd" , parent.parent.document).height(hei1);
+    });
+    function wxzf(){
+        shadboxFun1('set1');
+    }
+    function qxzf(){
+        layer.alert("确定取消该订单吗？",{
+            anim: 1,
+            btn: ['确定','取消'],
+            yes:function(){
+                layer.close(layer.index);
+                $.ajax({
+                    url :'/handApp/qxOrder.do',
+                    type : 'POST',
+                    timeout : 20000,
+                    data:{
+                        orderNum:$("#orderNum").val(),
+                        audit:10
+                    },
+                    async: false,
+                    success : function(result) {
+                        getOrderByOrderNum();
+                        layer.alert(result.result_msg);
+
+                        //
+
+                    }
+                });
+            },btn2:function(){
+                layer.close(layer.index);
+            }
+        });
+    }
+    function shadboxFun1(objId){
+        var obj = "#"+objId;  //对象ID
+
+        $('.popbox-container').fadeIn();
+        $('.popbox-overlay').css({
+            "height": $(document).height() + 'px'
+        })
+
+        var _height = $(obj).height();
+        var _width = $(obj).width();
+
+        //获取对象距离窗口上部和左部的距离
+        var _top = ($(window).height() - _height)/2 + "px";
+        var _left = ($(window).width() - _width)/2 + 'px';
+        $(obj).css({"left":_left});
+
+        $(obj).animate({
+            opacity: 'show', top: _top
+        }, "200",function(){
+            var userAgent = window.navigator.userAgent.toLowerCase();
+            var version = $.browser.version;
+
+            if(version!="6.0"){//如果是非IE6
+                $(obj).css({
+                    "top": ($(window).height() - _height)/2 + 'px'
+                });
+            }
+            if(version=="6.0"){//如果IE6
+                $(obj).css({
+                    "top": ($(window).height() - _height)/2 + $(window).scrollTop() + 'px'
+                });
+            }
+        });
+
+        $('.popbox-close').click(function(){
+            toba=2;
+            $(this).parents('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+
+            $('.popbox-container').fadeOut();
+        })
+
+        $('.popbox-overlay').click(function(){
+            $(this).siblings('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+
+            $('.popbox-container').fadeOut();
+        })
+        if(objId=='set1'){
+            $("#qrcode").html();
+            $.ajax({
+                url :'/handApp/wxPrePay.do',
+                type : 'POST',
+                timeout : 20000,
+                data:{
+                    orderNum:$("#orderNum").val(),
+                    body:'购买测试',
+                    trade_type:'NATIVE',
+                    payment:'0.01'
+                },
+                async: false,
+                success : function(result) {
+                    var content = result.data[0].code_url;
+                    var str = toUtf8(content);
+                    $("#qrcode").qrcode({
+                        render: "canvas", //table方式
+                        width: 200, //宽度
+                        height:200, //高度
+                        text: str //任意内容
+                    });
+                    toba=1;
+                    getAuditByOrderNum(obj);
+                    // qr.addData(content);
+                    // qr.make();
+                    // alert("bbb");
+                    // $("#qrcode").html(qr.createImgTag());
+                }
+            });
+        }
+
+    }
+    function getAuditByOrderNum(e){
+        if(toba==2){
+            return;
+        }
+        var orderNum=$("#orderNum").val();
+        $.ajax({
+            url :'/handApp/getOrderByOrderNum.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                orderNum:orderNum
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist[0]!=null){
+                    if(datalist[0].audit==6){
+                        $(e).animate({
+                            opacity: 'hide',top: '0px'
+                        }, "slow");
+                        $('.popbox-container').fadeOut();
+                        getOrderByOrderNum();
+                        return;
+                    }else{
+                        setTimeout(getAuditByOrderNum,1000);
+                    }
+                }
+            }
+        });
+    }
+    function toUtf8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for(i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+            }
+        }
+        return out;
+    }
+    function getOrderByOrderNum(){
+        var orderNum=$("#orderNum").val();
+        $.ajax({
+            url :'/handApp/getOrderByOrderNum.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                orderNum:orderNum
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist.length>0){
+                    $("#overTime").val(datalist[0].overTime);
+                    switch (datalist[0].audit){
+                        case 1:
+                            $("#audit").text("状态:"+"资料审核中");
+                            //$("#qx").show();
+                            break;
+                        case 2:
+                            $("#audit").text("状态:"+"待缴费");
+                            /*$("#qx").show();//待缴费状态不能取消*/
+                            //$("#zf").show();
+                            //time();
+                            break;
+                        case 3:
+                            $("#audit").text("状态:"+"已拒绝");
+                            //$("#qx").show();
+                            break;
+
+                        case 5:
+                            $("#audit").text("状态:"+"已过期");
+                            /*$("#qx").show();*/
+                            //$("#gq").show();
+                            break;
+                        case 6:
+                            $("#audit").text("状态:"+"参保中");
+                            // $("#qx").hide();
+                            // $("#zf").hide();
+                            // $("#gq").hide();
+                            break;
+                        case 7:
+                            $("#audit").text("状态:"+"退保审核中");
+                            break;
+                        case 8:
+                            $("#audit").text("状态:"+"已退保");
+                            $("#tbdiv").show();
+                            break;
+                        case 9:
+                            $("#audit").text("状态:"+"已完成");
+                            break;
+                        case 10:
+                            $("#audit").text("状态:"+"已取消");
+                            /*$("#qx").hide();
+                            $("#zf").hide();
+                            $("#gq").hide();*/
+                            break;
+                        default:
+
+                    }
+                    $("#orderNums").text("订单编号:"+datalist[0].orderNum);
+                    $("#insuStart").text(datalist[0].insuStart+"-"+datalist[0].insuEnd);
+                    $("#base").text(datalist[0].base);
+                    $("#ratio").text(datalist[0].ratio+"%");
+                    $("#monthNum").text(datalist[0].monthNum+"个月");
+                    $("#allpay").text(datalist[0].allpay+"元");
+                    $("#dpay").text(datalist[0].dpay+"元");
+                    $("#quit_integration").text(datalist[0].quit_integration);
+                    $("#integration_diff").text(datalist[0].integration_diff);
+                    if(datalist[0].integration_diff>0){
+                        $("#textli").show;
+                    }
+                    if(datalist[0].insuranceType==1){
+                        $("#insuranceType").text("养老保险");
+                    }else{
+                        $("#insuranceType").text("医疗保险");
+                    }
+                    $("#payment_inte").text(datalist[0].payment_inte+"元");
+                    $("#pra_payment").text(datalist[0].pra_payment+"元");
+                }
+
+            }
+        });
+    }
+    var timeout = false; //启动及关闭按钮
+    function time()
+    {
+        if(timeout) return;
+        var overTime=$("#overTime").val();
+        var date1=new Date();
+        var time1=date1.getTime();
+        overTime = overTime.replace(/-/g,'/');
+        var time2 = new Date(overTime).getTime();
+        if(time1>=time2){
+            $("#sytime").text("剩余支付时间：00:00:00");
+            timeout=true;
+            return;
+        }
+        var time3=time2-time1;
+        var h=Math.round(time3/3600000);
+        var m=Math.round(Math.round(time3%3600000)/60000);
+        var s=Math.round(Math.round(Math.round(time3%3600000)%60000)/1000);
+        var seetime=h+":"+m+":"+s;
+        $("#sytime").text("剩余支付时间："+seetime);
+        setTimeout(time,1000); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
+    }
+    /*]]>*/
+</script>
+</html>

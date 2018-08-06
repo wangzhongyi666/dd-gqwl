@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通个人资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/laydate/laydate.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="mpcenter" style="width: 100%;">
+    <div class="menu1"><span>参保订单</span></div>
+    <!--无参保订单
+    <div class="text-center mt50">
+        <p><img src="images/no.png"></p>
+        <p class="fontS16 fontC03 mt20">您还未在平台参保，快去社保服务参保吧！</p>
+    </div>-->
+    <!--有参保订单-->
+    <div class="search">
+        <form>
+            <label>订单号</label><input class="txt ml10" id="orderNum" type="text" placeholder="输入订单号"/>
+            <label class="ml10 mr10">参保周期</label><input class="txt laydate-icon" type="text" id="demo"/><span class="ml5 mr5">至</span><input class="txt laydate-icon" type="text" id="demo2"/><br/>
+            <label class="mr10">支付时间</label><input class="txt laydate-icon" type="text" id="demo3"/><span class="ml5 mr5">至</span><input class="txt laydate-icon" type="text" id="demo4"/>
+            <label class="ml10 mr10">保险类型</label>
+            <select id="insuranceType">
+                <option value="0">全部</option>
+                <option value="1">养老保险</option>
+                <option value="2">医疗保险</option>
+            </select>
+            <input class="btn2 ml10" id="searchbtn" value="搜索" style="cursor: pointer;"/>
+        </form>
+    </div>
+    <div style="margin:20px;min-height: 310px;">
+        <table class="table table-bordered table-striped text-center" >
+            <thead>
+            <tr>
+                <th>订单编号</th>
+                <th>保险类型</th>
+                <th>参保周期</th>
+                <th>缴费金额</th>
+                <th>状态</th>
+                <th>支付时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="audittab">
+            </tbody>
+        </table>
+        <input type="hidden" id="pageSizeInp"/>
+    </div>
+    <div style="margin-left:20px;">
+        <div class="box" id="box">
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        var hei=$("#mpcenter").height();
+        $("#pinfodiv" , parent.document).height(hei);
+        $("#pinfo" , parent.document).height(hei);
+
+        var hei1=$("#centerdiv" , parent.document).height();
+        $("#tabs" , parent.parent.document).height(hei1);
+        $("#ifWd" , parent.parent.document).height(hei1);
+        $('#pageSizeInp').val(4)
+        countOrderlist($('#pageSizeInp').val());
+        $("#searchbtn").live('click',function(){
+            countOrderlist($('#pageSizeInp').val());
+        });
+    });
+    function countOrderlist(pageSize){
+        var orderNum=$("#orderNum").val();
+        var insuranceType=$("#insuranceType").val();
+        var insuStart =$("#demo").val();
+        var insuEnd =$("#demo2").val();
+        var rechargeTime1 =$("#demo3").val();
+        var rechargeTime2 =$("#demo4").val();
+        $.ajax({
+            url :'/handApp/countOrderlist.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                orderNum:orderNum,
+                insuranceType:insuranceType,
+                rechargeTime1:rechargeTime1,
+                rechargeTime2:rechargeTime2,
+                insuStart:insuStart,
+                insuEnd:insuEnd,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                $('#box').paging({
+                    initPageNo: 1, // 初始页码
+                    totalPages: result.pageCount, //总页数
+                    totalCount: '合计' + result.allNum + '条数据', // 条目总数
+                    slideSpeed: 600, // 缓动速度。单位毫秒
+                    jump: true, //是否支持跳转
+                    callback: function(page) { // 回调函数
+                        getOrderlist(page,pageSize);
+                    }
+                });
+            }
+        });
+    }
+    function getOrderlist(pageNum,pageSize){
+        var orderNum=$("#orderNum").val();
+        var insuranceType=$("#insuranceType").val();
+        var rechargeTime1 =$("#demo").val();
+        var rechargeTime2 =$("#demo2").val();
+        var insuStart =$("#demo3").val();
+        var insuEnd =$("#demo4").val();
+        $.ajax({
+            url :'/handApp/getOrderlist.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                orderNum:orderNum,
+                insuranceType:insuranceType,
+                rechargeTime1:rechargeTime1,
+                rechargeTime2:rechargeTime2,
+                insuStart:insuStart,
+                insuEnd:insuEnd,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                const  rowlist=new Array();
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;datalist.length>i;i++){
+                        var row=datalist[i];
+                        const rowlist1=new Array();
+                        rowlist1[0]=row.orderNum;
+                        if(row.insuranceType==1){
+                            rowlist1[1]="养老保险";
+                        }else  if(row.insuranceType==2){
+                            rowlist1[1]="医疗保险";
+                        }
+                        rowlist1[2]=row.insuStart+"-"+row.insuEnd;
+                        rowlist1[3]=row.payment;
+                        switch (row.audit){
+                            case 1:
+                                rowlist1[4]="待审核";
+                                break;
+                            case 2:
+                                rowlist1[4]="待城市经理审核";
+                                break;
+                            // case 3:
+                            //     rowlist1[4]="驳回";
+                            //     break;
+                            // case 4:
+                            //     rowlist1[4]="待缴费";
+                            //     break;
+                            // case 5:
+                            //     rowlist1[4]="缴费过期";
+                            //     break;
+                            case 6:
+                                rowlist1[4]="参保中";
+                                break;
+                            case 7:
+                                rowlist1[4]="退保审核中";
+                                break;
+                            case 8:
+                                rowlist1[4]="退保";
+                                break;
+                            case 9:
+                                rowlist1[4]="完成";
+                                break;
+                            // case 10:
+                            //     rowlist1[4]="取消";
+                            //     break;
+                            default:
+                        }
+                        rowlist1[5]=row.rechargeTime;
+                        rowlist1[6]="<a class=\"text-info\"  href='/handApp/my_detail.shtml?orderNum="+row.orderNum+"'>查看详情</a>";
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"audittab");
+            }
+        });
+    }
+    ;!function(){
+        laydate({
+            elem: '#demo'
+        })
+        laydate({
+            elem: '#demo2'
+        })
+        laydate({
+            elem: '#demo3'
+        })
+        laydate({
+            elem: '#demo4'
+        })
+    }();
+    function getInfo(event){
+        var id=$(event).attr("a1");
+
+    }
+    /*]]>*/
+</script>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通个人资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/home.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="mpcenter" style="width: 100%;">
+    <input type="hidden" id="pay_pwd" th:value="${pay_pwd}"/>
+    <div class="menu1"><span>设置</span></div>
+    <div class="clearfix">
+        <div class="set text-center">
+            <p><img src="../../static/images/h5/set1.png"/><span class="fontS18 fontBold ml5">登录密码</span></p>
+            <p class="mt10">如果觉的您的登录密码不安全，请在此进行修改</p>
+            <p class="mt10"><a class="btn btn-primary btn-lg"  onclick="window.parent.parent.shadboxFun('set',this)">去修改</a></p>
+        </div>
+        <div class="set text-center" style="display: none;" id="paydiv1">
+            <p><img src="../../static/images/h5/set1.png"/><span class="fontS18 fontBold ml5">支付密码</span></p>
+            <p class="mt10">如果觉的您的交易密码不安全，请在此进行修改</p>
+            <p class="mt10"><a class="btn btn-primary btn-lg" a1="1" onclick="window.parent.parent.shadboxFun('set2',this)">去修改</a></p>
+        </div>
+        <div class="set text-center" style="display: none;" id="paydiv2">
+            <p><img src="../../static/images/h5/set2.png"/><span class="fontS18 fontBold ml5">支付密码</span></p>
+            <p class="mt10">请设置您的交易密码</p>
+            <p class="mt10"><a class="btn btn-primary btn-lg" a1="2" onclick="window.parent.parent.shadboxFun('set2',this)">去设置</a></p>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        var hei=$("#mpcenter").height();
+        $("#pinfodiv" , parent.document).height(hei);
+        $("#pinfo" , parent.document).height(hei);
+
+        var hei1=$("#centerdiv" , parent.document).height();
+        $("#tabs" , parent.parent.document).height(hei1);
+        $("#ifWd" , parent.parent.document).height(hei1);
+        var pay_pwd=$("#pay_pwd").val();
+        if(pay_pwd!=null && pay_pwd.length>0){
+            $("#paydiv2").hide();
+            $("#paydiv1").show();
+        }else{
+            $("#paydiv1").hide();
+            $("#paydiv2").show();
+        }
+    });
+    /*]]>*/
+</script>
+</html>

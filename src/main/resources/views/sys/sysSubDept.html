@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通子地区管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/js/sys/syssubdept.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">子地区管理</div>
+        <div class="search">
+        	<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-4 search_list">
+                      <input type="hidden" id="parentId" th:value="${parentId}"/>
+                      <input type="text" class="form-control" name="name" id="name" placeholder="地区名称" />
+                      <span class="fa fa-search"></span>
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                </div>
+            </form>
+        </div>
+        <div class="clearfix">
+            <a class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="shadboxFun1('deptadd',this)">添加市级地区</a>
+        </div>
+        <table class="table table-bordered table-striped text-center mt20">
+            <thead>
+            <tr>
+                <th>子地区</th>
+                <th>排序</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="subDeptDataList">
+
+            </tbody>
+        </table>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+    </div>
+    <!--弹出框-->
+    <div class="popbox-container">
+        <div class="popbox-overlay"></div>
+        <div class="popbox-wrapper safebox" id="deptadd">
+            <div class="popbox-body" style="min-width:520px;">
+                <div class="safe_nav">
+                    <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                    <span class="fontS16">添加市级地区</span>
+                </div>
+                <div class="detail_box">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-3 control-label">一级地区</label>
+                            <div class="col-md-8 col-xs-6 lineH35">全国</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-3 control-label">二级地区</label>
+                            <div class="col-md-8 col-xs-6 lineH35"><em id="cityName" th:text="${deptName}"></em></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-3 control-label">三级地区</label>
+                            <div class="col-md-8 col-xs-6">
+                                <select class="form-control" type="text" id="deptSelect">
+                                </select>
+                                <!--<input type="text" id="deptName" class="form-control" placeholder="" />-->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-3 control-label">开户行</label>
+                            <div class="col-md-8 col-xs-6">
+                                <input type="text" id="bank" class="form-control" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-3 control-label">排序</label>
+                            <div class="col-md-8 col-xs-6">
+                                <input type="text" class="form-control" id="rank" placeholder="只能输入1-100的数字，数字越小排位越前" />
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                                <a class="btn btn-primary btn-lg btn-radius" href="#" onclick="addDept(this)" style="width:100%;">保存</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

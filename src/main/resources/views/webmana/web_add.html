@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通添加资讯</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="rightIframe  pull-right">
+    <input th:value="${id}" id="id" class="hidden"/>
+    <input th:value="${title}" id="title" class="hidden"/>
+    <input th:value="${cont}" id="cont" class="hidden"/>
+    <input th:value="${picurl1}" id="picurl1" class="hidden"/>
+    <input th:value="${picurl2}" id="picurl2" class="hidden"/>
+    <input th:value="${picurl3}" id="picurl3" class="hidden"/>
+    <div class="sopen" id="sopen"></div>
+        <div id="zxdiv" class="menu fontS20">添加资讯</div>
+        <ul class="addbox pb60">
+            <form id="imgform" enctype='multipart/form-data'  class='ui-form' method='post'>
+                <li><span>标题</span><input style="width:426px;" name="title" id="titleinp" class="txt txt1" type="text"/></li>
+                <li style="float:left;">
+                    <span>图片</span>
+                    <span>列表展示图片</span>
+                    <i>
+                        <div class="uploadImg1">
+                            <input type="file" class="webfile" name="file" id="liefile1" onchange="imgChange(1,1,this)" size="1" />
+                            <em id="lieimg1"></em>
+                            <input id="lieinp1" name="lieinp" type="hidden"/>
+                        </div>
+                    </i>
+                </li>
+                <li style="margin-left:140px;width:900px;float:left;" id="qian">
+                    <span>展示在内容前</span>
+                    <i style="float:left;">
+                        <div class="uploadImg1">
+                            <input type="file" class="webfile" name="file" id="qianfile1" onchange="imgChange(2,1,this)" size="1" />
+                            <em id="qianimg1"></em>
+                            <input id="qianinp1" name="qianinp" type="hidden"/>
+                        </div>
+                        <div id="qiansc1" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg('2','1',this)">删除</div>
+                    </i>
+                </li>
+                <li style="margin-left:140px;width:900px;float:left;" id="hou">
+                    <span>展示在内容后</span>
+                    <i style="float:left;">
+                        <div class="uploadImg1">
+                            <input type="file" class="webfile" name="file" id="houfile1" onchange="imgChange(3,1,this)" size="1" />
+                            <em id="houimg1"></em>
+                            <input id="houinp1" name="houinp" type="hidden"/>
+                        </div>
+                        <div id="housc1" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg('3','1',this)">删除</div>
+                    </i>
+                </li>
+                <li style="float:left;"><span>内容</span><textarea name="cont" id="conttext" style="width:426px;" class="txt txt2"></textarea></li>
+            </form>
+            <li style="margin-left:140px;float:left;">
+                <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="saveinfo()" value="保存"/>
+                <input style="width:160px;" class="btn btn-warning btn-lg btn-radius mr10" type="submit" onclick="qx()" value="取消"/>
+                <input style="width:160px;display:none;" class="btn btn-primary btn-lg btn-radius" type="submit" value="预览"/>
+            </li>
+        </ul>
+    </div>
+<!--弹出框-->
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="add">
+        <div class="popbox-body" style="min-width:680px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">信息导出</span>
+            </div>
+            <div class="detail_box">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group"><label class="col-md-3 col-xs-3 control-label">按提交日期导出</label></div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-3 control-label">选择您要导出的日期</label>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="demo5"/>
+                        </div>
+                        <em class="pull-left" style="margin-top:8px;">至</em>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="demo6"/>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt50">
+                        <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                            <a class="btn btn-primary btn-lg btn-radius" href="" style="width:50%;">导出</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    /*<![CDATA[*/
+    var b1=1;
+    var b2=1;
+    $(document).ready(function() {
+        var id=$("#id").val();
+       if(id!=null && id!=""){
+           $("#zxdiv").text("编辑资讯");
+           $("#titleinp").val($("#title").val());
+           $("#conttext").text($("#cont").val());
+           var pic1=$("#picurl1").val();
+           var pic2=$("#picurl2").val();
+           var pic3=$("#picurl3").val();
+           if(pic1!=null && pic1!=""){
+               $("#liefile1").attr("name","file1");
+               $("#lieinp1").attr("name","lieinp");
+               $("#lieimg1").css('background',"url("+pic1+") center center no-repeat");
+               $("#lieimg1").css('background-size',"100% 100%");
+               $("#lieinp1").val(pic1);
+           }
+           if(pic2!=null && pic2!=""){
+                var a=pic2.split(";");
+                if(a!=null && a.length>0){
+                    for(var i=0;i<a.length;i++){
+                        var p=i+1;
+                        if(i>=1){
+                            var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file2" class="webfile" id="qianfile'+p+'" onchange="imgChange(2,'+p+',this)" size="1" /><em id="qianimg'+p+'"></em><input id="qianinp'+p+'" type="hidden" name="qianinp"/></div>' +
+                                '<div id="qiansc'+p+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;" onclick="deletimg(2,'+p+',this)">删除</div></i>';
+                            if(5>=p){
+                                $("#qian").append(divstr);
+                            }
+                            b1=p;
+                        }
+                        if(p==1){
+                            $("#qianfile"+p).attr("name","file2");
+                            $("#qianinp1").attr("name","qianinp");
+                            $("#qiansc1").show();
+                        }
+                        $("#qianimg"+p).css('background',"url("+a[i]+") center center no-repeat");
+                        $("#qianimg"+p).css('background-size',"100% 100%");
+                        $("#qianinp"+p).val(a[i]);
+                    }
+                    if(a.length<5){
+                        var p=a.length+1;
+                        var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file" class="webfile" id="qianfile'+p+'" onchange="imgChange(2,'+p+',this)" size="1" /><em id="qianimg'+p+'"></em><input id="qianinp'+p+'" type="hidden"/></div>' +
+                            '<div id="qiansc'+p+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg(2,'+p+',this)">删除</div></i>';
+                        if(5>=p){
+                            $("#qian").append(divstr);
+                        }
+                        b1=p;
+                    }
+                }
+           }
+           if(pic3!=null && pic3!=""){
+               var a=pic3.split(";");
+               if(a!=null && a.length>0){
+                   for(var i=0;i<a.length;i++){
+                       var p=i+1;
+                       if(i>=1){
+                           var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file3" class="webfile" id="houfile'+p+'" onchange="imgChange(3,'+p+',this)" size="1" /><em id="houimg'+p+'"></em><input id="houinp'+p+'" type="hidden" name="houinp"/></div>' +
+                               '<div id="housc'+p+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;" onclick="deletimg(3,'+p+',this)">删除</div></i>';
+                           if(5>=p){
+                               $("#hou").append(divstr);
+                           }
+                           b2=p;
+                       }
+                       if(p==1){
+                           $("#houfile"+p).attr("name","file3");
+                           $("#houinp1").attr("name","houinp");
+                           $("#housc1").show();
+                       }
+                       $("#houimg"+p).css('background',"url("+a[i]+") center center no-repeat");
+                       $("#houimg"+p).css('background-size',"100% 100%");
+                       $("#houinp"+p).val(a[i]);
+                   }
+                   if(a.length<5){
+                       var p=a.length+1;
+                       var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file" class="webfile" id="houfile'+p+'" onchange="imgChange(3,'+p+',this)" size="1" /><em id="houimg'+p+'"></em><input id="houinp'+p+'" type="hidden"/></div>' +
+                           '<div id="housc'+p+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg(3,'+p+',this)">删除</div></i>';
+                       if(5>=p){
+                           $("#hou").append(divstr);
+                       }
+                       b2=p;
+                   }
+               }
+           }
+       }
+    });
+    function qx(){
+        window.location.replace("/web/webinfo.do");
+    }
+    function saveinfo(){
+        if($("#imgform").form('validate')){
+            $("#imgform").form('submit', {
+                url:'/web/addInfo.do?id='+$("#id").val(),
+                success:function(data){
+                    var c = jQuery.parseJSON(data);
+                    layer.alert(c.msg,{
+                        anim: 1,
+                        btn: ['确定'],
+                        yes:function(){
+                            window.location.replace("/web/webinfo.do");
+                        }
+                    });
+                }
+            });
+        }
+    }
+    function imgChange(a,type,event){
+        var a1="qian";
+        if(a==1){
+            a1="lie";
+        }else if(a==2){
+            a1="qian";
+        }else if(a==3){
+            a1="hou";
+        }
+        $(event).attr("name","file"+a);
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+                url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        var path = getObjectURL(document.getElementById(a1+"file"+type).files[0]);
+        $("#"+a1+"inp"+type).val(path);
+        $("#"+a1+"inp"+type).attr("name",a1+"inp");
+        $("#"+a1+"img"+type).css('background',"url("+path+") center center no-repeat");
+        $("#"+a1+"img"+type).css('background-size',"100% 100%");
+        if(a!=1){
+            $("#"+a1+"sc"+type).show();
+        }
+        if(a==2 && type==b1){
+            type=type+1;
+            var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file" class="webfile" id="'+a1+'file'+type+'" onchange="imgChange('+a+','+type+',this)" size="1" /><em id="'+a1+'img'+type+'"></em><input id="'+a1+'inp'+type+'" type="hidden"/></div>' +
+                '<div id="'+a1+'sc'+type+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg('+a+','+type+',this)">删除</div></i>';
+            if(5>=$("#"+a1).children().length){
+                $("#"+a1).append(divstr);
+            }
+            b1=type;
+        }else if(a==3 && type==b2){
+            type=type+1;
+            var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file" class="webfile" id="'+a1+'file'+type+'" onchange="imgChange('+a+','+type+',this)" size="1" /><em id="'+a1+'img'+type+'"></em><input id="'+a1+'inp'+type+'" type="hidden"/></div>' +
+                '<div id="'+a1+'sc'+type+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg('+a+','+type+',this)">删除</div></i>';
+            if(5>=$("#"+a1).children().length){
+                $("#"+a1).append(divstr);
+            }
+            b2=type;
+        }
+    }
+
+    function deletimg(a,type,e){
+        var a1="qian";
+        if(a==1){
+            a1="lie";
+        }else if(a==2){
+            a1="qian";
+        }else if(a==3){
+            a1="hou";
+        }
+        var ysar=$("#"+a1).find("input");
+        var ain=ysar==null?null:ysar[ysar.length-1];
+        if($("#"+a1).children().length==6 && ain!=null && $(ain).val()!=null && $(ain).val().length>0){
+            $(e).parent().remove();
+            if(a==2 && type==b1){
+                type=b1+1;
+            }else if(a==3 && type==b2){
+                type=b2+1;
+            }
+            var divstr='<i style="float:left;"><div class="uploadImg1"><input type="file" name="file" class="webfile" id="'+a1+'file'+type+'" onchange="imgChange('+a+','+type+',this)" size="1" /><em id="'+a1+'img'+type+'"></em><input id="'+a1+'inp'+type+'" type="hidden"/></div>' +
+                '<div id="'+a1+'sc'+type+'" style="width: 100%;float: left;text-align: center;color:red;margin-top: 5px;display: none;" onclick="deletimg('+a+','+type+',this)">删除</div></i>';
+            if(a==2 && type==b1){
+                b1=type;
+            }else if(a==3 && type==b2){
+                b2=type;
+            }
+            if(5>=$("#"+a1).children().length){
+                $("#"+a1).append(divstr);
+            }
+        }else{
+            $(e).parent().remove();
+        }
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

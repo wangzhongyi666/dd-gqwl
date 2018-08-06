@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>365灵活通网站文案维护</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/webmana/webtext.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="rightIframe  pull-right">
+    <div class="sopen" id="sopen"></div>
+        <div class="menu fontS20">H5管理</div>
+        <ul class="addbox pb60">
+            <form id="imgform" enctype='multipart/form-data'  class='ui-form' method='post'>
+            <li>
+                <span>模块1</span>
+                <i>
+                    <div class="uploadImg1">
+                        <input type="file" class="webfile" name="file1" id="file1" onchange="imgChange(1)" size="1" />
+                        <em id="img1"></em>
+                    </div>
+                    <a id="pa1" target="view_window" onclick="openpic(this)" href="">预览</a>
+                </i>
+            </li>
+            <li><span>模块1跳转地址</span><input style="width:426px;" name="url1" class="txt txt1" type="text"/></li>
+            <li>
+                <span>模块2</span>
+                <i>
+                    <div class="uploadImg1">
+                        <input type="file" class="webfile" name="file2" id="file2" onchange="imgChange(2)" size="1" />
+                        <em id="img2"></em>
+                    </div>
+                    <a id="pa2" target="view_window" onclick="openpic(this)" href="">预览</a>
+                </i>
+            </li>
+            <li><span>模块2跳转地址</span><input style="width:426px;" name="url2" class="txt txt1" type="text"/></li>
+            <li>
+                <span>模块3</span>
+                <i>
+                    <div class="uploadImg1">
+                        <input type="file" class="webfile" name="file3" id="file3" onchange="imgChange(3)" size="1" />
+                        <em id="img3"></em>
+                    </div>
+                    <a id="pa3" target="view_window" onclick="openpic(this)" href="">预览</a>
+                </i>
+            </li>
+            <li><span>模块3跳转地址</span><input style="width:426px;" name="url3" class="txt txt1" type="text"/></li>
+            </form>
+            <li style="margin-left:140px;">
+                <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" onclick="saveoffice()" type="submit" value="保存"/>
+            </li>
+        </ul>
+    </div>
+<!--弹出框-->
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="add">
+        <div class="popbox-body" style="min-width:680px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">信息导出</span>
+            </div>
+            <div class="detail_box">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group"><label class="col-md-3 col-xs-3 control-label">按提交日期导出</label></div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-3 control-label">选择您要导出的日期</label>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="demo5"/>
+                        </div>
+                        <em class="pull-left" style="margin-top:8px;">至</em>
+                        <div class="col-md-4 col-xs-3">
+                            <input type="text" class="laydate-icon form-control" value="" id="demo6"/>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt50">
+                        <div class="col-md-offset-3 col-md-8 col-xs-offset-3 col-xs-6">
+                            <a class="btn btn-primary btn-lg btn-radius" href="" style="width:50%;">导出</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    jQuery(document).ready(function() {
+        App.init(); // initlayout and core plugins
+    });
+    ;!function(){
+        laydate({
+            elem: '#demo'
+        })
+        laydate({
+            elem: '#demo2'
+        })
+        laydate({
+            elem: '#demo3'
+        })
+        laydate({
+            elem: '#demo4'
+        })
+        laydate({
+            elem: '#demo5'
+        })
+        laydate({
+            elem: '#demo6'
+        })
+    }();
+</script>
+</body>
+</html>

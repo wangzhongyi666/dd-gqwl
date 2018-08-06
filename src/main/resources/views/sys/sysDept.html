@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通地区管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+    <script src="../../static/js/sys/sysdept.js"></script>
+    <script src="../../static/js/layer/layer.js"></script>
+<!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">地区管理</div>
+        <div class="search">
+        	<form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-md-4 search_list">
+                      <input type="text" class="form-control" name="name" id="name" placeholder="地区名称" />
+                      <span class="fa fa-search"></span>
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                </div>
+            </form>
+        </div>
+        <!--<div class="clearfix">-->
+        	<!--<a class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="shadboxFun('add')">添加省级地区</a>-->
+        <!--</div>-->
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+                <thead>
+                <tr>
+                    <th style="width: 170px;">地区</th>
+                    <th style="width: 170px;">排序</th>
+                    <th style="width: 170px;">子地区</th>
+                    <th style="width: 170px;">创建时间</th>
+                    <th style="width: 170px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="deptDataList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+    </div>
+
+<!--弹出框-->
+
+</body>
+</html>

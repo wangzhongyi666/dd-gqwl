@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>365灵活通</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/css/home.css"/>
+    <!--<script src="../static/js/commons/jquery.min.js"></script>-->
+    <script src="../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../static/js/commons/jquery.form.js"></script>
+    <script src="../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="/static/js/commons/bootstrap.min.js"></script>
+    <script src="../static/js/layer/layer.js"></script>
+    <script src="../static/js/h5/main.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+<!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+<!--[if lt IE 9]>
+ <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+    <style>
+
+        .city{
+            display:inline-block;
+            position:relative;
+            z-index:99999;
+        }
+        .city em{
+            display:inline-block;
+            position:absolute;
+            top:31px;
+            left:55px;
+            width:15px;
+            height:8px;
+            display:none;
+            background:url(../images/jiao.jpg) no-repeat;
+        }
+        .city .choice{
+            display:none;
+            position:absolute;
+            top:18px;
+            left:0;
+            width:110px;
+            padding:5px;
+            text-align:center;
+            background:#f8f8f8;
+            border:#ededed solid 1px;
+        }
+        .city .choice a{
+            display:block;
+            color:#333;
+        }
+        .city .choice a:hover{
+            background:#5dcdbf;
+            color:#fff;
+            text-decoration:none;
+        }
+        .weixin{
+            display:inline-block;
+            position:relative;
+            z-index:99999;
+
+        }
+/*        .weixin em{
+            display:inline-block;
+            position:absolute;
+            top:35px;
+            left:55px;
+            width:15px;
+            height:8px;
+            display:none;
+            background:url(../images/jiao.jpg) no-repeat;
+        }*/
+        .weixin .choice1{
+            display:none;
+            position:absolute;
+            top:34px;
+            left:0;
+            padding:5px;
+            text-align:center;
+            background:#f8f8f8;
+            border:#ededed solid 1px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <input id="telhi" type="hidden" th:value="${tel}"/>
+    <input id="ljip" type="hidden" th:value="${ljip}"/>
+    <input id="namehi" type="hidden" th:value="${name}"/>
+    <input id="vipid" type="hidden" th:value="${vipid}"/>
+    <input id="deptId" type="hidden"/>
+	<div class="container clearfix">
+    	<div class="pull-left">
+        	<img src="../static/images/h5/logo.png"/><span class="fontC01 fontS18 ml10">河北泽众人力</span>
+
+            <span class="mr20 city">
+                <i id="cityName" th:text="${cityName}"></i>
+                <span id="change_city">[切换城市]</span>
+
+                <div class="choice" id="choice" style="display: none;">
+                    <a href="#" th:each="city,cityIndex:${citys}" class="cityshow" th:text="${city.name}"></a>
+                    <input type="hidden" th:each="city,cityIndex:${citys}" th:name="${city.name}" th:value="${city.deptId}"/>
+                </div>
+            </span>
+        </div>
+        <input type="hidden" id="tel"/>
+        <div class="pull-right mt20">
+        	<a class="new" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/news.shtml}+'\',\''+${msUrl}+'\')'">消息<i id="xxts" style="display: none;"></i></a>
+            <a class="ml30" th:href="${ljip}+@{/handApp/login_h5.shtml}" id="mda">登录</a>
+            <label id="mdl" class="ml30" style="display:none;color: #ffffff;"></label>
+            <em class="ml5 mr5">|</em>
+            <a id="mza" th:href="${ljip}+@{/handApp/register.shtml}">注册</a>
+            <a id="mta" th:href="${ljip}+@{/handApp/login_h5.shtml}" style="display:none;">退出</a>
+            <a class="ml30" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/aboutus.shtml}+'\',\''+${msUrl}+'\')'">关于我们</a>
+            <div class="weixin">
+            <a class="ml30" id="x_order" href=""><img src="../static/images/h5/small.png"/><span class="ml10">小程序</span></a>
+            <a class="ml30" id="glpta" href="#"><span class="ml10">管理平台</span></a>
+            <div class="choice1 mt10" id="show_x_order" style="display: none;">
+                <p><img style="width:120px;" src="../static/images/x_order.jpg"/></p>
+                <p class="text-center mt10" style="color:#333;">关注灵活通小程序</p>
+            </div>
+            </div>
+        </div> 
+    </div>
+</div>
+<div class="nav">
+    <div class="container">
+    	<a class="con cur"  th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/index.shtml}+'\',\''+${msUrl}+'\',1)'">首页</a>
+        <a class="con" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/info.shtml}+'\',\''+${msUrl}+'\',2)'" href="javascript:void(0);" >政策资讯</a>
+        <a class="con" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/social.shtml}+'\',\''+${msUrl}+'\',2)'">社保服务</a>
+        <a class="con" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/jifen.shtml}+'\',\''+${msUrl}+'\',2)'">积分商城</a>
+        <a class="con" th:onclick="'javascript:opentab(\''+${msUrl}+@{/handApp/person_main.shtml}+'\',\''+${msUrl}+'\',2)'">个人中心</a>
+    </div>
+</div>
+<div id="tabs" style="width:100%;">
+    <iframe id="ifWd" frameborder="0" style="width:100%;" scrolling="no" th:src="@{/handApp/index.shtml}"></iframe>
+</div>
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="set">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">登录密码修改</span>
+            </div>
+            <div class="safe_box">
+                <p class="mt20"><input type="password" id="opwd" class="form-control" placeholder="输入原始密码"/></p>
+                <p class="mt20"><input type="password" id="pwd" class="form-control" maxlength="20" placeholder="输入新密码（6-20字符，数字，英文，特殊字符）"/></p>
+                <p class="mt20"><input type="password" id="pwd2" class="form-control" maxlength="20" placeholder="确认密码"/></p>
+                <div class="safe_btn clearfix mt20 text-center">
+                    <a class="btn btn-primary btn-lg btn-radius" style="width:46%;" onclick="updatePwd(this)">保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="set2">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16" id="paytitle">支付密码修改</span>
+            </div>
+            <div class="safe_box">
+                <p class="mt20"><input type="text" class="form-control" id="paytel" maxlength="11" readonly="readonly" placeholder="电话"/></p>
+                <p class="mt20 clearfix">
+                    <input type="text" id="identInp" class="form-control pull-left" maxlength="4" onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="输入验证码验证身份" style="width:60%;"/>
+                    <input type="button" class="yzmbtn pull-right" style="border: none;" id="identi" value="获取验证码" style="width:35%;" />
+                </p>
+                <p class="mt20"><input id="paypwd"  type="password"  class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="6" placeholder="输入新密码（6位数字密码）"/></p>
+                <p class="mt20"><input id="paypwd2" type="password" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="6" placeholder="确认密码"/></p>
+                <div class="safe_btn clearfix mt20 text-center">
+                    <a class="btn btn-primary btn-lg btn-radius" style="width:46%;" onclick="updatePayPwd(this)">保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="set3">
+        <input type="hidden" id="ad_id"/>
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">收货地址修改</span>
+            </div>
+            <div class="safe_box">
+                <p class="mt20"><input type="text" id="ad_name" class="form-control" placeholder="输入姓名"/></p>
+                <p class="mt20"><input type="text" id="ad_tel" class="form-control" placeholder="输入电话"/></p>
+                <p class="mt20">
+                    <select id="ad_pr" style="width: 120px;">
+                        <option value="0">省</option>
+                    </select>
+                    <select id="ad_ci" style="width: 120px;">
+                        <option value="0">市</option>
+                    </select>
+                    <select id="ad_ar" style="width: 120px;">
+                        <option value="0">区(县)</option>
+                    </select>
+                </p>
+                <p class="mt20"><input type="text" id="ad_ad" class="form-control" placeholder="确认地址"/></p>
+                <div class="safe_btn clearfix mt20 text-center">
+                    <a class="btn btn-primary btn-lg btn-radius" onclick="updateAddress(this)" style="width:46%;">修改完成</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="set4">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">收货地址新增</span>
+            </div>
+            <div class="safe_box">
+                <p class="mt20"><input type="text" id="person_name" class="form-control" placeholder="输入姓名"/></p>
+                <p class="mt20"><input type="text" id="person_tel" class="form-control" placeholder="输入电话"/></p>
+                <p class="mt20">
+                    <select id="province" style="width: 120px;">
+                        <option value="0">省</option>
+                    </select>
+                    <select id="city" style="width: 120px;">
+                        <option value="0">市</option>
+                    </select>
+                    <select id="area" style="width: 120px;">
+                        <option value="0">区(县)</option>
+                    </select>
+                </p>
+                <p class="mt20"><input type="text" id="address" class="form-control" placeholder="确认地址"/></p>
+                <div class="safe_btn clearfix mt20 text-center">
+                    <a class="btn btn-primary btn-lg btn-radius" onclick="addAddress(this)" style="width:46%;">保存</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popbox-wrapper safebox" id="set5">
+        <form id="bankimgform" enctype='multipart/form-data'  class='ui-form' method='post'>
+            <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">医保卡新增</span>
+            </div>
+            <div class="safe_box">
+                <p class="mt20">
+                    <label>请选择医保卡所属城市</label>
+                    <select type="text" name="deptId" id="deptselect" class="form-control" style="width:30%;float:right;margin-right:100px;"></select>
+                    <label type="text" id="deptlable" style="width:30%;float:right;margin-right:100px;display: none;"></label>
+                    <input id="medeptId" name="deptId" type="hidden"/>
+                </p>
+                <p class="mt20">
+                    <label>开户行</label>
+                    <label id="bankName">河北银行</label>
+                </p>
+                <p ><input type="text" id="bankNum" name="bankNum" class="form-control" placeholder="输入银行卡号"/></p>
+                <p class="mt20">
+                    <label>上传银行卡正面照片</label>
+                        <div class="uploadImg" id="ud1" style="margin-top:20px;">
+                            <input type="file" class="file1" id="file1" name="file1" onchange="bankimgChange(1)" size="1" />
+                            <a href="#" id="ut1" class="uptext1" style="width:242px;height: 146px;line-height:146px;">上传</a>
+                        </div>
+                    <label>请添加你的医保卡绑定的河北银行卡</label>
+                </p>
+                <div class="safe_btn clearfix mt20 text-center">
+                    <a class="btn btn-primary btn-lg btn-radius" onclick="addInsurance(this)" style="width:46%;">提交上传</a>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<div class="foot1">
+	<div class="container text-center">
+    	<!--<p><em>客服</em>电话<span class="fontS24 ml30">0311-66686628</span></p>-->
+        <!--<p class="fontS12 ml60">（周一至周五：09:00-18:00）</p>-->
+    </div>
+</div> 
+  
+<div class="foot2"><div class="container text-center">CopyRight @ 河北泽众人力 2016 - 2019</div></div>
+
+</body>
+<script>
+    /*<![CDATA[*/
+    var wait=60;
+    $(document).ready(function() {
+        $(".cityshow").click(function(){
+            $("#deptId").val($("input[name='"+$(this).text()+"']").val());
+            $("#cityName").text($(this).text());
+            $("#choice").hide();
+            $.ajax({
+                url:'/handApp/updateCity.do',
+                async:false,
+                type:'post',
+                data:{cityId:$("input[name='"+$(this).text()+"']").val()},
+                success:function(data){
+
+                }
+            })
+        });
+        $("#x_order").mouseover(function(){
+            $("#show_x_order").show();
+
+        });
+        $("#glpta").click(function(){
+            window.open($("#ljip").val()+"/flexiblebe/login.shtml");
+        });
+        $("#show_x_order").mouseout(function(){
+
+            $(this).hide();
+
+        });
+        $("#change_city").mousemove(function(){
+            $("#choice").show();
+            $('.choice').slideDown();
+        });
+
+        $("#choice").mouseout(function(){
+            $(this).hide();
+            $(this).slideUp("");
+
+        });
+        $("#choice").mousemove(function(){
+            $("#choice").show();
+        });
+        sh();
+        var hei=$(window).height();
+        $("#tabs").height(867);
+        $("#ifWd").height(867);
+        var namehi=$("#namehi").val();
+        var tel=$("#telhi").val();
+        if(tel!=null && tel.length>0){
+            $("#mda").hide();
+            $("#mza").hide();
+            if(namehi.length>0){
+                $("#mdl").text(tel);
+            }else{
+                $("#mdl").text(tel);
+            }
+            $("#mdl").show();
+            $("#mta").show();
+        }
+        $(".con").live('click',function(){
+            $(".cur").removeClass("cur");
+            $(this).addClass("cur");
+        });
+        $("#province").change(function(){
+            var pid = $("#province").val();
+            var t2 = $("#city").empty();
+            t2.append("<option value='0'>市</option>");
+            var t3 = $("#area").empty();
+            t3.append("<option value='0'>区(县)</option>");
+            if(pid =='' || pid ==0){
+                return;
+            }
+            $.ajax({
+                url:'/handApp/selectPRDept.do',
+                async:false,
+                type:'post',
+                data:{parentId:pid},
+                success:function(data){
+                    var datalist=data.data;
+                    for ( var i = 0; i < datalist.length; i++) {
+                        t2.append("<option value='"+datalist[i].deptId+"'>"+ datalist[i].name+"</option>");
+                    }
+                }
+            })
+        });
+
+        $("#city").live('change',function(){
+            var pid = $("#city").val();
+            var t3 = $("#area").empty();
+            t3.append("<option value='0'>区(县)</option>");
+            if(pid =='' || pid ==0){
+                return;
+            }
+            $.ajax({
+                url:'/handApp/selectPRDept.do',
+                async:false,
+                type:'post',
+                data:{parentId:pid},
+                success:function(data){
+                    var datalist=data.data;
+                    for ( var i = 0; i < datalist.length; i++) {
+                        t3.append("<option value='"+datalist[i].deptId+"'>"+datalist[i].name+"</option>");
+                    }
+                }
+            })
+        });
+        $("#ad_pr").change(function(){
+            var pid = $("#ad_pr").val();
+            var t2 = $("#ad_ci").empty();
+            t2.append("<option value='0'>市</option>");
+            var t3 = $("#ad_ar").empty();
+            t3.append("<option value='0'>区(县)</option>");
+            if(pid =='' || pid==0){
+                return;
+            }
+            $.ajax({
+                url:'/handApp/selectPRDept.do',
+                async:false,
+                type:'post',
+                data:{parentId:pid},
+                success:function(data){
+                    var datalist=data.data;
+                    for ( var i = 0; i < datalist.length; i++) {
+                        t2.append("<option value='"+datalist[i].deptId+"'>"+ datalist[i].name+"</option>");
+                    }
+                }
+            })
+        });
+
+        $("#ad_ci").live('change',function(){
+            var pid = $("#ad_ci").val();
+            var t3 = $("#ad_ar").empty();
+            t3.append("<option value='0'>区(县)</option>");
+            if(pid =='' || pid==0){
+                return;
+            }
+            $.ajax({
+                url:'/handApp/selectPRDept.do',
+                async:false,
+                type:'post',
+                data:{parentId:pid},
+                success:function(data){
+                    var datalist=data.data;
+                    for ( var i = 0; i < datalist.length; i++) {
+                        t3.append("<option value='"+datalist[i].deptId+"'>"+datalist[i].name+"</option>");
+                    }
+                }
+            })
+        });
+
+        $("#identi").live('click',function(){
+            var tel=$("#paytel").val();
+            if(tel==null || tel.length<1){
+                layer.alert("手机号不能为空!");
+                return;
+            }else if(tel.length<11){
+                layer.alert("请输入正确的手机号!");
+                return;
+            }
+            time(this);
+            $.ajax({
+                url :'/handApp/sendIdent.do',
+                type : 'POST',
+                timeout : 20000,
+                data:{
+                    tel:tel
+                },
+                async: true,
+                success : function(result) {
+                    layer.alert(result.result_msg);
+                }
+            });
+        });
+        countMessageList();
+    });
+    function countMessageList(){
+        $.ajax({
+            url :'/handApp/countMessageList.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                user_id:$("#vipid").val(),
+                unread:1,
+                pageSize:10
+            },
+            async: false,
+            success : function(result) {
+                var count=result.allNum;
+                if(count!=null && count>0){
+                    $("#xxts").show();
+                }else{
+                    $("#xxts").hide();
+                }
+            }
+        });
+    }
+    function sh(){
+        var tel=$("#telhi").val();
+        if(tel!=null && tel.length>0){
+            $.ajax({
+                url :'/handApp/getVipInfo.do',
+                type : 'POST',
+                timeout : 20000,
+                data:{
+                    tel:tel
+                },
+                async: false,
+                success : function(result) {
+                    var datalist=result.data;
+                    if(datalist[0].audit==null || (datalist[0].audit!=1 && datalist[0].audit!=2)){
+                        $("#tabs").html();
+                        var content = '<iframe id="ifWd"  frameborder="0" scrolling="no"  src="/handApp/name.shtml" style="width:100%;" ></iframe>';
+                        $("#tabs").html(content);
+                    }
+                }
+            });
+        }
+    }
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获取验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value="重新发送(" + wait + ")";
+            wait--;
+            setTimeout(function() {
+                    time(o)
+                },
+                1000)
+        }
+    }
+    function opentab(url,title,type){
+        if(type==1){
+            $("#tabs").html();
+            var content = '<iframe id="ifWd"  frameborder="0" scrolling="no"  src="'+url+'" style="width:100%;" ></iframe>';
+            $("#tabs").html(content);
+        }else{
+            var tel=$("#telhi").val();
+            if(tel==null || tel.length<1){
+                layer.alert("请先登录!",{
+                    anim: 1,
+                    btn: ['确定'],
+                    yes:function(){
+                        $(location).attr("href",$("#ljip").val()+"/handApp/login_h5.shtml");
+                    }
+                });
+            }else{
+                $.ajax({
+                    url :'/handApp/getVipInfo.do',
+                    type : 'POST',
+                    timeout : 20000,
+                    data:{
+                        tel:tel
+                    },
+                    async: false,
+                    success : function(result) {
+                        var datalist=result.data;
+                        if(datalist[0].audit==null || datalist[0].audit==0){
+                            layer.alert("请先实名认证!",{
+                                anim: 1,
+                                btn: ['确定'],
+                                yes:function(){
+                                    $("#tabs").html();
+                                    var content = '<iframe id="ifWd"  frameborder="0" scrolling="no"  src="/handApp/name.shtml" style="width:100%;" ></iframe>';
+                                    $("#tabs").html(content);
+                                    layer.close(layer.index);
+                                }
+                            });
+                        }else if(datalist[0].audit==3){
+                            layer.alert("实名认证失败,请重新认证!",{
+                                anim: 1,
+                                btn: ['确定'],
+                                yes:function(){
+                                    $("#tabs").html();
+                                    var content = '<iframe id="ifWd"  frameborder="0" scrolling="no"  src="/handApp/name.shtml" style="width:100%;" ></iframe>';
+                                    $("#tabs").html(content);
+                                    layer.close(layer.index);
+                                }
+                            });
+                        }else{
+                            $("#tabs").html();
+                            var content = '<iframe id="ifWd"  frameborder="0" scrolling="no"  src="'+url+'" style="width:100%;" ></iframe>';
+                            $("#tabs").html(content);
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function addAddress(e){
+        var person_name=$("#person_name").val();
+        var person_tel=$("#person_tel").val();
+        var province=$("#province").val();
+        var city=$("#city").val();
+        var area=$("#area").val();
+        if(person_name==null || person_name.length<1){
+            layer.alert("收货人不能为空！");
+            return;
+        }
+        if(person_tel==null || person_tel.length<1){
+            layer.alert("手机号不能为空！");
+            return;
+        }
+        if(province==null || province==0){
+            layer.alert("请填写完整的收货地址！");
+            return;
+        }
+        if(city==null || city==0){
+            layer.alert("请填写完整的收货地址！");
+            return;
+        }
+        if(area==null || area==0){
+            layer.alert("请填写完整的收货地址！");
+            return;
+        }
+        var province_zh=$("#province").find("option:selected").text();
+        var city_zh=$("#city").find("option:selected").text();
+        var area_zh=$("#area").find("option:selected").text();
+        var address=$("#address").val();
+        $.ajax({
+            url :'/handApp/addAddress.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                person_name:person_name,
+                person_tel:person_tel,
+                province:province,
+                city:city,
+                area:area,
+                province_zh:province_zh,
+                city_zh:city_zh,
+                area_zh:area_zh,
+                address:address
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg, {
+                    // skin: 'layui-layer-molv',
+                    //closeBtn: 1,
+                    anim: 1,
+                    btn: ['确定'],
+                    //icon: 6,
+                    yes:function(){
+                        $(e).parents('.popbox-wrapper').animate({
+                            opacity: 'hide',top: '0px'
+                        }, "slow");
+                        $('.popbox-container').fadeOut();
+                        if(result.result_code==1){
+                            $("#ifWd").contents().find("#pinfo").attr("src","/handApp/my_address.shtml");
+                            layer.close(layer.index);
+                        }else{
+                            layer.close(layer.index);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function updatePwd(e){
+        var opwd=$("#opwd").val();
+        var pwd=$("#pwd").val();
+        var pwd2=$("#pwd2").val();
+        if(pwd==null || pwd.length<1){
+            layer.alert("密码不能为空!");
+            return;
+        }else if(pwd.length<6){
+            layer.alert("登录密码不能少于6位!");
+            return;
+        }
+        if(pwd!=pwd2){
+            layer.alert("两次密码不一致");
+            return;
+        }
+        $.ajax({
+            url :'/handApp/updatePwd.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                opwd:opwd,
+                pwd:pwd
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg);
+                    $(e).parents('.popbox-wrapper').animate({
+                        opacity: 'hide',top: '0px'
+                    }, "slow");
+                    $('.popbox-container').fadeOut();
+            }
+        });
+    }
+    function updatePayPwd(e){
+        var tel=$("#paytel").val();
+        if(tel!=$("#telhi").val()){
+            layer.alert("请输入预留的电话!");
+            return;
+        }
+        var pwd=$("#paypwd").val();
+        var pwd2=$("#paypwd2").val();
+        var ident=$("#identInp").val();
+        if(ident==null || ident.length<1){
+            layer.alert("验证码不能为空!");
+            return;
+        }
+        if(pwd==null || pwd.length<1){
+            layer.alert("密码不能为空!");
+            return;
+        }else if(pwd.length<6){
+            layer.alert("请输入6位交易密码!");
+            return;
+        }
+        if(pwd!=pwd2){
+            layer.alert("两次密码不一致");
+            return;
+        };
+        $.ajax({
+            url :'/handApp/updatePayPwd.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                tel:tel,
+                pay_pwd:pwd,
+                yzm:ident
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg);
+                $(e).parents('.popbox-wrapper').animate({
+                    opacity: 'hide',top: '0px'
+                }, "slow");
+                $('.popbox-container').fadeOut();
+            }
+        });
+    }
+    function updateAddress(e){
+        var ad_id=$("#ad_id").val();
+        var ad_name=$("#ad_name").val();
+        var ad_tel=$("#ad_tel").val();
+        var ad_pr=$("#ad_pr").val();
+        var ad_ci=$("#ad_ci").val();
+        var ad_ar=$("#ad_ar").val();
+        var ad_przh=$("#ad_pr").find("option:selected").text();
+        if(ad_przh!="北京" && ad_przh!="天津" && ad_przh!="上海" && ad_przh!="重庆"){
+            ad_przh+="省";
+        }
+        var ad_cizh=$("#ad_ci").find("option:selected").text()+"市";
+        var ad_arzh=$("#ad_ar").find("option:selected").text();
+        var ad_ad=$("#ad_ad").val();
+        $.ajax({
+            url :'/handApp/updateAddress.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                id:ad_id,
+                person_name:ad_name,
+                person_tel:ad_tel,
+                province:ad_pr,
+                city:ad_ci,
+                area:ad_ar,
+                province_zh:ad_przh,
+                city_zh:ad_cizh,
+                area_zh:ad_arzh,
+                address:ad_ad
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg);
+                $(e).parents('.popbox-wrapper').animate({
+                    opacity: 'hide',top: '0px'
+                }, "slow");
+                $('.popbox-container').fadeOut();
+            }
+        });
+    }
+    function shadboxFun(objId,event){
+        var obj = "#"+objId;  //对象ID
+
+        $('.popbox-container').fadeIn();
+        $('.popbox-overlay').css({
+            "height": $(document).height() + 'px'
+        })
+
+        var _height = $(obj).height();
+        var _width = $(obj).width();
+
+        //获取对象距离窗口上部和左部的距离
+        var _top = ($(window).height() - _height)/2 + "px";
+        var _left = ($(window).width() - _width)/2 + 'px';
+        $(obj).css({"left":_left});
+
+        $(obj).animate({
+            opacity: 'show', top: _top
+        }, "200",function(){
+            var userAgent = window.navigator.userAgent.toLowerCase();
+            var version = $.browser.version;
+
+            if(version!="6.0"){//如果是非IE6
+                $(obj).css({
+                    "top": ($(window).height() - _height)/2 + 'px'
+                });
+            }
+            if(version=="6.0"){//如果IE6
+                $(obj).css({
+                    "top": ($(window).height() - _height)/2 + $(window).scrollTop() + 'px'
+                });
+            }
+        });
+
+        $('.popbox-close').click(function(){
+            $(this).parents('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+
+            $('.popbox-container').fadeOut();
+        })
+
+        $('.popbox-overlay').click(function(){
+            $(this).siblings('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+
+            $('.popbox-container').fadeOut();
+        })
+        if(objId=='set2'){
+            var ty=$(event).attr("a1");
+            $("#paytel").val($("#telhi").val());
+            if(ty==1){
+                $("#paytitle").text("支付密码修改");
+            }else{
+                $("#paytitle").text("支付密码设置");
+            }
+        }
+        if(objId=='set3'){
+            var id=$(event).attr("a1");
+            var ad_name=$(event).attr("a2");
+            var ad_tel=$(event).attr("a3");
+            var ad_pr=$(event).attr("a4");
+            var ad_ci=$(event).attr("a5");
+            var ad_ar=$(event).attr("a6");
+            var ad_ad=$(event).attr("a7");
+            $("#ad_id").val(id);
+            $("#ad_name").val(ad_name);
+            $("#ad_tel").val(ad_tel);
+            $("#ad_ad").val(ad_ad);
+            selectPRDept(0,"ad_pr");
+            selectPRDept(ad_pr,"ad_ci");
+            selectPRDept(ad_ci,"ad_ar");
+            $("#ad_pr").val(ad_pr);
+            $("#ad_ci").val(ad_ci);
+            $("#ad_ar").val(ad_ar);
+        }
+        if(objId=='set4'){
+            $("#province").empty();
+            $("#city").empty();
+            $("#area").empty();
+            $("#province").append("<option value='0'>省</option>");
+            $("#city").append("<option value='0'>市</option>");
+            $("#area").append("<option value='0'>区(县)</option>");
+            selectPRDept(0,"province");
+        }
+        if(objId=='set5'){
+            var bankNum=$(event).attr("a3");
+            if(bankNum!=null && bankNum.length>0){
+                $("#deptselect").hide();
+                $("#deptlable").show();
+                var id=$(event).attr("a1");
+                var bank=$(event).attr("a2");
+                var deptId=$(event).attr("a4");
+                var medicalUrl=$(event).attr("a5");
+                var deptName=$(event).attr("a6");
+                $("#bankNum").val(bankNum);
+                $("#ut1").css('background',"url("+medicalUrl+")");
+                $("#bankName").text(bank);
+                $("#deptlable").text(deptName);
+                $("#medeptId").text(deptId);
+            }else{
+                $("#bankNum").val('');
+                $("#ut1").css('background',"url(../images/h5/name1.png)");
+                $("#deptlable").hide();
+                $("#deptselect").show();
+                $("#deptselect").empty();
+                selectKTDept("deptselect");
+            }
+        }
+    }
+    function selectKTDept(seId){
+        $("#"+seId).empty();
+        $.ajax({
+            url :'/handApp/selectKTDept.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist.length>0){
+                    for(var i=0;i<datalist.length;i++){
+                        $("#"+seId).append("<option value='"+datalist[i].deptId+"'>"+datalist[i].name+"</option>");
+                    }
+                }
+            }
+        });
+    }
+    function selectPRDept(parentId,seId){
+        $("#"+seId).empty();
+        if(seId=="province" || seId=="ad_pr"){
+            $("#"+seId).append("<option value='0'>省</option>");
+        }else if(seId=="city" || seId=="ad_ci"){
+            $("#"+seId).append("<option value='0'>市</option>");
+            if(parentId==0){
+                return;
+            }
+        }else if(seId=="area" || seId=="ad_ar"){
+            $("#"+seId).append("<option value='0'>区(县)</option>");
+            if(parentId==0){
+                return;
+            }
+        }
+
+        $.ajax({
+            url :'/handApp/selectPRDept.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                parentId:parentId
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.data;
+                if(datalist!=null && datalist.length>0){
+                    for(var i=0;i<datalist.length;i++){
+                        $("#"+seId).append("<option value='"+datalist[i].deptId+"'>"+datalist[i].name+"</option>");
+                    }
+                }
+            }
+        });
+    }
+    function bankimgChange(type){
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjcectURL != undefined) {
+                url = window.createOjcectURL(file);
+            } else if (window.URL != undefined) {
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) {
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+        var path = getObjectURL(document.getElementById("file"+type).files[0]);
+        $("#ut"+type).css('background',"url("+path+")");
+        $("#ut"+type).css('background-size',"cover");
+    }
+    function addInsurance(e) {
+        var deptId=$("#deptselect").val();
+        var filepath1=$("#file1").val();
+        var bankNum=$("#bankNum").val();
+        if(deptId==null || deptId=="0" || deptId==0){
+            layer.alert("提示","请选择城市！", "info");
+            return false;
+        }
+        if(bankNum==null || bankNum==""){
+            layer.alert("提示","账号不能为空！", "info");
+            return false;
+        }
+        if(filepath1!=null && filepath1!=""){
+            var extStart=filepath1.lastIndexOf(".");
+            var ext=filepath1.substring(extStart,filepath1.length).toUpperCase();
+            if(ext!=".BMP"&&ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG"){
+                layer.alert("提示","图片格式不正确，请重新上传！", "info");
+                return false;
+            }
+        }else{
+            layer.alert("提示","请上传图片！", "info");
+            return false;
+        }
+        if($("#bankimgform").form('validate')){
+            $("#bankimgform").form('submit', {
+                url:'/handApp/uploadMedicalUrl.do',
+                success:function(data){
+                    var c = jQuery.parseJSON(data);
+                    layer.alert(c.result_msg, {
+                        // skin: 'layui-layer-molv',
+                        closeBtn: 1,
+                        anim: 1,
+                        btn: ['确定'],
+                        //icon: 6,
+                        yes:function(){
+                            $(e).parents('.popbox-wrapper').animate({
+                                opacity: 'hide',top: '0px'
+                            }, "slow");
+                            $('.popbox-container').fadeOut();
+                            layer.close(layer.index);
+                            $("#ifWd").contents().find("#pinfo").attr("src","/handApp/my_medical.shtml");
+                        }
+                    });
+                }
+            });
+        }
+    }
+    /*]]>*/
+</script>
+</html>
