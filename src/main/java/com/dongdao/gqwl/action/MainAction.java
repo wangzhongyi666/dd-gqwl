@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
-@RequestMapping("/flexiblebe")
+@RequestMapping("/guangqi")
 @MapperScan("com.dongdao.gqwl")
 public class MainAction extends BaseAction {
 

@@ -13,6 +13,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
     public void addViewControllers( ViewControllerRegistry registry ) {
-        registry.addViewController( "/" ).setViewName( "forward:/flexiblebe/login.shtml" );
+        registry.addViewController( "/" ).setViewName( "forward:/guangqi/login.shtml" );
     }
 }
