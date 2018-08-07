@@ -10,13 +10,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @ServletComponentScan
 @EnableScheduling
-public class FlexiblebeApplication extends SpringBootServletInitializer {
+public class GuangqiApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(FlexiblebeApplication.class);
+		return application.sources(GuangqiApplication.class);
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(FlexiblebeApplication.class, args);
+		SpringApplication.run(GuangqiApplication.class, args);
 	}
 
 }
