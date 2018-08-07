@@ -1,4 +1,4 @@
-package com.e365.flexiblebe;
+package com.dongdao.gqwl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
