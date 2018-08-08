@@ -2,7 +2,6 @@ package com.dongdao.gqwl.mapper;
 
 import com.dongdao.gqwl.bean.SmsTemplate;
 import com.dongdao.gqwl.model.SmsTemplateModel;
-import com.dongdao.gqwl.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;

@@ -1,5 +1,7 @@
 package com.dongdao.gqwl.model;
 
+import com.dongdao.gqwl.bean.BaseBean;
+
 import java.util.Date;
 
 public class SysDeptModel extends BaseModel{

@@ -1,5 +1,7 @@
 package com.dongdao.gqwl.model;
 
+import com.dongdao.gqwl.bean.BaseBean;
+
 public class SysRoleModel extends BaseModel{
 
     private Integer id;

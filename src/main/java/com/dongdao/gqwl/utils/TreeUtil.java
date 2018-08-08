@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.utils;
 
-import com.e365.flexiblebe.bean.SysMenu;
-import com.e365.flexiblebe.bean.SysMenuBtn;
-import com.e365.flexiblebe.bean.TreeNode;
+import com.dongdao.gqwl.bean.SysMenu;
+import com.dongdao.gqwl.bean.SysMenuBtn;
+import com.dongdao.gqwl.bean.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;

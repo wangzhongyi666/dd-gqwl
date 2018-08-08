@@ -1,7 +1,7 @@
 package com.dongdao.gqwl.task;
 
-import com.dongdao.gqwl.bean.SmsTemplate;
 import com.dongdao.gqwl.bean.RedeemCode;
+import com.dongdao.gqwl.bean.SmsTemplate;
 import com.dongdao.gqwl.model.OrderInfoModel;
 import com.dongdao.gqwl.model.RedeemCodeModel;
 import com.dongdao.gqwl.model.SmsTemplateModel;

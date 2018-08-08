@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.SysDept;
-import com.dongdao.gqwl.model.SysDeptModel;
 import com.dongdao.gqwl.mapper.SysDeptMapper;
+import com.dongdao.gqwl.model.SysDeptModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

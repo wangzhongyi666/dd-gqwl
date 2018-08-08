@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.ZpResumes;
-import com.dongdao.gqwl.model.ZpResumesModel;
 import com.dongdao.gqwl.mapper.ZpResumesMapper;
+import com.dongdao.gqwl.model.ZpResumesModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

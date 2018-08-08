@@ -55,7 +55,7 @@ public interface RedeemCodeMapper<T> extends BaseMapper {
     Integer queryByEXCount(@Param("goods_id")Integer goods_id,@Param("status")Integer status);
 
     @Select("<script>select * from redeem_code c where status = #{status} and NOW() > term_of_validity_end </script>")
-    List<RedeemCode> queryByTermOfValidityEnd(@Param("status")Integer status);
+    List<RedeemCodeMapper> queryByTermOfValidityEnd(@Param("status")Integer status);
 
     @Select("<script>select count(0) from redeem_code c where goods_id = #{goods_id} GROUP BY goods_id </script>")
     Integer queryByGoods(@Param("goods_id")Integer goods_id);

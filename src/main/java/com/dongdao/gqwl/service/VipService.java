@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.Vip;
-import com.dongdao.gqwl.model.VipModel;
 import com.dongdao.gqwl.mapper.VipMapper;
+import com.dongdao.gqwl.model.VipModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

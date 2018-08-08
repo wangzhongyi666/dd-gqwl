@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.e365.flexiblebe.bean.SysUser;
-import com.e365.flexiblebe.bean.Vip;
+import com.dongdao.gqwl.bean.SysUser;
+import com.dongdao.gqwl.bean.Vip;
 import org.apache.log4j.Logger;
 
 

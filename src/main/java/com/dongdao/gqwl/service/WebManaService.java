@@ -1,9 +1,9 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.Webinfo;
+import com.dongdao.gqwl.mapper.WebManaMapper;
 import com.dongdao.gqwl.model.WebTextModel;
 import com.dongdao.gqwl.model.WebinfoModel;
-import com.dongdao.gqwl.mapper.WebManaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

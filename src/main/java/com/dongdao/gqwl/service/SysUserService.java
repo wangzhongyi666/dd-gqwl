@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.SysUser;
-import com.dongdao.gqwl.model.SysUserModel;
 import com.dongdao.gqwl.mapper.SysUserMapper;
+import com.dongdao.gqwl.model.SysUserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

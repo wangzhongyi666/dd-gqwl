@@ -34,6 +34,7 @@ public interface SysDeptMapper<T> extends BaseMapper {
             "<if test=\"num1 != null and num2 !=null \"> limit #{num1},#{num2}</if>"+
             "</script>")
     public List<SysDept> queryByList(SysDeptModel model);
+
     @Select("<script>SELECT *,(SELECT GROUP_CONCAT(c.`name`)  " +
             "FROM sys_dept c where c.deleted = 0 and m.deptId = c.parentId GROUP BY m.parentId ) AS subDeptNames," +
             "(SELECT COUNT(*) FROM sys_dept c WHERE c.parentId = m.id) AS subCount "+

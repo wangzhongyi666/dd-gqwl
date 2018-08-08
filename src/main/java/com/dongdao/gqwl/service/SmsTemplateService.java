@@ -1,7 +1,7 @@
 package com.dongdao.gqwl.service;
 
-import com.dongdao.gqwl.bean.SmsTemplate;
 import com.dongdao.gqwl.mapper.SmsTemplateMapper;
+import com.dongdao.gqwl.bean.SmsTemplate;
 import com.dongdao.gqwl.model.SmsTemplateModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

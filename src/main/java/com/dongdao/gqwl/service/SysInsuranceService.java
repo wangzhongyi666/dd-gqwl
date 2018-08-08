@@ -1,13 +1,15 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.SysInsurance;
-import com.dongdao.gqwl.model.SysInsuranceModel;
 import com.dongdao.gqwl.mapper.SysInsuranceMapper;
 
+import com.dongdao.gqwl.model.SysInsuranceModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysInsuranceService<T> extends BaseService<T> {

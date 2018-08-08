@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.service;
 
 import com.dongdao.gqwl.bean.Message;
-import com.dongdao.gqwl.model.MessageModel;
 import com.dongdao.gqwl.mapper.MessageMapper;
+import com.dongdao.gqwl.model.MessageModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
