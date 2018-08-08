@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-
 import sun.io.ByteToCharConverter;
 import sun.io.CharToByteConverter;
+
 
 /**
  * <p>公共方法类</p>

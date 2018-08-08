@@ -2738,89 +2738,7 @@ public class HandAppAction extends BaseAction{
         List<Map<String,Object>> dataList=sysDeptService.getktCity();
         return setFailureMap(jsonMap, "操作成功！", dataList);
     }
-    //缴费比例（接口）
-    @Auth(verifyURL=false)
-    @ResponseBody
-    @RequestMapping("/getBase.do")
-    public Map<String,Object> getBase(Integer deptId, HttpServletRequest request)throws Exception{
-        Map<String,Object>  jsonMap = new HashMap<String ,Object>();
-        Vip vip = SessionUtils.getVip(request);
-        OrderModel model = new OrderModel();
-        try {
-            if(deptId==null){
-                return setFailureMap(jsonMap, "did为空！", null);
-            }else{
-                List<Map<String,Object>> datalist= insuranceService.getbaseByDeptId(deptId);
-                String rastr="";
-                String yistr="";
-                if(datalist!=null && datalist.size()>0){
-                    for(int i=0;i<datalist.size();i++){
-                        Map<String,Object> map=datalist.get(i);
-                        String str=Double.parseDouble(map.get("expends_scale")+"")*100+"";
-                        if(map.get("insuranceType").equals(1)){
-                            jsonMap.put("yl_start_time",DateUtil.getFomartDate(new Date(),"yyyy-")+"01");
-                            jsonMap.put("yl_end_time",DateUtil.getFomartDate(new Date(),"yyyy-MM"));
-                            jsonMap.put("custom_yl_start_time",DateUtil.getFomartDate(new Date(),"yyyy-")+"01");
-                            jsonMap.put("custom_yl_end_time",map.get("adjustment_time_end").toString().replaceAll("/","-"));
-                            jsonMap.put("base",map.get("expends_base"));
-                            jsonMap.put("state",map.get("state"));
-                            jsonMap.put("yl_adjustment_zh","本市基数调整月份为:"+map.get("adjustment_time_start"));
-                            if(map.get("state")==2){
 
-                                if(!map.get("expends_scale").equals(0.6)&&map.get("expends_scale")!=0.6){
-                                    if(i==datalist.size()-1){
-                                        rastr+=Integer.parseInt(str.substring(0,str.length()-2))+"%";
-                                    }else{
-                                        rastr+=Integer.parseInt(str.substring(0,str.length()-2))+"%;";
-                                    }
-                                }
-                            }else{
-                                jsonMap.put("scale_zh","60%的缴费基数只能缴纳参保月份在"+map.get("effect_start_time")+"-"+map.get("effect_end_time")+"的保险");
-
-                                if(i==datalist.size()-1){
-                                    rastr+=Integer.parseInt(str.substring(0,str.length()-2))+"%";
-                                }else{
-                                    rastr+=Integer.parseInt(str.substring(0,str.length()-2))+"%;";
-                                }
-                            }
-                            jsonMap.put("ylexplain","1.选择周期包含当前月份之前的月份，则之前的月份按补缴一次性缴纳；\n " +
-                                                          "2.养老保险可补缴月份为当年度月份，不能跨年补缴；\n " +
-                                                          "3.根据国家政策每年的参保基数都会调整，参保周期的结束月份会按照参保基数调整月份而更改，具体请以每年\n" +
-                                                            "参保基数相关政策文件为准\n " +
-                                                          "4.参保月份大于等于6个月的订单可以获得积分奖励，缴费基数越大，缴纳的费用越高;");
-                        }else{
-                            jsonMap.put("yilbase",map.get("expends_base"));
-                            jsonMap.put("yb_start_time","2010-01");
-                            jsonMap.put("yb_end_time",DateUtil.getFomartDate(new Date(),"yyyy-MM"));
-                            jsonMap.put("custom_yb_start_time",DateUtil.getFomartDate(new Date(),"yyyy-")+"01");
-                            jsonMap.put("custom_yb_end_time",map.get("adjustment_time_end").toString().replaceAll("/","-"));
-                            jsonMap.put("yb_adjustment_zh","本市基数调整月份为:"+map.get("adjustment_time_start"));
-                            if(i==datalist.size()-1){
-                                yistr+=Integer.parseInt(str.substring(0,str.length()-2))+"%";
-                            }else{
-                                yistr+=Integer.parseInt(str.substring(0,str.length()-2))+"%;";
-                            }
-                            jsonMap.put("ybexplain","1.选择周期包含当前月份之前的月份，则之前的月份按补缴一次性缴纳；\n " +
-                                    "2.根据国家政策每年的参保基数都会调整，参保周期的结束月份会按照参保基数调整月份来更改，具体请以每年\n" +
-                                    "参保基数相关政策文件为准\n " +
-                                    "3.参保月份大于等于6个月的订单可以获得积分奖励，缴费基数越大，缴纳的费用越高;");
-                        }
-                    }
-                }
-                String ratio[]=rastr.split(";");
-                jsonMap.put("ratio",ratio==null?"":ratio);//社保号
-                String[] yilratio =yistr.split(";");
-                jsonMap.put("yilratio",yilratio==null?"":yilratio);//社保号
-
-            }
-            return setSuccessMap(jsonMap, "操作成功！", null);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return setFailureMap(jsonMap, "操作失败！", null);
-        }
-
-    }
 
 
     //有无支付密码接口）
@@ -4153,28 +4071,6 @@ public class HandAppAction extends BaseAction{
         }
         return setSuccessMap(jsonMap, "操作成功！", null);
     }
-//    @ResponseBody
-//    @Auth(verifyLogin=false,verifyURL=false)
-//    @RequestMapping("/updateMedical")
-//    public  Map<String, Object> updateMedical(SysInsuranceModel model,HttpServletResponse response,
-//                                           HttpServletRequest request) throws Exception {
-//        Map<String, Object> jsonMap = new HashMap<String, Object>();
-//        List<SysInsurance> datalist=new ArrayList<SysInsurance>();
-//        try {
-//            datalist=sysInsuranceService.getMedical(model);
-//
-//            if(datalist!=null && datalist.size()>0){
-//                sysInsuranceService.updateSysIns(model);
-//            }else{
-//                model.setCreateTime(model.getMedicalUpdateTime());
-//                sysInsuranceService.addSysIns(model);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return setFailureMap(jsonMap, "操作失败！", null);
-//        }
-//        return setSuccessMap(jsonMap, "操作成功！", datalist);
-//    }
 
     @ResponseBody
     @Auth(verifyLogin=false,verifyURL=false)
