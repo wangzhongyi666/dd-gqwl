@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.dongdao.gqwl.bean.SysUser;
-import com.dongdao.gqwl.bean.Vip;
 import org.apache.log4j.Logger;
 
 
@@ -182,24 +181,6 @@ public final class SessionUtils {
 		 }
 		 return true;
 	 }
-	/**
-	 * 设置vip信息 到session
-	 * @param request
-	 * @param vip
-	 */
-	public static void setVip(HttpServletRequest request,Vip vip){
-		request.getSession(true).setAttribute(SESSION_VIP, vip);
-	}
-
-
-	/**
-	 * 从session中获取vip信息
-	 * @param request
-	 * @return Vip
-	 */
-	public static Vip getVip(HttpServletRequest request){
-		return (Vip)request.getSession(true).getAttribute(SESSION_VIP);
-	}
 	 
 	 /**
 	  * 设置菜单按钮

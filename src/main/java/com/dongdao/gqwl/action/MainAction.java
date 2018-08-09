@@ -1,11 +1,6 @@
 package com.dongdao.gqwl.action;
 
 import com.dongdao.gqwl.bean.*;
-import com.dongdao.gqwl.model.*;
-import com.dongdao.gqwl.service.*;
-import com.dongdao.gqwl.utils.*;
-import com.dongdao.gqwl.bean.*;
-import com.dongdao.gqwl.model.*;
 import com.dongdao.gqwl.service.*;
 import com.dongdao.gqwl.utils.*;
 import org.apache.commons.lang3.StringUtils;
@@ -39,21 +34,6 @@ public class MainAction extends BaseAction {
     @Autowired(required = false)
     // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
     public SysMenuBtnService sysMenuBtnService;
-
-    @Autowired(required = false)
-    // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
-    public VipService vipService;
-
-    @Autowired(required = false)
-    // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
-    public InsuranceSetService insuranceSetService;
-
-    @Autowired(required = false)
-    // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
-    public InsuranceService insuranceService;
-
-    @Autowired(required = false)
-    public GoodsOrderService goodsOrderService;
 
     @Auth(verifyLogin=false,verifyURL=false)
     @RequestMapping(value = "/login.shtml")
@@ -174,97 +154,6 @@ public class MainAction extends BaseAction {
         }
         SessionUtils.setAccessUrl(request, accessUrls);//设置可访问的URL
         SessionUtils.setMemuBtnMap(request, menuBtnMap); //设置可用的按钮
-    }
-    /**
-     * 首页待处理处理事件
-     */
-    @Auth(verifyLogin=false,verifyURL=false)
-    @RequestMapping(value = "/home.shtml")
-    public ModelAndView needDealt(HttpServletRequest request, HttpServletResponse response) {
-        SysUser user = SessionUtils.getUser(request);
-        VipModel vipModel = new VipModel();
-        vipModel.setAudit(1);
-
-        OrderModel orderModel = new OrderModel();
-        orderModel.setAudit(1);
-
-        GoodsOrderModel gmodel=new GoodsOrderModel();
-        gmodel.setTake_type(2);
-        gmodel.setWrite_off_state(1);
-
-        QuitModel qmodel = new QuitModel();
-        OrderInfoModel orderModel1 = new OrderInfoModel();
-        OrderInfoModel orderModel2 = new OrderInfoModel();
-
-        OrderModel orderModel3 = new OrderModel();
-        if(user.getJid()!=1){
-            vipModel.setDeptId(user.getDeptId());
-            orderModel.setDeptId(user.getDeptId());
-            qmodel.setDeptId(user.getDeptId());
-            orderModel1.setDeptId(user.getDeptId());
-            orderModel2.setDeptId(user.getDeptId());
-            gmodel.setDeptId(user.getDeptId());
-            orderModel3.setDeptId(user.getDeptId());
-        }
-        if(user.getJid()==1){
-            qmodel.setAudit(201);
-            orderModel1.setAudit(201);
-            orderModel2.setAudit(201);
-        }else if(user.getJid()==3){
-            qmodel.setAudit(21);
-            orderModel1.setAudit(21);
-            orderModel2.setAudit(21);
-        }else if(user.getJid()==4){
-            qmodel.setAudit(101);
-            orderModel1.setAudit(11);
-            orderModel2.setAudit(11);
-        }
-        orderModel1.setStatus(1);
-        orderModel2.setStatus(2);
-        Integer sm = 0;
-        Integer xcb = 0;
-        Integer cb=0;
-        Integer bj=0;
-        Integer tb = 0;
-        Integer fh = 0;
-        Integer sh = 0;
-        switch (user.getJid()){
-            case 1:
-                sm = vipService.countAuditlist(vipModel);
-                xcb = insuranceSetService.insuranceDateCount(orderModel);
-                cb = insuranceService.countinsulist(orderModel1);
-                bj = insuranceService.countinsulist(orderModel2);
-                tb = insuranceService.countquitlist(qmodel);
-                fh = goodsOrderService.countGoods1(gmodel);
-                break;
-            case 2:
-                sm = vipService.countAuditlist(vipModel);
-                xcb = insuranceSetService.insuranceDateCount(orderModel);
-                fh = goodsOrderService.countGoods1(gmodel);
-                break;
-            case 3:
-                cb = insuranceService.countinsulist(orderModel1);
-                bj = insuranceService.countinsulist(orderModel2);
-                tb = insuranceService.countquitlist(qmodel);
-                sh = insuranceService.countadjulist(orderModel3);
-                break;
-            case 4:
-                cb = insuranceService.countinsulist(orderModel1);
-                bj = insuranceService.countinsulist(orderModel2);
-                tb = insuranceService.countquitlist(qmodel);
-                break;
-        }
-
-        Map<String, Object> context = getRootMap();
-        context.put("sm",sm==null?0:sm);
-        context.put("xcb",xcb==null?0:xcb);
-        context.put("cb",cb==null?0:cb);
-        context.put("bj",bj==null?0:bj);
-        context.put("tb",tb==null?0:tb);
-        context.put("fh",fh==null?0:fh);
-        context.put("sh",sh==null?0:sh);
-        context.put("jid",user.getJid());
-        return forword("/home", context);
     }
 
     /**
