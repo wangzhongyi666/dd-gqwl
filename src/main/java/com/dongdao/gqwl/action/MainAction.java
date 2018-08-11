@@ -18,7 +18,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/guangqi")
-@MapperScan("com.dongdao.gqwl")
+@MapperScan("com.dongdao.gqwl.*")
 public class MainAction extends BaseAction {
 
     private final static Logger log= Logger.getLogger(MainAction.class);

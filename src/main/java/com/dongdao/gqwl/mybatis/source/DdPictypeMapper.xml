@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dongdao.gqwl.mapper.DdPictypeMapper" >
-  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.DdPictype" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdPictypeMapper" xmlns:c="http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdPictype" >
     <id column="pictypeid" property="pictypeid" jdbcType="BIGINT" />
     <result column="typename" property="typename" jdbcType="VARCHAR" />
     <result column="tsort" property="tsort" jdbcType="INTEGER" />
@@ -17,17 +17,34 @@
     from dd_pictype
     where pictypeid = #{pictypeid,jdbcType=BIGINT}
   </select>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdPictype"  resultMap="BaseResultMap">
+    select * from dd_pictype
+    <if test="num1!=null and num2!=''">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdPictype" >
+   select count(*) from dd_pictype
+    <if test="num1 != null and num2 !=null ">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_pictype
     where pictypeid = #{pictypeid,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.dongdao.gqwl.model.DdPictype" >
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdPictype" >
     insert into dd_pictype (pictypeid, typename, tsort, 
       parentid, filed1)
     values (#{pictypeid,jdbcType=BIGINT}, #{typename,jdbcType=VARCHAR}, #{tsort,jdbcType=INTEGER}, 
       #{parentid,jdbcType=INTEGER}, #{filed1,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.DdPictype" >
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdPictype" >
     insert into dd_pictype
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pictypeid != null" >
@@ -64,7 +81,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.DdPictype" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdPictype" >
     update dd_pictype
     <set >
       <if test="typename != null" >
@@ -82,7 +99,7 @@
     </set>
     where pictypeid = #{pictypeid,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.DdPictype" >
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdPictype" >
     update dd_pictype
     set typename = #{typename,jdbcType=VARCHAR},
       tsort = #{tsort,jdbcType=INTEGER},

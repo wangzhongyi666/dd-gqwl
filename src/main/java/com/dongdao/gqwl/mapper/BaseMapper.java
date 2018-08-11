@@ -20,4 +20,5 @@ public interface BaseMapper<T> {
 
     public T queryById(Object id);
 
+
 }
