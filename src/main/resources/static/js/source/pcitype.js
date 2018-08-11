@@ -22,7 +22,7 @@ function countlist(pageSize){
         type : 'POST',
         timeout : 20000,
         data:{
-            jname:jname,
+            typename:jname,
             pageSize:pageSize
         },
         async: false,
@@ -48,7 +48,7 @@ function getlist(pageNum,pageSize){
         type : 'POST',
         timeout : 20000,
         data:{
-            jname:jname,
+            typename:jname,
             pageNum:pageNum,
             pageSize:pageSize
         },
@@ -61,19 +61,19 @@ function getlist(pageNum,pageSize){
                     const rowlist1=new Array();
                     if(i<datalist.length){
                         var row=datalist[i];
-                        rowlist1[0]=row.jname;
-                        rowlist1[1]=row.jdesc;
-                        rowlist1[2]=row.create_time.toString().substring(0,19);
-                        rowlist1[3]=row.update_time.toString().substring(0,19);
+                        rowlist1[0]=row.pictypeid;
+                        rowlist1[1]=row.typename;
+                        rowlist1[2]=row.tsort;
 
-                        rowlist1[4]="<a href=\"javascript:void(0)\" a1="+row.id+" a2="+row.jname+" onclick=\"getTree(this)\" class=\"text-primary ml10\">编辑</a>"+
-                            "<a href=\"javascript:void(0)\" a1="+row.id+" onclick=\"deleteRole(this)\" class=\"text-primary ml10\">删除</a>";
+
+                        rowlist1[3]="<a href=\"javascript:void(0)\" a1="+row.pictypeid+" a2="+row.typename+" a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
+                            "<a href=\"javascript:void(0)\" a1="+row.pictypeid+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                     }else{
                         rowlist1[0]='';
                         rowlist1[1]='';
                         rowlist1[2]='';
                         rowlist1[3]='';
-                        rowlist1[4]='';
+
                     }
                     rowlist[i]=rowlist1;
                 }
@@ -82,7 +82,12 @@ function getlist(pageNum,pageSize){
         }
     });
 }
-
+function edit(e){
+    $("#pictypeid1").val($(e).attr("a1"));
+    $("#typename1").val($(e).attr("a2"));
+    $("#tsort1").val($(e).attr("a3"));
+    shadboxFun('edit');
+}
 function goon(){
     var a=$('#pageNumInp').val();
     if(a!=null && a>0){
@@ -91,50 +96,24 @@ function goon(){
         alert("请输入页数!");
     }
 }
+
+
 function getTree(e){
-    shadboxFun1('add',e);
-    $.ajax({
-        url :'/sys/getTree.do',
-        type : 'POST',
-        timeout : 20000,
-        data:{
-            roleId:$("#roleId").val()
-        },
-        async: false,
-        success : function(result) {
-            var tree =result.str;
-            $('#tree').treeview({
-                data: tree,
-                showCheckbox:true,
-                levels:0
-            });
-        }
-    });
+    shadboxFun1('add');
+
+
 }
 
-function saveMenu(){
-    var roleId=$("#roleId").val();
-    var jname=$("#jnameinp").val();
-    var a=$('#tree').treeview('getChecked');
-    var b= '';
-    if(a!=null && a.length>0){
-        for(var i=0;i<a.length;i++){
-            if(i==a.length-1){
-                b+=a[i].menuId;
-            }else{
-                b+=a[i].menuId+",";
-            }
-
-        }
-    }
+function saveType(){
+    var typename=$("#typename").val();
+    var tsort=$("#tsort").val();
     $.ajax({
-        url :'/sys/saveRole.do',
+        url :'/pictype/addtype.do',
         type : 'POST',
         timeout : 20000,
         data:{
-            id:roleId,
-            jname:jname,
-            menustr:b
+            typename:typename,
+            tsort:tsort
         },
         async: false,
         success : function(result) {
@@ -148,22 +127,100 @@ function saveMenu(){
     });
 
 }
-function deleteRole(e){
+function deleteType(e){
     var id = $(e).attr("a1");
     if(confirm("确认删除吗！")){
         $.ajax({
-            url :'/sys/deleteRole.do',
+            url :'/pictype/deleteptype.do',
             type : 'POST',
             timeout : 20000,
             data:{
-                id:id
+                pictypeid:id
             },
             async: false,
             success : function(result) {
                 layer.alert(result.msg);
+
+                if(result.msg=="操作成功！"){
+                    countlist($('#pageSizeInp').val());
+
+                }
+
             }
         });
     }
 
 }
+
+//编辑信息
+function updatetype() {
+    var typename=$("#typename1").val();
+    var tsort=$("#tsort1").val();
+    var pictypeid=$("#pictypeid1").val();
+    $.ajax({
+        url :'/pictype/updatetype.do',
+        type : 'POST',
+        timeout : 20000,
+        data:{
+            pictypeid:pictypeid,
+            typename:typename,
+            tsort:tsort
+        },
+        async: false,
+        success : function(result) {
+            layer.alert(result.msg);
+            $(this).parents('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+            $('.popbox-container').fadeOut();
+            countlist($('#pageSizeInp').val());
+        }
+    });
+}
+
+// 验证函数
+function formValidate1(e) {
+    var str = '';
+    // 判断名称
+    if($.trim($('#typename1').val()).length == 0) {
+        str += '分类名称没有输入\n';
+        $('#typename1').focus();
+    }
+
+    if($.trim($('#tsort1').val()).length == 0) {
+        str += '排序没有输入\n';
+        $('#tsort1').focus();
+    }
+    // 如果没有错误则提交
+    if(str != '') {
+        layer.alert(str);
+        return false;
+    } else {
+        updatetype();
+    }
+}
+
+
+// 验证函数
+function formValidate(e) {
+    var str = '';
+    // 判断名称
+    if($.trim($('#typename').val()).length == 0) {
+        str += '分类名称没有输入\n';
+        $('#typename').focus();
+    }
+
+    if($.trim($('#tsort').val()).length == 0) {
+        str += '排序没有输入\n';
+        $('#tsort').focus();
+    }
+    // 如果没有错误则提交
+    if(str != '') {
+        layer.alert(str);
+        return false;
+    } else {
+        saveType();
+    }
+}
+
 /*]]>*/

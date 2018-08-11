@@ -7,12 +7,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Mapper
-public interface  DdPictypeMapper<DdPictype> extends BaseMapper {
-    int deleteByPrimaryKey(Long pictypeid);
+public interface  DdPictypeMapper<T> extends BaseMapper {
+    int deleteByPrimaryKey(Object pictypeid);
 
     int insert(DdPictype record);
 
-    int insertSelective(DdPictype record);
+     int insertSelective(DdPictype record);
 
     DdPictype selectByPrimaryKey(Long pictypeid);
 

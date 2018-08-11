@@ -41,4 +41,15 @@ public abstract class BaseService<T> {
     public T queryById(Object id) throws Exception{
         return getMapper().queryById(id);
     }
+
+    public int deleteByPrimaryKey(Object id) throws Exception{
+        return getMapper().deleteByPrimaryKey(id);
+    }
+    public int insertSelective(T record) throws Exception{
+        return getMapper().insertSelective(record);
+    }
+
+    public int updateByPrimaryKeySelective(T record) throws Exception{
+        return getMapper().updateByPrimaryKeySelective(record);
+    }
 }

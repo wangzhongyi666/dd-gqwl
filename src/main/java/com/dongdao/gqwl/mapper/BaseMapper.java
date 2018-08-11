@@ -22,5 +22,8 @@ public interface BaseMapper<T> {
 
     int deleteByPrimaryKey(Object id);
 
+    int insertSelective(T record);
+
+    int updateByPrimaryKeySelective(T record);
 
 }

@@ -33,8 +33,6 @@ public class PicTypeAction extends BaseAction {
     @RequestMapping(value = "/pictype.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
-
-
         Map<String, Object> context = getRootMap();
         return forword("source/pictype", context);
     }
@@ -50,7 +48,7 @@ public class PicTypeAction extends BaseAction {
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);
     }
-    //获取用户总数
+    //获取总数
     @RequestMapping("/pictypecount.do")
     public void roleDataCount(DdPictype model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 
@@ -68,5 +66,49 @@ public class PicTypeAction extends BaseAction {
 
     }
 
+    @RequestMapping("/deleteptype.do")
+    public void deleteType(DdPictype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        int num= PicTypeService.deleteByPrimaryKey(model.getPictypeid());
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
+
+    @RequestMapping("/addtype.do")
+    public void saceType(DdPictype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        int num= PicTypeService.insertSelective(model);
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
+
+    @RequestMapping("/updatetype.do")
+    public void updatetype(DdPictype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        int num= PicTypeService.updateByPrimaryKeySelective(model);
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
 
 }
