@@ -11,32 +11,32 @@
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
             <property name="suppressAllComments" value="true"/>  
             <property name="mergeable" value="false"></property>
-        </commentGenerator>  
-        <!--数据库链接URL，用户名、密码 -->  
+        </commentGenerator>
+        <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://43.226.73.239:3306/guangqi?useUnicode=true&amp;characterEncoding=UTF-8" userId="root" password="root">
-        </jdbcConnection>  
-        <javaTypeResolver>  
-            <property name="forceBigDecimals" value="false"/>  
-        </javaTypeResolver>  
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
 		 <javaModelGenerator targetPackage="com.dongdao.gqwl.model.source"   targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-          <sqlMapGenerator targetPackage="com.dongdao.gqwl.mybatis.source"  targetProject="src/main/java">
+          <sqlMapGenerator targetPackage="mybatis.source"  targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
                              targetPackage="com.dongdao.gqwl.mapper.source"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
-        </javaClientGenerator>   
-       <!-- 要生成哪些表-->   
-    
-         
+        </javaClientGenerator>
+       <!-- 要生成哪些表-->
+
+
 		<table schema="general" tableName="dd_pictype" domainObjectName="DdPictype"
 		    enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
 		    enableSelectByExample="false" selectByExampleQueryId="false" >
 		    <property name="useActualColumnNames" value="true"/>
 		</table>
-    </context>  
-</generatorConfiguration>  
+    </context>
+</generatorConfiguration>

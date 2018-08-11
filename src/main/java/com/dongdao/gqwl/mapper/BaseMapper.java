@@ -20,5 +20,7 @@ public interface BaseMapper<T> {
 
     public T queryById(Object id);
 
+    int deleteByPrimaryKey(Object id);
+
 
 }

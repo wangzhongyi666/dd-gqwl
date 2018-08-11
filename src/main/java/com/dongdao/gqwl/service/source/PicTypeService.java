@@ -20,7 +20,7 @@ public class PicTypeService<T> extends BaseService<T> {
         return ddPictypeMapper;
     }
 
-    public List<SysDept> queryByList(DdPictype model){
+    public List<DdPictype> queryByList(DdPictype model){
         return ddPictypeMapper.queryByList(model);
     }
 }

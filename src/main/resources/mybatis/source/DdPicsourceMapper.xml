@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdPicsourceMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdPicsource" >
+    <id column="picid" property="picid" jdbcType="BIGINT" />
+    <result column="pictypeid" property="pictypeid" jdbcType="BIGINT" />
+    <result column="pictitle" property="pictitle" jdbcType="VARCHAR" />
+    <result column="pichub" property="pichub" jdbcType="VARCHAR" />
+    <result column="psort" property="psort" jdbcType="INTEGER" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="pusername" property="pusername" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    picid, pictypeid, pictitle, pichub, psort, picpath, creattime, updatetime, pusername, 
+    isdelete, filed1, filed2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_picsource
+    where picid = #{picid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_picsource
+    where picid = #{picid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdPicsource" >
+    insert into dd_picsource (picid, pictypeid, pictitle, 
+      pichub, psort, picpath, 
+      creattime, updatetime, pusername, 
+      isdelete, filed1, filed2
+      )
+    values (#{picid,jdbcType=BIGINT}, #{pictypeid,jdbcType=BIGINT}, #{pictitle,jdbcType=VARCHAR}, 
+      #{pichub,jdbcType=VARCHAR}, #{psort,jdbcType=INTEGER}, #{picpath,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{pusername,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER}, #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdPicsource" >
+    insert into dd_picsource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="picid != null" >
+        picid,
+      </if>
+      <if test="pictypeid != null" >
+        pictypeid,
+      </if>
+      <if test="pictitle != null" >
+        pictitle,
+      </if>
+      <if test="pichub != null" >
+        pichub,
+      </if>
+      <if test="psort != null" >
+        psort,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="pusername != null" >
+        pusername,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="picid != null" >
+        #{picid,jdbcType=BIGINT},
+      </if>
+      <if test="pictypeid != null" >
+        #{pictypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pictitle != null" >
+        #{pictitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pichub != null" >
+        #{pichub,jdbcType=VARCHAR},
+      </if>
+      <if test="psort != null" >
+        #{psort,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pusername != null" >
+        #{pusername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdPicsource" >
+    update dd_picsource
+    <set >
+      <if test="pictypeid != null" >
+        pictypeid = #{pictypeid,jdbcType=BIGINT},
+      </if>
+      <if test="pictitle != null" >
+        pictitle = #{pictitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pichub != null" >
+        pichub = #{pichub,jdbcType=VARCHAR},
+      </if>
+      <if test="psort != null" >
+        psort = #{psort,jdbcType=INTEGER},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pusername != null" >
+        pusername = #{pusername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where picid = #{picid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdPicsource" >
+    update dd_picsource
+    set pictypeid = #{pictypeid,jdbcType=BIGINT},
+      pictitle = #{pictitle,jdbcType=VARCHAR},
+      pichub = #{pichub,jdbcType=VARCHAR},
+      psort = #{psort,jdbcType=INTEGER},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      pusername = #{pusername,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where picid = #{picid,jdbcType=BIGINT}
+  </update>
+</mapper>

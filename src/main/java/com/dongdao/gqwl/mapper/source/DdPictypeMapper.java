@@ -6,7 +6,7 @@ import com.dongdao.gqwl.model.source.DdPictype;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Mapper
 public interface  DdPictypeMapper<DdPictype> extends BaseMapper {
     int deleteByPrimaryKey(Long pictypeid);
 
@@ -20,5 +20,4 @@ public interface  DdPictypeMapper<DdPictype> extends BaseMapper {
 
     int updateByPrimaryKey(DdPictype record);
 
-    public int queryByCount(DdPictype model);
-}
+   }
