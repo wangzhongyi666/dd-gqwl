@@ -98,12 +98,12 @@ public class MainAction extends BaseAction {
             rootMenus = sysMenuService.getRootMenu(null);// 查询所有根节点
             childMenus = sysMenuService.getChildMenu();//查询所有子节点
         }else{
-            rootMenus = sysMenuService.getRootMenuByUser(user.getId() );//根节点
-            childMenus = sysMenuService.getChildMenuByUser(user.getId());//子节点
-            childBtns = sysMenuBtnService.getMenuBtnByUser(user.getId());//按钮操作
+            rootMenus = sysMenuService.getRootMenuByUser(user.getJid() );//根节点
+            childMenus = sysMenuService.getChildMenuByUser(user.getJid());//子节点
+            childBtns = sysMenuService.getChildMenuBtnByUser(user.getId());//按钮操作
 
 
-           // buildData(childMenus,childBtns,request); //构建必要的数据
+           buildData(childMenus,childBtns,request); //构建必要的数据
         }
         String nameRole = "";
         String deptName = "";
@@ -132,7 +132,7 @@ public class MainAction extends BaseAction {
      * 构建树形数据
      * @return
      */
-    private void buildData(List<SysMenu> childMenus, List<SysMenuBtn> childBtns, HttpServletRequest request){
+    private void buildData(List<SysMenu> childMenus, List<SysMenu> childBtns, HttpServletRequest request){
         //能够访问的url列表
         List<String> accessUrls  = new ArrayList<String>();
         //菜单对应的按钮
@@ -141,10 +141,10 @@ public class MainAction extends BaseAction {
             //判断URL是否为空
             if(StringUtils.isNotBlank(menu.getUrl())){
                 List<String> btnTypes = new ArrayList<String>();
-                for(SysMenuBtn btn  : childBtns){
-                    if(menu.getId().equals(btn.getMenuid())){
-                        btnTypes.add(btn.getBtnType());
-                        URLUtils.getBtnAccessUrls(menu.getUrl(), btn.getActionUrls(),accessUrls);
+                for(SysMenu btn  : childBtns){
+                    if(menu.getId().equals(btn.getParentId())){
+                        btnTypes.add(btn.getUrl());
+                        URLUtils.getBtnAccessUrls(menu.getUrl(), btn.getActions(),accessUrls);
                     }
                 }
                 menuBtnMap.put(menu.getUrl(), btnTypes);

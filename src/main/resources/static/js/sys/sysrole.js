@@ -115,6 +115,10 @@ function getTree(e){
 function saveMenu(){
     var roleId=$("#roleId").val();
     var jname=$("#jnameinp").val();
+    if(jname==null||jname==''){
+        layer.alert("职位名称不能为空");
+        return;
+    }
     var a=$('#tree').treeview('getChecked');
     var b= '';
     if(a!=null && a.length>0){
@@ -161,6 +165,7 @@ function deleteRole(e){
             async: false,
             success : function(result) {
                 layer.alert(result.msg);
+                countlist($('#pageSizeInp').val());
             }
         });
     }

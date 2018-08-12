@@ -102,6 +102,7 @@ function addUser(e){
 
                 $('.popbox-container').fadeOut();
             }
+            countlist($('#pageSizeInp').val());
         }
     });
 }

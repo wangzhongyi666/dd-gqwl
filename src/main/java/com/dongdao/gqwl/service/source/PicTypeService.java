@@ -1,8 +1,6 @@
 package com.dongdao.gqwl.service.source;
 
-import com.dongdao.gqwl.bean.SysDept;
 import com.dongdao.gqwl.mapper.source.DdPictypeMapper;
-import com.dongdao.gqwl.model.SysDeptModel;
 import com.dongdao.gqwl.model.source.DdPictype;
 import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;

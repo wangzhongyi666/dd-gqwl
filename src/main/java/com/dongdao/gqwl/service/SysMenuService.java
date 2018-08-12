@@ -39,12 +39,12 @@ public class SysMenuService<T> extends BaseService<T> {
      * @param userId
      * @return
      */
-    public List<SysMenu> getRootMenuByUser(@Param("userId")Integer userId){
-        return sysMenuMapper.getRootMenuByUser(userId);
+    public List<SysMenu> getRootMenuByUser(@Param("role_id")Integer role_id){
+        return sysMenuMapper.getRootMenuByUser(role_id);
     }
 
-    public List<SysMenu> getChildMenuByUser(@Param("userId")Integer userId){
-        return sysMenuMapper.getChildMenuByUser(userId);
+    public List<SysMenu> getChildMenuByUser(@Param("role_id")Integer role_id){
+        return sysMenuMapper.getChildMenuByUser(role_id);
     }
     public List<SysMenu> getAllMenu(){
         return sysMenuMapper.getAllMenu();
@@ -60,5 +60,9 @@ public class SysMenuService<T> extends BaseService<T> {
     }
     public void addRoleRel(SysRoleModel model){
         sysMenuMapper.addRoleRel(model);
+    }
+
+    public List<SysMenu> getChildMenuBtnByUser(@Param("role_id")Integer role_id){
+        return sysMenuMapper.getChildMenuBtnByUser(role_id);
     }
 }

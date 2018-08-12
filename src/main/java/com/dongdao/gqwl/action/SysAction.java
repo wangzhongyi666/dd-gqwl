@@ -335,6 +335,7 @@ public class SysAction extends BaseAction {
         model.setUpdate_time(DateUtil.getNowPlusTime());
         if(model.getId()==0){
             sysMenuService.addRole(model);
+
         }else{
             sysRoleService.deleteRelByRoleId(model.getId());
         }
@@ -345,7 +346,7 @@ public class SysAction extends BaseAction {
                 sysMenuService.addRoleRel(model);
             }
         }
-        sysMenuService.addRoleRel(model);
+        //sysMenuService.addRoleRel(model);
         jsonMap.put("msg", "操作成功！");
         HtmlUtil.writerJson(response, jsonMap);
     }

@@ -30,37 +30,35 @@ public interface SysMenuMapper<T> extends BaseMapper<T> {
      */
     @Select(" SELECT DISTINCT id,NAME,url,parentId,actions,imgclass " +
             " FROM sys_menu m " +
+            " LEFT JOIN sys_role_rel u on m.id = u.objId " +
             " WHERE deleted= 0 AND parentId IS NULL " +
-            " AND EXISTS ( " +
-            " SELECT * FROM sys_role_rel r " +
-            " WHERE r.objId = m.id AND r.relType = 0 " +
-            " AND EXISTS ( " +
-            " SELECT 1 FROM sys_role_rel u WHERE u.roleId = r.roleId  AND u.relType = 1 AND u.objId = #{userId} " +
-            ") " +
-            ") order by rank")
-    List<SysMenu> getRootMenuByUser(@Param("userId")Integer userId);
+            " AND m.type=1 and u.roleId = #{role_id} order by rank")
+    List<SysMenu> getRootMenuByUser(@Param("role_id")Integer role_id);
 
-    @Select(" SELECT DISTINCT id,NAME,url,parentId,actions,rank,imgclass " +
+    @Select(" SELECT DISTINCT id,NAME,url,parentId,actions,imgclass " +
             " FROM sys_menu m " +
+            " LEFT JOIN sys_role_rel u on m.id = u.objId " +
             " WHERE deleted= 0 AND parentId IS NOT NULL " +
-            " AND EXISTS ( " +
-            " SELECT * FROM sys_role_rel r " +
-            " WHERE r.objId = m.id AND r.relType = 0 " +
-            " AND EXISTS ( " +
-            " SELECT 1 FROM sys_role_rel u WHERE u.roleId = r.roleId  AND u.relType = 1 AND u.objId = #{userId} " +
-            " )" +
-            " ) " +
-            " order by rank")
-    List<SysMenu> getChildMenuByUser(@Param("userId")Integer userId);
+            " AND m.type=2 and u.roleId = #{role_id} order by rank")
+    List<SysMenu> getChildMenuByUser(@Param("role_id")Integer role_id);
 
-    @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu</script>")
+
+    @Select(" SELECT DISTINCT id,NAME,url,parentId,actions,imgclass " +
+            " FROM sys_menu m " +
+            " LEFT JOIN sys_role_rel u on m.id = u.objId " +
+            " WHERE deleted= 0 AND parentId IS NOT NULL " +
+            " AND m.type=3 and u.roleId = #{role_id} order by rank")
+    List<SysMenu> getChildMenuBtnByUser(@Param("role_id")Integer role_id);
+
+    @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu where deleted = 0</script>")
     List<SysMenu> getAllMenu();
-    @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu</script>")
+    @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu where deleted = 0</script>")
     List<SysMenu> getButn();
     @Select("<script>select objId from sys_role_rel where relType=0 and roleId=#{roleId}</script>")
     List<Integer> getIdByRoleId(@Param("roleId")Integer roleId);
 
-    @Insert("<script>insert into sys_role (jname,jdesc,create_time,update_time) values(#{jname},#{jname},#{create_time},#{update_time})</script>")
+    @Insert("<script>insert into sys_role (jname,jdesc,create_time,update_time) " +
+            "values(#{jname},#{jname},#{create_time},#{update_time})</script>")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void addRole(SysRoleModel model);
     @Insert("<script>insert into sys_role_rel (roleId,objId,relType) values(#{id},#{objId},#{relType})</script>")
