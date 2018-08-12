@@ -1,27 +1,31 @@
 package com.dongdao.gqwl.model.source;
 
+import com.dongdao.gqwl.model.BaseModel;
+
 import java.util.Date;
 
-public class DdPicsource {
-    private Long picid;
+public class DdPicsource extends BaseModel {
+    private Long picid;//自增id
 
-    private Long pictypeid;
+    private Long pictypeid;//分类id
 
-    private String pictitle;
+    private Long typename;//分类名称
 
-    private String pichub;
+    private String pictitle;//图片标题
 
-    private Integer psort;
+    private String pichub;//关键字
 
-    private String picpath;
+    private Integer psort; //排序
 
-    private Date creattime;
+    private String picpath;//图片路径
 
-    private Date updatetime;
+    private String creattime;//创建时间
 
-    private String pusername;
+    private String updatetime;//修改时间
 
-    private Integer isdelete;
+    private String pusername;//发布人
+
+    private Integer isdelete;//是否上架（1，上架  0，下架）
 
     private String filed1;
 
@@ -39,6 +43,13 @@ public class DdPicsource {
         return pictypeid;
     }
 
+    public Long getTypename() {
+        return typename;
+    }
+
+    public void setTypename(Long typename) {
+        this.typename = typename;
+    }
     public void setPictypeid(Long pictypeid) {
         this.pictypeid = pictypeid;
     }
@@ -75,19 +86,19 @@ public class DdPicsource {
         this.picpath = picpath == null ? null : picpath.trim();
     }
 
-    public Date getCreattime() {
+    public String getCreattime() {
         return creattime;
     }
 
-    public void setCreattime(Date creattime) {
+    public void setCreattime(String creattime) {
         this.creattime = creattime;
     }
 
-    public Date getUpdatetime() {
+    public String getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(Date updatetime) {
+    public void setUpdatetime(String updatetime) {
         this.updatetime = updatetime;
     }
 

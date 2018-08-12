@@ -162,7 +162,7 @@ public class MainAction extends BaseAction {
     @Auth(verifyLogin=false,verifyURL=false)
     @RequestMapping(value = "/changepwd.shtml")
     public String changePwd(HttpServletRequest request, HttpServletResponse response) {
-        return "/changepwd";
+             return "/changepwd";
     }
 
     /**

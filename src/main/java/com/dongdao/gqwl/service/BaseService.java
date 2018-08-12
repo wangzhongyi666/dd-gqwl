@@ -3,6 +3,8 @@ package com.dongdao.gqwl.service;
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.BaseModel;
 
+import java.util.List;
+
 public abstract class BaseService<T> {
 
     public abstract BaseMapper<T> getMapper();
@@ -52,4 +54,9 @@ public abstract class BaseService<T> {
     public int updateByPrimaryKeySelective(T record) throws Exception{
         return getMapper().updateByPrimaryKeySelective(record);
     }
+
+    public List<T> queryType() throws Exception{
+        return getMapper().queryType();
+    }
+
 }

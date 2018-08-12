@@ -5,8 +5,6 @@ import com.dongdao.gqwl.model.BaseModel;
 
 public class DdPictype extends BaseModel {
 
-
-
     private Long pictypeid;
 
     private String typename;

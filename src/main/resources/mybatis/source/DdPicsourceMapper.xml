@@ -19,6 +19,40 @@
     picid, pictypeid, pictitle, pichub, psort, picpath, creattime, updatetime, pusername, 
     isdelete, filed1, filed2
   </sql>
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdPicsource"  resultMap="BaseResultMap">
+    select dd_picsource.*,dd_pictype.typename from dd_picsource
+    left join dd_pictype on dd_picsource.pictypeid=dd_pictype.pictypeid
+    where 1=1
+    <if test="pictypeid!=null">
+      and dd_picsource.pictypeid= #{pictypeid}
+    </if>
+    <if test="pictitle!=null and pictitle!=''">
+      and (dd_picsource.pictitle like  CONCAT('%', #{pictitle}, '%') or  dd_picsource.pichub like  CONCAT('%', #{pictitle}, '%'))
+    </if>
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdPicsource" >
+    select count(0) from dd_picsource where 1=1
+    <if test="pictypeid!=null">
+      and  pictypeid= #{pictypeid}
+    </if>
+    <if test="pictitle!=null and pictitle!=''">
+      and  (pictitle like  CONCAT('%', #{pictitle}, '%') or  pichub like  CONCAT('%', #{pictitle}, '%'))
+    </if>
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <!--查询分类-->
+  <select id="queryType" resultType="com.dongdao.gqwl.model.source.DdPictype"   >
+    select pictypeid,typename from dd_pictype order by tsort desc
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
