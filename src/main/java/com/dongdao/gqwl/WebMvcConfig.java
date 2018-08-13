@@ -12,7 +12,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:D:/gqfile/uploads/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+        super.addResourceHandlers(registry);
 
     }
     public void addViewControllers( ViewControllerRegistry registry ) {
