@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdVideosourceMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdVideosource" >
+    <id column="videoid" property="videoid" jdbcType="BIGINT" />
+    <result column="videotypeid" property="videotypeid" jdbcType="BIGINT" />
+    <result column="videotitle" property="videotitle" jdbcType="VARCHAR" />
+    <result column="videohub" property="videohub" jdbcType="VARCHAR" />
+    <result column="vsort" property="vsort" jdbcType="INTEGER" />
+    <result column="videopath" property="videopath" jdbcType="VARCHAR" />
+    <result column="videosize" property="videosize" jdbcType="VARCHAR" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="pusername" property="pusername" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    videoid, videotypeid, videotitle, videohub, vsort, videopath, videosize, picpath, 
+    creattime, updatetime, pusername, isdelete, filed1, filed2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_videosource
+    where videoid = #{videoid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_videosource
+    where videoid = #{videoid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdVideosource" >
+    insert into dd_videosource (videoid, videotypeid, videotitle, 
+      videohub, vsort, videopath, 
+      videosize, picpath, creattime, 
+      updatetime, pusername, isdelete, 
+      filed1, filed2)
+    values (#{videoid,jdbcType=BIGINT}, #{videotypeid,jdbcType=BIGINT}, #{videotitle,jdbcType=VARCHAR}, 
+      #{videohub,jdbcType=VARCHAR}, #{vsort,jdbcType=INTEGER}, #{videopath,jdbcType=VARCHAR}, 
+      #{videosize,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{creattime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{pusername,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, 
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdVideosource" >
+    insert into dd_videosource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="videoid != null" >
+        videoid,
+      </if>
+      <if test="videotypeid != null" >
+        videotypeid,
+      </if>
+      <if test="videotitle != null" >
+        videotitle,
+      </if>
+      <if test="videohub != null" >
+        videohub,
+      </if>
+      <if test="vsort != null" >
+        vsort,
+      </if>
+      <if test="videopath != null" >
+        videopath,
+      </if>
+      <if test="videosize != null" >
+        videosize,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="pusername != null" >
+        pusername,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="videoid != null" >
+        #{videoid,jdbcType=BIGINT},
+      </if>
+      <if test="videotypeid != null" >
+        #{videotypeid,jdbcType=BIGINT},
+      </if>
+      <if test="videotitle != null" >
+        #{videotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="videohub != null" >
+        #{videohub,jdbcType=VARCHAR},
+      </if>
+      <if test="vsort != null" >
+        #{vsort,jdbcType=INTEGER},
+      </if>
+      <if test="videopath != null" >
+        #{videopath,jdbcType=VARCHAR},
+      </if>
+      <if test="videosize != null" >
+        #{videosize,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pusername != null" >
+        #{pusername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdVideosource" >
+    update dd_videosource
+    <set >
+      <if test="videotypeid != null" >
+        videotypeid = #{videotypeid,jdbcType=BIGINT},
+      </if>
+      <if test="videotitle != null" >
+        videotitle = #{videotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="videohub != null" >
+        videohub = #{videohub,jdbcType=VARCHAR},
+      </if>
+      <if test="vsort != null" >
+        vsort = #{vsort,jdbcType=INTEGER},
+      </if>
+      <if test="videopath != null" >
+        videopath = #{videopath,jdbcType=VARCHAR},
+      </if>
+      <if test="videosize != null" >
+        videosize = #{videosize,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pusername != null" >
+        pusername = #{pusername,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where videoid = #{videoid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdVideosource" >
+    update dd_videosource
+    set videotypeid = #{videotypeid,jdbcType=BIGINT},
+      videotitle = #{videotitle,jdbcType=VARCHAR},
+      videohub = #{videohub,jdbcType=VARCHAR},
+      vsort = #{vsort,jdbcType=INTEGER},
+      videopath = #{videopath,jdbcType=VARCHAR},
+      videosize = #{videosize,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      pusername = #{pusername,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where videoid = #{videoid,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>  
-<!DOCTYPE generatorConfiguration  
-  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>  
 	<!-- 数据库驱动包位置-->
-    <classPathEntry  location="mysql-connector-java-5.1.26.jar"/>  
+    <classPathEntry  location="C:\work\dd-gqwl\mysql-connector-java-5.1.26.jar"/>
     <context id="DB2Tables"  targetRuntime="MyBatis3">  
         <commentGenerator>  
             <property name="suppressDate" value="true"/>  
@@ -33,7 +33,7 @@
        <!-- 要生成哪些表-->
 
 
-		<table schema="general" tableName="dd_pictype" domainObjectName="DdPictype"
+		<table schema="general" tableName="dd_videosource" domainObjectName="DdVideosource"
 		    enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
 		    enableSelectByExample="false" selectByExampleQueryId="false" >
 		    <property name="useActualColumnNames" value="true"/>
