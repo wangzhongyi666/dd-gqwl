@@ -313,3 +313,22 @@ function qx(e) {
 
     $('.popbox-container').fadeOut();
 }
+//判断该用户是否有btnUrl功能权限
+function is_purview(btn,btnUrl,btnsUrl,msUrl){
+    var btns = btn.split(msUrl);
+    var btnsU = btns[1]+"";
+
+    var flag = false;
+    $.each(btnsUrl,function (index,val) {
+        alert("1"+index);
+        if(btnsU==index){
+            $.each(val,function (i,v) {
+                if(btnUrl==v){
+                    flag = true;
+                    return flag;
+                }
+            });
+        }
+    });
+    return flag;
+}

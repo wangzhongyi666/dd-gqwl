@@ -72,6 +72,7 @@ public class SysAction extends BaseAction {
             model.setDeptId(null);
         }else{
             model.setDeptId(user.getDeptId());
+
         }
 
         model.setNum1(model.getPageSize()*(model.getPageNum()-1));

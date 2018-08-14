@@ -21,8 +21,6 @@ public final class SessionUtils {
 	
 	private static final String SESSION_USER = "session_user";
 
-	private static final String SESSION_VIP = "session_vip";
-
 	private static final String SESSION_VALIDATECODE = "session_validatecode";//验证码
 	
 	

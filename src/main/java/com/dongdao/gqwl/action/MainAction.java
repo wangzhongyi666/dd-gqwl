@@ -100,7 +100,7 @@ public class MainAction extends BaseAction {
         }else{
             rootMenus = sysMenuService.getRootMenuByUser(user.getJid() );//根节点
             childMenus = sysMenuService.getChildMenuByUser(user.getJid());//子节点
-            childBtns = sysMenuService.getChildMenuBtnByUser(user.getId());//按钮操作
+            childBtns = sysMenuService.getChildMenuBtnByUser(user.getJid());//按钮操作
 
 
            buildData(childMenus,childBtns,request); //构建必要的数据
@@ -137,6 +137,7 @@ public class MainAction extends BaseAction {
         List<String> accessUrls  = new ArrayList<String>();
         //菜单对应的按钮
         Map<String,List> menuBtnMap = new HashMap<String,List>();
+
         for(SysMenu menu: childMenus){
             //判断URL是否为空
             if(StringUtils.isNotBlank(menu.getUrl())){

@@ -61,10 +61,11 @@
     </div>
 
     <div id="tabs" style="overflow-x: hidden;">
-        <iframe id="ifWd" frameborder="0" th:src="@{/flexiblebe/home.shtml}" scrolling="no" onload="setIframeHeight(this)"></iframe>
+        <iframe id="ifWd" frameborder="0" th:src="@{/guangqi/pictype/pictype.shtml}" scrolling="no" onload="setIframeHeight(this)"></iframe>
     </div>
 </div>
-<script>
+<script th:inline="javascript" type="text/javascript">
+
     $(function(){
         $("#ifWd").width($("#tabs").width());
 /*        $(".set_height").on("click",function(){
@@ -96,7 +97,7 @@
             }
         }
     };
-
+    /*]]>*/
 </script>
 </body>
 </html>

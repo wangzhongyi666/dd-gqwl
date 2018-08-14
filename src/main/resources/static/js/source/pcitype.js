@@ -43,8 +43,10 @@ function countlist(pageSize){
 
 function getlist(pageNum,pageSize){
     var jname=$("#jname").val();
+    var url = '/pictype/updatetype.do';
+    var purview = isPurview(url);
     $.ajax({
-        url :'/pictype/pictypeDataList.do',
+        url :"/pictype/pictypeDataList.do",
         type : 'POST',
         timeout : 20000,
         data:{
@@ -65,9 +67,16 @@ function getlist(pageNum,pageSize){
                         rowlist1[1]=row.typename;
                         rowlist1[2]=row.tsort;
 
+                        if(purview){
+                            rowlist1[3]="<a href=\"javascript:void(0)\" a1="+row.pictypeid+" a2="+row.typename+" " +
+                                "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
+                                "<a href=\"javascript:void(0)\" a1="+row.pictypeid+" onclick=\"deleteType(this)\" " +
+                                "class=\"text-primary ml10\">删除</a>";
+                        }else{
+                            rowlist1[3]="<a href=\"javascript:void(0)\" class=\"text-primary ml10\">编1辑</a>"+
+                                "<a href=\"javascript:void(0)\" class=\"text-primary ml10\">删1除</a>";
+                        }
 
-                        rowlist1[3]="<a href=\"javascript:void(0)\" a1="+row.pictypeid+" a2="+row.typename+" a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
-                            "<a href=\"javascript:void(0)\" a1="+row.pictypeid+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                     }else{
                         rowlist1[0]='';
                         rowlist1[1]='';
