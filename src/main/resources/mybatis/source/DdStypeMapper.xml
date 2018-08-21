@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdStypeMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdStype" >
+    <id column="s_typeid" property="s_typeid" jdbcType="BIGINT" />
+    <result column="s_name" property="s_name" jdbcType="VARCHAR" />
+    <result column="s_r_time" property="s_r_time" jdbcType="VARCHAR" />
+    <result column="s_m_time" property="s_m_time" jdbcType="VARCHAR" />
+    <result column="w_uid" property="w_uid" jdbcType="VARCHAR" />
+    <result column="s_state" property="s_state" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    s_typeid, s_name, s_r_time, s_m_time, w_uid, s_state, filed1, filed2
+  </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdStype"  resultMap="BaseResultMap">
+    select * from dd_stype
+    <if test="s_name!=null and s_name!=''">
+      where s_name like  CONCAT('%', #{s_name}, '%')
+    </if>
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdStype" >
+    select count(0) from dd_stype
+    <if test="s_name!=null and s_name!=''">
+      where s_name=#{s_name}
+    </if>
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_stype
+    where s_typeid = #{s_typeid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_stype
+    where s_typeid = #{s_typeid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdStype" >
+    insert into dd_stype (s_typeid, s_name, s_r_time, 
+      s_m_time, w_uid, s_state, 
+      filed1, filed2)
+    values (#{s_typeid,jdbcType=BIGINT}, #{s_name,jdbcType=VARCHAR}, #{s_r_time,jdbcType=VARCHAR}, 
+      #{s_m_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=VARCHAR}, #{s_state,jdbcType=INTEGER}, 
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdStype" >
+    insert into dd_stype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="s_typeid != null" >
+        s_typeid,
+      </if>
+      <if test="s_name != null" >
+        s_name,
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time,
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time,
+      </if>
+      <if test="w_uid != null" >
+        w_uid,
+      </if>
+      <if test="s_state != null" >
+        s_state,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="s_typeid != null" >
+        #{s_typeid,jdbcType=BIGINT},
+      </if>
+      <if test="s_name != null" >
+        #{s_name,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdStype" >
+    update dd_stype
+    <set >
+      <if test="s_name != null" >
+        s_name = #{s_name,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        w_uid = #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        s_state = #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where s_typeid = #{s_typeid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdStype" >
+    update dd_stype
+    set s_name = #{s_name,jdbcType=VARCHAR},
+      s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      w_uid = #{w_uid,jdbcType=VARCHAR},
+      s_state = #{s_state,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where s_typeid = #{s_typeid,jdbcType=BIGINT}
+  </update>
+</mapper>
