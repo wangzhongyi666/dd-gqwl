@@ -1,11 +1,13 @@
 package com.dongdao.gqwl.action.Source;
 
 import com.dongdao.gqwl.action.BaseAction;
+import com.dongdao.gqwl.bean.SysUser;
 import com.dongdao.gqwl.model.source.DdStype;
 import com.dongdao.gqwl.service.source.STypeService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import com.dongdao.gqwl.utils.HtmlUtil;
+import com.dongdao.gqwl.utils.SessionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,8 +67,8 @@ public class SypeAction extends BaseAction {
     @RequestMapping("/deletestype.do")
     public void deleteType(DdStype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-
-        int num= PicTypeService.deleteByPrimaryKey(model.getS_typeid());
+        model.setS_state(0);
+        int num= PicTypeService.updateByPrimaryKeySelective(model);
         if(num==1){
             jsonMap.put("msg", "操作成功！");
         }else{
@@ -80,7 +82,10 @@ public class SypeAction extends BaseAction {
     @RequestMapping("/addstype.do")
     public void saceType(DdStype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        SysUser user = SessionUtils.getUser(request);
+        model.setW_uid(user.getEmail());
         model.setS_r_time(DateUtil.getNowPlusTime());
+        model.setS_state(1);
         int num= PicTypeService.insertSelective(model);
         if(num==1){
             jsonMap.put("msg", "操作成功！");

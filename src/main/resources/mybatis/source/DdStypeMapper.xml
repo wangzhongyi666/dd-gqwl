@@ -17,20 +17,22 @@
 
 
   <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdStype"  resultMap="BaseResultMap">
-    select * from dd_stype
+    select * from dd_stype where
     <if test="s_name!=null and s_name!=''">
-      where s_name like  CONCAT('%', #{s_name}, '%')
+       s_name like  CONCAT('%', #{s_name}, '%') and
     </if>
+    s_state=1
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
     </if>
   </select>
 
   <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdStype" >
-    select count(0) from dd_stype
+    select count(0) from dd_stype where
     <if test="s_name!=null and s_name!=''">
-      where s_name=#{s_name}
+       s_name=#{s_name} and
     </if>
+    s_state=1
   </select>
 
 

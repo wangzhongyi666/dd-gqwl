@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdLabelMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdLabel" >
+    <id column="s_label_id" property="s_label_id" jdbcType="BIGINT" />
+    <result column="s_lname" property="s_lname" jdbcType="VARCHAR" />
+    <result column="s_r_time" property="s_r_time" jdbcType="VARCHAR" />
+    <result column="s_m_time" property="s_m_time" jdbcType="VARCHAR" />
+    <result column="w_uid" property="w_uid" jdbcType="VARCHAR" />
+    <result column="s_state" property="s_state" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    s_label_id, s_lname, s_r_time, s_m_time, w_uid, s_state, filed1, filed2
+  </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdLabel"  resultMap="BaseResultMap">
+    select * from dd_label where
+    <if test="s_lname!=null and s_lname!=''">
+      s_lname like  CONCAT('%', #{s_lname}, '%') and
+    </if>
+    s_state=1
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdLabel" >
+    select count(0) from dd_label where
+    <if test="s_lname!=null and s_lname!=''">
+      s_lname=#{s_lname} and
+    </if>
+    s_state=1
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_label
+    where s_label_id = #{s_label_id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_label
+    where s_label_id = #{s_label_id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdLabel" >
+    insert into dd_label (s_label_id, s_lname, s_r_time, 
+      s_m_time, w_uid, s_state, 
+      filed1, filed2)
+    values (#{s_label_id,jdbcType=BIGINT}, #{s_lname,jdbcType=VARCHAR}, #{s_r_time,jdbcType=VARCHAR}, 
+      #{s_m_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=VARCHAR}, #{s_state,jdbcType=INTEGER}, 
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdLabel" >
+    insert into dd_label
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="s_label_id != null" >
+        s_label_id,
+      </if>
+      <if test="s_lname != null" >
+        s_lname,
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time,
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time,
+      </if>
+      <if test="w_uid != null" >
+        w_uid,
+      </if>
+      <if test="s_state != null" >
+        s_state,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="s_label_id != null" >
+        #{s_label_id,jdbcType=BIGINT},
+      </if>
+      <if test="s_lname != null" >
+        #{s_lname,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdLabel" >
+    update dd_label
+    <set >
+      <if test="s_lname != null" >
+        s_lname = #{s_lname,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        w_uid = #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        s_state = #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where s_label_id = #{s_label_id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdLabel" >
+    update dd_label
+    set s_lname = #{s_lname,jdbcType=VARCHAR},
+      s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      w_uid = #{w_uid,jdbcType=VARCHAR},
+      s_state = #{s_state,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=VARCHAR}
+    where s_label_id = #{s_label_id,jdbcType=BIGINT}
+  </update>
+</mapper>
