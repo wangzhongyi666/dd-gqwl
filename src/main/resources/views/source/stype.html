@@ -20,7 +20,7 @@
     <script src="../../static/js/commons/paging.js"></script>
 
     <script src="../../static/js/layer/layer.js"></script>
-    <script src="../../static/js/source/pcitype.js"></script>
+    <script src="../../static/js/source/stype.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
     <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
     <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
@@ -30,12 +30,71 @@
     <![endif]-->
 </head>
 
+<script>
+    function getlist(pageNum,pageSize){
+        var jname=$("#jname").val();
+        var url = '/stype/updatetype.do';
+        var purview = /*isPurview(url);*/true;
+        $.ajax({
+            url :"/stype/stypeDataList.do",
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                s_name:jname,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=new Array();
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=new Array();
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            rowlist1[0]=row.s_typeid;
+                            rowlist1[1]=row.s_name;
+                            rowlist1[2]=row.s_r_time;
+                            rowlist1[3]=row.s_m_time;
+                            rowlist1[4]=row.w_uid;
 
+                            if(purview){
+                                rowlist1[5]="<a href=\"javascript:void(0)\" a1="+row.s_typeid+" a2="+row.s_name+" " +
+                                    "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
+                                    "<a href=\"javascript:void(0)\" a1="+row.s_typeid+" onclick=\"deleteType(this)\" " +
+                                    "class=\"text-primary ml10\">删除</a>";
+                            }else{
+                                rowlist1[5]="<a href=\"javascript:void(0)\" class=\"text-primary ml10\">编1辑</a>"+
+                                    "<a href=\"javascript:void(0)\" class=\"text-primary ml10\">删1除</a>";
+                            }
+
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                            rowlist1[5]='';
+
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"userDataList");
+            }
+        });
+    }
+
+
+
+
+</script>
 
 <body>
     <div class="rightIframe pull-right">
     	<div class="sopen"></div>
-        <div class="menu fontS20">图片分类</div>
+        <div class="menu fontS20">素材分类</div>
         <div class="search">
         	<form class="form-horizontal" role="form">
                 <div class="form-group">
@@ -56,7 +115,9 @@
                 <tr>
                     <th style="width: 170px;">序号</th>
                     <th style="width: 170px;">分类名称</th>
-                    <th style="width: 170px;">排序</th>
+                    <th style="width: 170px;">发布时间</th>
+                    <th style="width: 170px;">修改时间</th>
+                    <th style="width: 170px;">操作人</th>
                     <th style="width: 170px;">操作</th>
                 </tr>
                 </thead>
@@ -92,12 +153,12 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
+             <!--   <div class="form-group" style="margin-bottom: 15px;">
                     <label class="col-md-3 col-xs-3 control-label">排序</label>
                     <div class="col-md-8 col-xs-6">
                         <input type="text" id="tsort" class="form-control" placeholder=""/>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="form-group text-center" style="margin-top: 10px;">
                     <div class="col-md-offset-3 col-xs-offset-3 col-xs-6">
@@ -125,12 +186,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                   <!--     <div class="form-group">
                             <label class="col-md-3 col-xs-3 control-label">排序</label>
                             <div class="col-md-8 col-xs-6">
                                 <input type="text" class="form-control" name="tsort" id="tsort1" placeholder="请输入排序" />
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="form-group text-center">
                             <div style="width:100%;">
