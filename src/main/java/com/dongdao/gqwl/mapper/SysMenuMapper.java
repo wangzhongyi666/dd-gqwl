@@ -43,11 +43,13 @@ public interface SysMenuMapper<T> extends BaseMapper<T> {
     List<SysMenu> getChildMenuByUser(@Param("role_id")Integer role_id);
 
 
-    @Select(" SELECT DISTINCT id,NAME,url,parentId,actions,imgclass " +
-            " FROM sys_menu m " +
-            " LEFT JOIN sys_role_rel u on m.id = u.objId " +
-            " WHERE deleted= 0 AND parentId IS NOT NULL " +
-            " AND m.type=3 and u.roleId = #{role_id} order by rank")
+        @Select("<script>SELECT DISTINCT id,NAME,url,parentId,actions,imgclass " +
+                " FROM sys_menu m " +
+                " LEFT JOIN sys_role_rel u on m.id = u.objId " +
+                " WHERE deleted= 0 AND parentId IS NOT NULL " +
+                " AND m.type=3 " +
+                " <if test=\"role_id != null\"> and u.roleId = #{role_id} </if>" +
+                " order by rank</script>")
     List<SysMenu> getChildMenuBtnByUser(@Param("role_id")Integer role_id);
 
     @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu where deleted = 0</script>")

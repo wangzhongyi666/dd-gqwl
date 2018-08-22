@@ -97,6 +97,8 @@ public class MainAction extends BaseAction {
         if(user != null && Constant.SuperAdmin.YES.key ==  user.getSuperAdmin()){
             rootMenus = sysMenuService.getRootMenu(null);// 查询所有根节点
             childMenus = sysMenuService.getChildMenu();//查询所有子节点
+            childBtns = sysMenuService.getChildMenuBtnByUser(null);//按钮操作
+            buildData(childMenus,childBtns,request); //构建必要的数据
         }else{
             rootMenus = sysMenuService.getRootMenuByUser(user.getJid() );//根节点
             childMenus = sysMenuService.getChildMenuByUser(user.getJid());//子节点
