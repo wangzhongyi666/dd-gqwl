@@ -16,6 +16,9 @@
             if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
                 return 'http://localhost/ueditor/imgUpload.do';
                 //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
+            }else  if (action == 'uploadvideo' ) {
+                return 'http://localhost/ueditor/imgUpload.do';
+                //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
             } else {
                 return this._bkGetActionUrl.call(this, action);
             }

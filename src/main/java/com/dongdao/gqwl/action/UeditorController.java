@@ -17,13 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping(value="/ueditor")
-public class UeditorController {
+public class UeditorController extends  BaseAction{
 
 
     @RequestMapping(value="/ueditor.do")
@@ -37,7 +39,65 @@ public class UeditorController {
 
     @RequestMapping(value="/imgUpload.do")
     @ResponseBody
-        public String imgUpload(@Param(value="file") MultipartFile upfile, HttpServletRequest request) throws IOException{
+        public Map<String,Object> imgUpload(@Param(value="file") MultipartFile upfile, HttpServletRequest request) throws IOException , NoSuchAlgorithmException, UnsupportedEncodingException {
+        Map<String,Object> rs = new HashMap<String, Object>();
+        MultipartHttpServletRequest mReq  =  null;
+        MultipartFile file = null;
+        String fileName = "";
+        // 原始文件名   UEDITOR创建页面元素时的alt和title属性
+        String originalFileName = "";
+        try {
+            mReq = (MultipartHttpServletRequest)request;
+            // 从config.json中取得上传文件的ID
+            file = mReq.getFile("upfile");
+
+            if(!file.isEmpty()){
+                // 取得文件的原始文件名称
+                fileName = file.getOriginalFilename();
+                originalFileName = fileName;
+
+                String ext = (FilenameUtils.getExtension(file.getOriginalFilename())).toLowerCase();
+                String storePath = "";
+                if ("jpg".equals(ext) || "png".equals(ext) || "jpeg".equals(ext) || "bmp".equals(ext)) {
+                    storePath = "uploads/ueditorimage/";
+                }else{
+                    storePath = "uploads/video/";
+                }
+                //将图片和视频保存在本地服务器
+                String pathRoot =  UserConstants.UPLOADPATH ;
+                String path = pathRoot + "/" + storePath;
+                File localFile = new File(path);
+                // 判断文件夹
+                if (!localFile.exists()) {// 如果目录不存在
+                    localFile.mkdirs();// 创建文件夹
+                }
+                file.transferTo(new File(path+fileName));
+               // String doMain = readProperties.getFileDomain();
+                String httpImgPath = UserConstants.CRMURL+ storePath + fileName;
+
+                rs.put("state", "SUCCESS");// UEDITOR的规则:不为SUCCESS则显示state的内容
+                rs.put("url",httpImgPath);         //能访问到你现在图片的路径
+                rs.put("title", originalFileName);
+                rs.put("original", originalFileName);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rs.put("state", "文件上传失败!"); //在此处写上错误提示信息，这样当错误的时候就会显示此信息
+            rs.put("url","");
+            rs.put("title", "");
+            rs.put("original", "");
+        }
+        return rs;
+    }
+
+
+
+
+    /*public Map<String,Object> uploadImg(MultipartFile file,
+                            HttpServletRequest request) throws IOException {
+
         Ueditor ueditor = new Ueditor();
         String httpImgPath = "";
         String imageNamePath = "";
@@ -49,7 +109,7 @@ public class UeditorController {
         if(!upfile.isEmpty()) {
             // 取得文件的原始文件名称
             fileName = upfile.getOriginalFilename();
-            originalFileName = fileName;
+            originalFileName = EncoderByMd5(upfile.getOriginalFilename()+System.currentTimeMillis());
             String ext = (FilenameUtils.getExtension(upfile.getOriginalFilename())).toLowerCase();
             String storePath = "";
             if ("jpg".equals(ext) || "png".equals(ext) || "jpeg".equals(ext) || "bmp".equals(ext)) {
@@ -60,18 +120,18 @@ public class UeditorController {
             //将图片和视频保存在本地服务器
             File localFile;
             try {
-                imageNamePath = UserConstants.UPLOADPATH + File.separator
-                        + UserConstants.UPLOADFOLDER + File.separator + "ueditorimage";
+                imageNamePath = UserConstants.UPLOADPATH + "/"
+                        + UserConstants.UPLOADFOLDER + "/" + "ueditorimage";
 
                 localFile = new File(imageNamePath);
                 // 判断文件夹
                 if (!localFile.exists()) {// 如果目录不存在
                     localFile.mkdirs();// 创建文件夹
                 }
-                localFile = new File(imageNamePath + File.separator + fileName + "." + ext);
+                localFile = new File(imageNamePath + "/" + originalFileName + "." + ext);
                 System.err.println(imageNamePath);
-                httpImgPath = File.separator
-                        + UserConstants.UPLOADFOLDER + File.separator + "ueditorimage"+ File.separator +fileName;
+                httpImgPath = "http://localhost/"
+                        + UserConstants.UPLOADFOLDER + "/" + "ueditorimage"+ "/" +originalFileName+ "." + ext;
                 System.err.println("http://localhost"+httpImgPath);
                 upfile.transferTo(localFile);
                 ueditor.setState("Success");// UEDITOR的规则:不为SUCCESS则显示state的内容
@@ -87,62 +147,9 @@ public class UeditorController {
             }
         }
         return JSON.toJSONString(ueditor);
-    }
-
-    public Map<String,Object> uploadImg(MultipartFile file,
-                            HttpServletRequest request) throws IOException {
-
-        String httpImgPath = "";
-        String imageNamePath = "";
-        Map<String,Object> rs = new HashMap<String, Object>();
-
-        String fileName = "";
-        // 原始文件名   UEDITOR创建页面元素时的alt和title属性
-        String originalFileName = "";
-
-            if(!file.isEmpty()) {
-                // 取得文件的原始文件名称
-                fileName = file.getOriginalFilename();
-                originalFileName = fileName;
-                String ext = (FilenameUtils.getExtension(file.getOriginalFilename())).toLowerCase();
-                String storePath = "";
-                if ("jpg".equals(ext) || "png".equals(ext) || "jpeg".equals(ext) || "bmp".equals(ext)) {
-                    storePath = "uploads/image/";
-                } else {
-                    storePath = "uploads/file/";
-                }
-                //将图片和视频保存在本地服务器
-                File localFile;
-                try {
-                    imageNamePath = UserConstants.UPLOADPATH + File.separator
-                            + UserConstants.UPLOADFOLDER + File.separator + "ueditorimage";
-
-                    localFile = new File(imageNamePath);
-                    // 判断文件夹
-                    if (!localFile.exists()) {// 如果目录不存在
-                        localFile.mkdirs();// 创建文件夹
-                    }
-                    localFile = new File(imageNamePath + File.separator + fileName + "." + ext);
-                    System.err.println(imageNamePath);
-                    httpImgPath = File.separator
-                            + UserConstants.UPLOADFOLDER + File.separator + "ueditorimage";
-                    file.transferTo(localFile);
-                    rs.put("state", "SUCCESS");// UEDITOR的规则:不为SUCCESS则显示state的内容
-                    rs.put("url", httpImgPath);         //能访问到你现在图片的路径
-                    rs.put("title", originalFileName);
-                    rs.put("original", originalFileName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    rs.put("state", "文件上传失败!"); //在此处写上错误提示信息，这样当错误的时候就会显示此信息
-                    rs.put("url", "");
-                    rs.put("title", "");
-                    rs.put("original", "");
-                }
-            }
-        return rs;
 
 }
-
+*/
 
 
 }
