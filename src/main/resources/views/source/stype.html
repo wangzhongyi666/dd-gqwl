@@ -33,8 +33,10 @@
 <script>
     function getlist(pageNum,pageSize){
         var jname=$("#jname").val();
-        var url = '/stype/updatetype.do';
-        var purview = /*isPurview(url);*/true;
+        var edit = '/stype/updatestype.do';
+        var deletes="/stype/deletestype.do";
+
+        var puredit = isPurview(edit);
         $.ajax({
             url :"/stype/stypeDataList.do",
             type : 'POST',
@@ -59,7 +61,7 @@
                             rowlist1[3]=row.s_m_time;
                             rowlist1[4]=row.w_uid;
 
-                            if(purview){
+                            if(puredit){
                                 rowlist1[5]="<a href=\"javascript:void(0)\" a1="+row.s_typeid+" a2="+row.s_name+" " +
                                     "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
                                     "<a href=\"javascript:void(0)\" a1="+row.s_typeid+" onclick=\"deleteType(this)\" " +
