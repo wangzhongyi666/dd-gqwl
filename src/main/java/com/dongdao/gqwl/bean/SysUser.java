@@ -1,10 +1,13 @@
 package com.dongdao.gqwl.bean;
 
+import org.springframework.context.annotation.Lazy;
+
 import java.util.Date;
 
 /**
  * 用户表
  */
+@Lazy(value = false)
 public class SysUser extends  BaseBean{
     private Integer id;
 

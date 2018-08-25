@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片分类管理</title>
+    <title>文件上传</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
     <link rel="stylesheet" href="../../static/css/css.css"/>
     <link rel="stylesheet" href="../../static/css/paging.css"/>
-    <script src="../../static/js/commons/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../static/js/webuploader/webuploader.css"/>
+
+    <script src="../../static/js/commons/jquery-1.7.2-min.js"></script>
+    <script src="../../static/js/jquery-3.2.1.min.js"></script>
     <script src="../../static/js/commons/jquery.form.js"></script>
     <script src="../../static/js/commons/jquery.easyui.min.js"></script>
     <script src="../../static/js/commons/bootstrap.min.js"></script>
@@ -22,6 +25,7 @@
     <script src="../../static/js/layer/layer.js"></script>
     <script src="../../static/js/source/stype.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script type="text/javascript" src="../../static/js/webuploader/webuploader.js"></script>
     <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
     <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
     <!--[if lt IE 9]>
@@ -85,10 +89,6 @@
             }
         });
     }
-
-
-
-
 </script>
 
 <body>
@@ -107,7 +107,7 @@
             </form>
         </div>
         <div class="clearfix">
-        	<a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加分类</a>
+        	<a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="shadboxFun('add')">添加分类</a>
         </div>
         <div id="tabdiv" style="overflow:auto">
             <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
@@ -142,16 +142,36 @@
         <div class="popbox-body" style="min-width:620px;">
         	<div class="safe_nav">
             	<span class="pull-right fa fa-close popbox-close fontS20"></span>
-                <span class="fontS16">添加分类</span>
+                <span class="fontS16">文件上传</span>
             </div>
             <div style="padding: 20px 30px;">
-            <form class="form-horizontal" role="form">
+            <!--<form class="form-horizontal" role="form">-->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label class="col-md-3 col-xs-3 control-label">分类名称</label>
                     <div class="col-md-8 col-xs-6">
-                      <input type="text" id="typename" class="form-control" placeholder=""/>
+                      <input type="text" id="s_descript" name="s_descript" class="form-control" placeholder=""/>
                     </div>
                 </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="col-md-3 col-xs-3 control-label">分类名称</label>
+                    <div class="col-md-8 col-xs-6">
+                        <input type="text" id="s_title" name="s_title" class="form-control" placeholder=""/>
+                    </div>
+                </div>
+                 <div>
+                     <label class="col-md-3 col-xs-3 control-label">文件上传</label>
+                     <div class="col-md-8 col-xs-6">
+                         <div id="uploader" class="wu-example">
+                             <!--用来存放文件信息-->
+                             <div id="thelist" class="uploader-list"></div>
+                             <div class="btns">
+                                 <div id="picker">选择文件</div>
+                                 <button id="ctlBtn" class="btn btn-default" style="width: 85px;height: 40px;">开始上传</button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
 
              <!--   <div class="form-group" style="margin-bottom: 15px;">
                     <label class="col-md-3 col-xs-3 control-label">排序</label>
@@ -165,47 +185,14 @@
                         <a class="btn btn-primary btn-lg btn-radius"  style="margin:0 auto;" onclick="formValidate(this)" style="width:50%;">保存</a>
                     </div>
                 </div>
-            </form>
+            <!--</form>-->
             </div>
         </div>
 	</div>
 
-        <div class="popbox-wrapper safebox" id="edit">
-            <input type="hidden" id="pictypeid1" />
-            <div class="popbox-body">
-                <div class="safe_nav">
-                    <span class="pull-right fa fa-close popbox-close fontS20"></span>
-                    <span class="fontS16">编辑分类</span>
-                </div>
-                <div class="detail_box">
-                    <form class="form-horizontal" id="addUserForm" role="form">
-                        <div class="form-group">
-                            <label class="col-md-3 col-xs-3 control-label">分类名称</label>
-                            <div class="col-md-8 col-xs-6">
-                                <input type="text" class="form-control" name="typename" id="typename1" placeholder="请输入分类名称" />
-                            </div>
-                        </div>
-
-                   <!--     <div class="form-group">
-                            <label class="col-md-3 col-xs-3 control-label">排序</label>
-                            <div class="col-md-8 col-xs-6">
-                                <input type="text" class="form-control" name="tsort" id="tsort1" placeholder="请输入排序" />
-                            </div>
-                        </div>-->
-
-                        <div class="form-group text-center">
-                            <div style="width:100%;">
-                                <a class="btn btn-primary btn-lg btn-radius" href="javascript:void(0);" onclick="formValidate1(this)" style="width:100px;">保存</a>
-                               <!-- <a class="btn btn-primary btn-lg btn-radius" href="javascript:void(0);" onclick="qx(this)" style="margin-left:30px;width:100px;">取消</a>-->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
     </div>
 </body>
+<!-权限处理-->
 <script th:inline="javascript">
     /*<![CDATA[*/
     var btn = $("#ifWd",parent.document).attr("src");
@@ -215,5 +202,99 @@
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }
     /*]]>*/
+</script>
+<!-上传文件-->
+<script>
+    $(function () {
+
+        var uploader = WebUploader.create({
+
+            // swf文件路径
+            swf: '../../static/js/webuploader/Uploader.swf',
+
+            // 文件接收服务端。
+            server: 'http://localhost/upload/uploadfile.do',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+            //分块
+            chunked: true,
+            auto: false,
+            disableGlobalDnd: true,
+            chunkSize:1024*1024,//1M 为一分片
+            fileNumLimit: 1024,
+            fileSizeLimit: 1024 * 1024 * 1024,    // 200 M
+            fileSingleSizeLimit: 1024 * 1024 * 1024,    // 50 M
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        var $list = $("#thelist");
+        var $btn = $('#ctlBtn');
+        $("#picker div:eq(0)").attr("style","width:85px;height:40px;");
+        $("#picker div:eq(1)").attr("style","width:85px;height:40px;");
+
+        // 当有文件被添加进队列的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $list.append( '<div id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
+                '<p class="state">等待上传...</p>' +
+                '</div>' );
+        });
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress .progress-bar');
+
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo( $li ).find('.progress-bar');
+            }
+
+            $li.find('p.state').text('上传中');
+
+            $percent.css( 'width', percentage * 100 + '%' );
+        });
+        uploader.on( 'uploadSuccess', function( file ) {
+            $( '#'+file.id ).find('p.state').text('已上传');
+        });
+
+        uploader.on( 'uploadError', function( file ) {
+            $( '#'+file.id ).find('p.state').text('上传出错');
+        });
+
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').fadeOut();
+        });
+
+        //开始上传
+        $btn.on( 'click', function() {
+            uploader.upload();
+        });
+
+        var  webuploader_pick = document.getElementsByClassName("webuploader-pick");
+        webuploader_pick[0].style.opacity = 0;
+
+        //解决上传按钮不起作用
+        setTimeout(function(){
+            var file = document.getElementsByName("file");
+            var fileEle = file[0];
+            fileEle.parentNode.style.width = "80px";
+            fileEle.parentNode.style.height = "40px";
+
+            var label = fileEle.parentNode.childNodes[1];
+            label.style.width = "80px";
+            label.style.height = "40px";
+            label.style.opacity = 1;
+            label.backgroundColor  = 'blue';
+            label.innerHTML = "<span style='color:rgb(0,0,255);'>选择文件</span>";
+        },1000);
+    });
+
 </script>
 </html>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdScontentMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdScontent" >
+    <id column="s_contentid" property="s_contentid" jdbcType="BIGINT" />
+    <result column="s_typeid" property="s_typeid" jdbcType="BIGINT" />
+    <result column="s_label_id" property="s_label_id" jdbcType="BIGINT" />
+    <result column="s_descript" property="s_descript" jdbcType="VARCHAR" />
+    <result column="s_rand" property="s_rand" jdbcType="INTEGER" />
+    <result column="s_title" property="s_title" jdbcType="VARCHAR" />
+    <result column="s_brief" property="s_brief" jdbcType="VARCHAR" />
+    <result column="s_writer" property="s_writer" jdbcType="VARCHAR" />
+    <result column="s_fimg" property="s_fimg" jdbcType="VARCHAR" />
+    <result column="s_icon" property="s_icon" jdbcType="VARCHAR" />
+    <result column="s_music" property="s_music" jdbcType="VARCHAR" />
+    <result column="s_video" property="s_video" jdbcType="VARCHAR" />
+    <result column="s_file" property="s_file" jdbcType="VARCHAR" />
+    <result column="s_audit" property="s_audit" jdbcType="INTEGER" />
+    <result column="s_r_time" property="s_r_time" jdbcType="VARCHAR" />
+    <result column="s_m_time" property="s_m_time" jdbcType="VARCHAR" />
+    <result column="w_uid" property="w_uid" jdbcType="VARCHAR" />
+    <result column="s_state" property="s_state" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="VARCHAR" />
+    <result column="filed3" property="filed3" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.dongdao.gqwl.model.source.DdScontent" extends="BaseResultMap" >
+    <result column="s_content" property="s_content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    s_contentid, s_typeid, s_label_id, s_descript, s_rand, s_title, s_brief, s_writer, 
+    s_fimg, s_icon, s_music, s_video, s_file, s_audit, s_r_time, s_m_time, w_uid, s_state, 
+    isdelete, filed1, filed2, filed3
+  </sql>
+  <sql id="Blob_Column_List" >
+    s_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dd_scontent
+    where s_contentid = #{s_contentid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_scontent
+    where s_contentid = #{s_contentid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    insert into dd_scontent (s_contentid, s_typeid, s_label_id, 
+      s_descript, s_rand, s_title, 
+      s_brief, s_writer, s_fimg, 
+      s_icon, s_music, s_video, 
+      s_file, s_audit, s_r_time, 
+      s_m_time, w_uid, s_state, 
+      isdelete, filed1, filed2, 
+      filed3, s_content)
+    values (#{s_contentid,jdbcType=BIGINT}, #{s_typeid,jdbcType=BIGINT}, #{s_label_id,jdbcType=BIGINT}, 
+      #{s_descript,jdbcType=VARCHAR}, #{s_rand,jdbcType=INTEGER}, #{s_title,jdbcType=VARCHAR}, 
+      #{s_brief,jdbcType=VARCHAR}, #{s_writer,jdbcType=VARCHAR}, #{s_fimg,jdbcType=VARCHAR}, 
+      #{s_icon,jdbcType=VARCHAR}, #{s_music,jdbcType=VARCHAR}, #{s_video,jdbcType=VARCHAR}, 
+      #{s_file,jdbcType=VARCHAR}, #{s_audit,jdbcType=INTEGER}, #{s_r_time,jdbcType=VARCHAR}, 
+      #{s_m_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=VARCHAR}, #{s_state,jdbcType=INTEGER}, 
+      #{isdelete,jdbcType=INTEGER}, #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=VARCHAR}, 
+      #{filed3,jdbcType=INTEGER}, #{s_content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    insert into dd_scontent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="s_contentid != null" >
+        s_contentid,
+      </if>
+      <if test="s_typeid != null" >
+        s_typeid,
+      </if>
+      <if test="s_label_id != null" >
+        s_label_id,
+      </if>
+      <if test="s_descript != null" >
+        s_descript,
+      </if>
+      <if test="s_rand != null" >
+        s_rand,
+      </if>
+      <if test="s_title != null" >
+        s_title,
+      </if>
+      <if test="s_brief != null" >
+        s_brief,
+      </if>
+      <if test="s_writer != null" >
+        s_writer,
+      </if>
+      <if test="s_fimg != null" >
+        s_fimg,
+      </if>
+      <if test="s_icon != null" >
+        s_icon,
+      </if>
+      <if test="s_music != null" >
+        s_music,
+      </if>
+      <if test="s_video != null" >
+        s_video,
+      </if>
+      <if test="s_file != null" >
+        s_file,
+      </if>
+      <if test="s_audit != null" >
+        s_audit,
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time,
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time,
+      </if>
+      <if test="w_uid != null" >
+        w_uid,
+      </if>
+      <if test="s_state != null" >
+        s_state,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+      <if test="filed3 != null" >
+        filed3,
+      </if>
+      <if test="s_content != null" >
+        s_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="s_contentid != null" >
+        #{s_contentid,jdbcType=BIGINT},
+      </if>
+      <if test="s_typeid != null" >
+        #{s_typeid,jdbcType=BIGINT},
+      </if>
+      <if test="s_label_id != null" >
+        #{s_label_id,jdbcType=BIGINT},
+      </if>
+      <if test="s_descript != null" >
+        #{s_descript,jdbcType=VARCHAR},
+      </if>
+      <if test="s_rand != null" >
+        #{s_rand,jdbcType=INTEGER},
+      </if>
+      <if test="s_title != null" >
+        #{s_title,jdbcType=VARCHAR},
+      </if>
+      <if test="s_brief != null" >
+        #{s_brief,jdbcType=VARCHAR},
+      </if>
+      <if test="s_writer != null" >
+        #{s_writer,jdbcType=VARCHAR},
+      </if>
+      <if test="s_fimg != null" >
+        #{s_fimg,jdbcType=VARCHAR},
+      </if>
+      <if test="s_icon != null" >
+        #{s_icon,jdbcType=VARCHAR},
+      </if>
+      <if test="s_music != null" >
+        #{s_music,jdbcType=VARCHAR},
+      </if>
+      <if test="s_video != null" >
+        #{s_video,jdbcType=VARCHAR},
+      </if>
+      <if test="s_file != null" >
+        #{s_file,jdbcType=VARCHAR},
+      </if>
+      <if test="s_audit != null" >
+        #{s_audit,jdbcType=INTEGER},
+      </if>
+      <if test="s_r_time != null" >
+        #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=VARCHAR},
+      </if>
+      <if test="filed3 != null" >
+        #{filed3,jdbcType=INTEGER},
+      </if>
+      <if test="s_content != null" >
+        #{s_content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    update dd_scontent
+    <set >
+      <if test="s_typeid != null" >
+        s_typeid = #{s_typeid,jdbcType=BIGINT},
+      </if>
+      <if test="s_label_id != null" >
+        s_label_id = #{s_label_id,jdbcType=BIGINT},
+      </if>
+      <if test="s_descript != null" >
+        s_descript = #{s_descript,jdbcType=VARCHAR},
+      </if>
+      <if test="s_rand != null" >
+        s_rand = #{s_rand,jdbcType=INTEGER},
+      </if>
+      <if test="s_title != null" >
+        s_title = #{s_title,jdbcType=VARCHAR},
+      </if>
+      <if test="s_brief != null" >
+        s_brief = #{s_brief,jdbcType=VARCHAR},
+      </if>
+      <if test="s_writer != null" >
+        s_writer = #{s_writer,jdbcType=VARCHAR},
+      </if>
+      <if test="s_fimg != null" >
+        s_fimg = #{s_fimg,jdbcType=VARCHAR},
+      </if>
+      <if test="s_icon != null" >
+        s_icon = #{s_icon,jdbcType=VARCHAR},
+      </if>
+      <if test="s_music != null" >
+        s_music = #{s_music,jdbcType=VARCHAR},
+      </if>
+      <if test="s_video != null" >
+        s_video = #{s_video,jdbcType=VARCHAR},
+      </if>
+      <if test="s_file != null" >
+        s_file = #{s_file,jdbcType=VARCHAR},
+      </if>
+      <if test="s_audit != null" >
+        s_audit = #{s_audit,jdbcType=INTEGER},
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="s_m_time != null" >
+        s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        w_uid = #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        s_state = #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=VARCHAR},
+      </if>
+      <if test="filed3 != null" >
+        filed3 = #{filed3,jdbcType=INTEGER},
+      </if>
+      <if test="s_content != null" >
+        s_content = #{s_content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where s_contentid = #{s_contentid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    update dd_scontent
+    set s_typeid = #{s_typeid,jdbcType=BIGINT},
+      s_label_id = #{s_label_id,jdbcType=BIGINT},
+      s_descript = #{s_descript,jdbcType=VARCHAR},
+      s_rand = #{s_rand,jdbcType=INTEGER},
+      s_title = #{s_title,jdbcType=VARCHAR},
+      s_brief = #{s_brief,jdbcType=VARCHAR},
+      s_writer = #{s_writer,jdbcType=VARCHAR},
+      s_fimg = #{s_fimg,jdbcType=VARCHAR},
+      s_icon = #{s_icon,jdbcType=VARCHAR},
+      s_music = #{s_music,jdbcType=VARCHAR},
+      s_video = #{s_video,jdbcType=VARCHAR},
+      s_file = #{s_file,jdbcType=VARCHAR},
+      s_audit = #{s_audit,jdbcType=INTEGER},
+      s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      w_uid = #{w_uid,jdbcType=VARCHAR},
+      s_state = #{s_state,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=VARCHAR},
+      filed3 = #{filed3,jdbcType=INTEGER},
+      s_content = #{s_content,jdbcType=LONGVARCHAR}
+    where s_contentid = #{s_contentid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    update dd_scontent
+    set s_typeid = #{s_typeid,jdbcType=BIGINT},
+      s_label_id = #{s_label_id,jdbcType=BIGINT},
+      s_descript = #{s_descript,jdbcType=VARCHAR},
+      s_rand = #{s_rand,jdbcType=INTEGER},
+      s_title = #{s_title,jdbcType=VARCHAR},
+      s_brief = #{s_brief,jdbcType=VARCHAR},
+      s_writer = #{s_writer,jdbcType=VARCHAR},
+      s_fimg = #{s_fimg,jdbcType=VARCHAR},
+      s_icon = #{s_icon,jdbcType=VARCHAR},
+      s_music = #{s_music,jdbcType=VARCHAR},
+      s_video = #{s_video,jdbcType=VARCHAR},
+      s_file = #{s_file,jdbcType=VARCHAR},
+      s_audit = #{s_audit,jdbcType=INTEGER},
+      s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      s_m_time = #{s_m_time,jdbcType=VARCHAR},
+      w_uid = #{w_uid,jdbcType=VARCHAR},
+      s_state = #{s_state,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=VARCHAR},
+      filed3 = #{filed3,jdbcType=INTEGER}
+    where s_contentid = #{s_contentid,jdbcType=BIGINT}
+  </update>
+</mapper>
