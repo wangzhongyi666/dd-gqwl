@@ -20,6 +20,10 @@ public class DdAudit extends BaseModel {
 
     private String nickName;
 
+    private String email;
+
+    private String s_descript;
+
     private String s_title;
 
     public String getNickName() {
@@ -100,5 +104,21 @@ public class DdAudit extends BaseModel {
 
     public void setFiled2(Integer filed2) {
         this.filed2 = filed2;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getS_descript() {
+        return s_descript;
+    }
+
+    public void setS_descript(String s_descript) {
+        this.s_descript = s_descript;
     }
 }

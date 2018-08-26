@@ -55,12 +55,12 @@
                             rowlist1[1]=row.s_title;
                             rowlist1[2]=row.smessage;
                             rowlist1[3]=row.s_r_time;
-                            rowlist1[4]=row.nickName;
-
+                            rowlist1[4]=row.email;
+                            rowlist1[5]=row.s_descript;
                             if(row.s_state==0){
-                                rowlist1[5]="未通过";
+                                rowlist1[6]="已撤销";
                             }else{
-                                rowlist1[5]="已通过";
+                                rowlist1[6]="已通过";
                             }
 
                         }else{
@@ -70,6 +70,7 @@
                             rowlist1[3]='';
                             rowlist1[4]='';
                             rowlist1[5]='';
+                            rowlist1[6]='';
 
                         }
                         rowlist[i]=rowlist1;
@@ -109,6 +110,7 @@
                 <th style="width: 170px;">审核反馈</th>
                 <th style="width: 170px;">审核时间</th>
                 <th style="width: 170px;">操作人</th>
+                <th style="width: 170px;">素材使用描述</th>
                 <th style="width: 170px;">操作</th>
             </tr>
             </thead>
