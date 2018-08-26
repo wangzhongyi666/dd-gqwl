@@ -56,7 +56,7 @@ public class MainAction extends BaseAction {
         List<SysUser> users=sysUserService.queryLogin(email,pwd);
         String msg = "用户登录日志:";
         if(users==null||users.size()==0){
-            //记录错误登录日志
+            //记录错误登录日志n
             log.debug(msg+"["+email+"]"+"账号或者密码输入错误.");
             sendFailureMessage(response, "账号或者密码输入错误.");
             return;

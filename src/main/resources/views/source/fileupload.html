@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片分类管理</title>
+    <title>文件上传</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
     <link rel="stylesheet" href="../../static/css/css.css"/>
     <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <link rel="stylesheet" type="text/css" href="webuploader/webuploader.css">
     <script src="../../static/js/commons/jquery.min.js"></script>
     <script src="../../static/js/commons/jquery.form.js"></script>
     <script src="../../static/js/commons/jquery.easyui.min.js"></script>
@@ -19,6 +20,9 @@
     <script src="../../static/js/commons/common.js"></script>
     <script src="../../static/js/commons/paging.js"></script>
 
+
+    <!--引入JS-->
+    <script type="text/javascript" src="webuploader文件夹/webuploader.js"></script>
     <script src="../../static/js/layer/layer.js"></script>
     <script src="../../static/js/source/stype.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
@@ -33,11 +37,8 @@
 <script>
     function getlist(pageNum,pageSize){
         var jname=$("#jname").val();
-        var edit = '/stype/updatestype.do';
-        var deletes="/stype/deletestype.do";
-
-        var puredit = isPurview(edit);
-        var purdelete = isPurview(deletes);
+        var url = '/stype/updatetype.do';
+        var purview = /*isPurview(url);*/true;
         $.ajax({
             url :"/stype/stypeDataList.do",
             type : 'POST',
@@ -135,9 +136,9 @@
 
             </div>
         </div>
-        
+
     </div>
-    
+
 <!--弹出框-->
 <div class="popbox-container">
 	<div class="popbox-overlay"></div>
@@ -145,7 +146,7 @@
         <div class="popbox-body" style="min-width:620px;">
         	<div class="safe_nav">
             	<span class="pull-right fa fa-close popbox-close fontS20"></span>
-                <span class="fontS16">添加分类</span>
+                <span class="fontS16">文件上传</span>
             </div>
             <div style="padding: 20px 30px;">
             <form class="form-horizontal" role="form">
@@ -172,40 +173,6 @@
             </div>
         </div>
 	</div>
-
-        <div class="popbox-wrapper safebox" id="edit">
-            <input type="hidden" id="pictypeid1" />
-            <div class="popbox-body">
-                <div class="safe_nav">
-                    <span class="pull-right fa fa-close popbox-close fontS20"></span>
-                    <span class="fontS16">编辑分类</span>
-                </div>
-                <div class="detail_box">
-                    <form class="form-horizontal" id="addUserForm" role="form">
-                        <div class="form-group">
-                            <label class="col-md-3 col-xs-3 control-label">分类名称</label>
-                            <div class="col-md-8 col-xs-6">
-                                <input type="text" class="form-control" name="typename" id="typename1" placeholder="请输入分类名称" />
-                            </div>
-                        </div>
-
-                   <!--     <div class="form-group">
-                            <label class="col-md-3 col-xs-3 control-label">排序</label>
-                            <div class="col-md-8 col-xs-6">
-                                <input type="text" class="form-control" name="tsort" id="tsort1" placeholder="请输入排序" />
-                            </div>
-                        </div>-->
-
-                        <div class="form-group text-center">
-                            <div style="width:100%;">
-                                <a class="btn btn-primary btn-lg btn-radius" href="javascript:void(0);" onclick="formValidate1(this)" style="width:100px;">保存</a>
-                               <!-- <a class="btn btn-primary btn-lg btn-radius" href="javascript:void(0);" onclick="qx(this)" style="margin-left:30px;width:100px;">取消</a>-->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
     </div>
 </body>

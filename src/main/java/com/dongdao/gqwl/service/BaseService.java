@@ -64,4 +64,7 @@ public abstract class BaseService<T> {
     public  T selectByPrimaryKey(Object id){
         return getMapper().selectByPrimaryKey(id);
     }
+    public List<T> queryByList(BaseModel model) throws Exception{
+        return getMapper().queryByList(model);
+    }
 }

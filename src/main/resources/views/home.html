@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>365灵活通首页</title>
+    <tite>广汽蔚来</tite>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="../static/js/commons/jquery.min.js"></script>
     <script src="../static/js/commons/bootstrap.min.js"></script>
@@ -22,80 +22,7 @@
     <![endif]-->
 </head>
 <body>
-    <div class="rightIframe rightboxbg pull-right">
-        <input type="hidden" id="jid" th:value="${jid}"/>
-        <div class="sopen" id="sopen"></div>
-        <div class="menu fontS20">待办事项</div>
-        <div class="wait clearfix">
-            <a id ="mk1" class="color1" th:href="@{/vip/vipaudit.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="sm" th:text="${sm}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待实名认证审核</p>
-            </a>
-            <a id ="mk2" class="color2" th:href="@{/insurance/insurance.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="cb" th:text="${cb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待参保审核</p>
-            </a>
-            <a id ="mk3" class="color2" th:href="@{/insurance/supple.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="bj" th:text="${bj}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待补缴审核</p>
-            </a>
-            <a id ="mk4" class="color3" th:href="@{/insuranceSet/insuranceInfo.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="xcb" th:text="${xcb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 新参保信息审核数</p>
-            </a>
-            <a id ="mk5" class="color4" th:href="@{/insurance/untread.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="tb" th:text="${tb}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待退保审核</p>
-            </a>
-            <a id ="mk6" class="color5" th:href="@{/goods/sendgoods.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="fh" th:text="${fh}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 待发货</p>
-            </a>
-            <a id ="mk7" class="color6" th:href="@{/insurance/adjustment.do}" style="margin-top: 20px;display: none;">
-                <!--<em></em>-->
-                <p class="fontS30"></p>
-                <p class="fontS18"><i id="sh" th:text="${sh}"></i>&nbsp;&nbsp;&nbsp;&nbsp; 保单调整审核</p>
-            </a>
-        </div>
-    </div>
+    <div>Hello word!</div>
 </body>
-<script>
-    /*<![CDATA[*/
-    $(function(){
-        var jid=$("#jid").val();
-        switch (jid){
-            case "1":
-                $("#mk1").show();
-                $("#mk2").show();
-                $("#mk3").show();
-                $("#mk4").show();
-                $("#mk5").show();
-                $("#mk6").show();
-                break;
-            case "2" :
-                $("#mk1").show();
-                $("#mk4").show();
-                $("#mk6").show();
-                break;
-            case "3" :
-                $("#mk2").show();
-                $("#mk3").show();
-                $("#mk5").show();
-                $("#mk7").show();
-                break;
-            case "4" :
-                $("#mk2").show();
-                $("#mk3").show();
-                $("#mk5").show();
-                break;
-        }
-    })
-    /*]]>*/
-</script>
+
 </html>

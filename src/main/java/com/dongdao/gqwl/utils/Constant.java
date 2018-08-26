@@ -11,11 +11,7 @@ public class Constant {
 	public static String SSI_WEBSITE_DOMAIN = res.getString("ssi.website.domain");
 	//网站地址
 	public static String SSI_WEBSITE_URL = res.getString("ssi.website.url");
-	
 
-	
-	
-	
 
 	/**
 	 * 超级管理员常量
