@@ -13,6 +13,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/uploads/**").addResourceLocations("file:D:/gqfile/uploads/");
+        registry.addResourceHandler("/FTP/**").addResourceLocations("file:D:/gqfile/FTP_file/");
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
         super.addResourceHandlers(registry);
 

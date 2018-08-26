@@ -216,6 +216,7 @@
     /*<![CDATA[*/
     var btn = $("#ifWd",parent.document).attr("src");
     var btnsUrl = [[${session.session_menubtn_map}]];
+    console.log(btnsUrl);
     function isPurview(btnUrl){
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }

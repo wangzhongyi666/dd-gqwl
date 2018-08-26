@@ -1,6 +1,8 @@
 package com.dongdao.gqwl.mapper;
 
 import com.dongdao.gqwl.model.BaseModel;
+import com.dongdao.gqwl.model.source.DdLabel;
+import com.dongdao.gqwl.model.source.DdStype;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public interface BaseMapper<T> {
 
     int updateByPrimaryKeySelective(T record);
 
-    public List<T> queryType();
-
+    List<T> queryType();
+    List<T> queryLabel();
+    public T selectByPrimaryKey(Object id);
 }

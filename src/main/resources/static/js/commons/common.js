@@ -320,7 +320,7 @@ function is_purview(btn,btnUrl,btnsUrl,msUrl){
 
     var flag = false;
     $.each(btnsUrl,function (index,val) {
-        alert("1"+index);
+
         if(btnsU==index){
             $.each(val,function (i,v) {
                 if(btnUrl==v){

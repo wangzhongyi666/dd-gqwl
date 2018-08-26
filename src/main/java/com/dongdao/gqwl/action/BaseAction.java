@@ -4,12 +4,14 @@ import com.dongdao.gqwl.UserConstants;
 import com.dongdao.gqwl.utils.HtmlUtil;
 import com.dongdao.gqwl.utils.MyEditor;
 import com.dongdao.gqwl.utils.URLUtils;
+import com.dongdao.gqwl.utils.VerifyFormat;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 import sun.misc.BASE64Encoder;
@@ -17,9 +19,7 @@ import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -151,6 +151,62 @@ public class BaseAction {
         return jsonMap;
     }
 
+    public String uploadFiles(InputStream is, String fileName, String folder) {
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        BufferedInputStream bis = null;
+        File file = null;
+        String filePath = "";
+        try {
+            String path = UserConstants.FTPPATH ;
+            /*	String path = "D:\\youyang\\FTP_file";*/
+            file = new File(path + File.separator + folder);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            filePath = "/" + folder + "/" + fileName;
+            File new_file = new File(path + filePath);
+            bis = new BufferedInputStream(is);
+            fos = new FileOutputStream(new_file);
+            bos = new BufferedOutputStream(fos);
+            byte[] bt = new byte[4096];
+            int len;
+            while ((len = bis.read(bt)) > 0) {
+                bos.write(bt, 0, len);
+            }
+            // System.err.println("f:" + file.length());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != bos) {
+                    bos.close();
+                    bos = null;
+                }
+                if (null != fos) {
+                    fos.close();
+                    fos = null;
+                }
+
+                if (null != is) {
+                    is.close();
+                    is = null;
+                }
+                if (null != bis) {
+                    bis.close();
+                    bis = null;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "";
+            }
+
+        }
+        return filePath;
+
+    }
+
 
     public String uploadFile(String folder, MultipartFile file,HttpServletRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException{
         String imgName = "";
@@ -209,6 +265,30 @@ public class BaseAction {
         //加密后的字符串
         String newstr=base64en.encode(md5.digest(str.getBytes("utf-8")));
         return newstr;
+    }
+
+    /*********************uploadify上传方法***************************/
+    public void uploadify(MultipartFile file, String folder,HttpServletResponse response,HttpServletRequest request) throws IOException,NoSuchAlgorithmException, UnsupportedEncodingException {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        // 文件原名
+        String fileName = file.getOriginalFilename().toLowerCase();
+        // 文件扩展名
+        String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+        // 验证后缀
+        if (!VerifyFormat.verifyFormat(fileType)) {
+            jsonMap.put("msg", "操作失败！");
+        }
+        String newname = System.currentTimeMillis() + "." + fileType;
+        // 将文件保存到服务器
+        String filePath = uploadFiles(file.getInputStream(),newname,folder);
+
+        if (!"".equals(filePath)) {
+            jsonMap.put("msg", "操作成功！");
+            jsonMap.put("path", filePath);
+        } else {
+            jsonMap.put("msg", "操作失败！");
+        }
+        HtmlUtil.writerJson(response, jsonMap);
     }
 
 

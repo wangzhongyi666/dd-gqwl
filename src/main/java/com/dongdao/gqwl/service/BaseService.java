@@ -58,5 +58,10 @@ public abstract class BaseService<T> {
     public List<T> queryType() throws Exception{
         return getMapper().queryType();
     }
-
+    public List<T> queryLabel() throws Exception{
+        return getMapper().queryLabel();
+    }
+    public  T selectByPrimaryKey(Object id){
+        return getMapper().selectByPrimaryKey(id);
+    }
 }

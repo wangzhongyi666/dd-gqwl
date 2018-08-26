@@ -233,6 +233,6 @@ public class MainAction extends BaseAction {
     @RequestMapping("/logout")
     public void  logout(HttpServletRequest request,HttpServletResponse response) throws Exception{
         SessionUtils.removeUser(request);
-        response.sendRedirect(URLUtils.get("msUrl")+"/flexiblebe/login.shtml");
+        response.sendRedirect(URLUtils.get("msUrl")+"/guangqi/login.shtml");
     }
 }

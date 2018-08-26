@@ -96,7 +96,7 @@ public class SypeAction extends BaseAction {
         HtmlUtil.writerJson(response, jsonMap);
 
     }
-
+    //编辑素材信息
     @RequestMapping("/updatestype.do")
     public void updatetype(DdStype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
