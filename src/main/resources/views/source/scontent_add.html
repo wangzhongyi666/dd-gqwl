@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>图片管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <!--<script src="../../static/js/source/scontent.js"></script>-->
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+
+    <!-- Uploadify文件上传 -->
+    <link href="../../static/js/uploadify/uploadify.css"   rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript"  src="../../static/js/source/uploadfile.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+   $(function(){
+       UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+       UE.Editor.prototype.getActionUrl = function(action) {
+
+           if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
+               return 'http://localhost/ueditor/imgUpload.do';
+               //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
+           }else  if (action == 'uploadvideo' ) {
+               return 'http://localhost/ueditor/imgUpload.do';
+               //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
+           } else {
+               return this._bkGetActionUrl.call(this, action);
+           }
+       }
+       var felObj = $("#s_typeid");
+       var selObj=$('#s_label_id');
+       $.get('/scontent/querytype.do', {},
+           function(data) {
+               var data=data.stype;
+               for (var i = 0; i < data.length; i++) {
+                   var value = data[i].s_typeid;
+                   var text = data[i].s_name;
+                   felObj.append("<option value='"+value+"'>" + text
+                       + "</option>");
+
+               }
+           });
+
+       $.get('/scontent/querylabel.do', {},
+           function(data) {
+               var data=data.label;
+               for (var i = 0; i < data.length; i++) {
+                   var value = data[i].s_label_id;
+                   var text = data[i].s_lname;
+
+                   selObj.append("<option value='"+value+"'>" + text
+                       + "</option>");
+               }
+           });
+       $('#domainInfoForm').form({
+           url : '/scontent/addscontent.do',
+           onSubmit : function() {
+
+           },
+           success : function(data) {
+               var obj = JSON.parse(data);
+
+               if (obj.msg=="操作成功！") {
+                   layer.alert('添加成功');
+                   window.parent.opentab('/scontent/scontent.shtml','素材管理');
+               }  else {
+                   layer.alert('添加失败');
+               }
+           }
+       });
+
+       fileupload();
+       fileupload2();
+       fileupload3();
+   });
+
+   function fileupload() {
+       //初始化附件上传
+       $("#file_upload")
+           .uploadify(
+               {
+                   'auto' : false,
+                   'swf' : '/static/js/uploadify/uploadify.swf',//引入uploadify.swf
+                   'uploader' : '/files/uploadfile.do',//后台处理的请求
+                   'queueID' : 'fileQueue',//与下面的id对应  ，队列ID，用来展示上传进度的
+                   'queueSizeLimit' : 1,//同时上传文件的个数
+                   'fileObjName' : 'm_file',
+                   'multi' : false,//允许多文件同时上传
+                   'fileTypeDesc' : 'Media Files',
+                   'fileTypeExts' : '*.mp3;*.wma;*.waf',
+                   'sizeLimit' : 10000000000, //设置单个文件大小限制
+                   'buttonText' : '选择附件',
+                   'removeTimeout' : 10,
+                   'height' : 25,//按钮高度
+                   //'itemTemplate' : itemTemplate,
+                   'onQueueComplete' : function() {//文件上传队列处理完毕后触发
+                       b = true;
+                   },
+                   'onSelect' : function(file) {
+                       b = false;
+                       var fileQueueSize = $("#fileQueue").children().length;
+                       //alert('The file ' + file.name +'--'+ file.size+' = was added to the queue.'+fileQueueSize);
+                   },
+                   'onCancel' : function(file) {
+                   },
+                   //开始上传
+                   'onUploadStart' : function(file) {
+
+                   },
+                   //上传成功
+                   'onUploadSuccess' : function(file, data, response) {
+                       //有数据从后台返回
+                       //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
+                       var obj = JSON.parse(data);
+                       if (obj.msg.indexOf("成功")>0) {
+                           var type = obj.path.split(".")[1]
+                           $('#s_music').val(obj.path);
+                       } else {
+                           layer.alert('提示', obj.msg);
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onUploadError' : function(file, errorCode,
+                                              errorMsg, errorString) {
+                       switch (errorCode) {
+                           case -100:
+                               alert("上传的文件数量已经超出系统限制的"
+                                   + $('#file_upload').uploadify(
+                                       'settings',
+                                       'queueSizeLimit') + "个文件！");
+                               break;
+                           case -120:
+                               alert("文件大小异常！");
+                               break;
+                           case -130:
+                               alert("文件 类型不正确！");
+                               break;
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onSelectError' : function(file, errorCode,
+                                              errorMsg) {
+                       var msgText = "上传失败\n";
+                       switch (errorCode) {
+                           case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                               msgText += "文件大小为0";
+                               break;
+                           case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+                               msgText += "文件格式不正确，仅限 "
+                                   + $('#file_upload').uploadify(
+                                       'settings', 'fileTypeExts');
+                               break;
+                           case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                               msgText += "文件大小超过限制( "
+                                   + $('#file_upload')
+                                       .uploadify('settings',
+                                           'fileSizeLimit')
+                                   + " )";
+                               break;
+                           default:
+                               msgText += "错误代码：" + errorCode + "\n"
+                                   + errorMsg;
+                       }
+                       alert(msgText);
+                   }
+               });
+
+   }
+
+   function fileupload2() {
+       //初始化附件上传
+       $("#file_upload2")
+           .uploadify(
+               {
+                   'auto' : false,
+                   'swf' : '/static/js/uploadify/uploadify.swf',//引入uploadify.swf
+                   'uploader' : '/files/uploadfile.do',//后台处理的请求
+                   'queueID' : 'fileQueue',//与下面的id对应  ，队列ID，用来展示上传进度的
+                   'queueSizeLimit' : 1,//同时上传文件的个数
+                   'fileObjName' : 'm_file',
+                   'multi' : false,//允许多文件同时上传
+                   'fileTypeDesc' : 'Media Files',
+                   'fileTypeExts' : '*.mp4;*.avi',
+                   'sizeLimit' : 100000000000, //设置单个文件大小限制
+                   'buttonText' : '选择附件',
+                   'removeTimeout' : 10,
+                   'height' : 25,//按钮高度
+                   //'itemTemplate' : itemTemplate,
+                   'onQueueComplete' : function() {//文件上传队列处理完毕后触发
+                       b = true;
+                   },
+                   'onSelect' : function(file) {
+                       b = false;
+                       var fileQueueSize = $("#fileQueue2").children().length;
+                       //alert('The file ' + file.name +'--'+ file.size+' = was added to the queue.'+fileQueueSize);
+                   },
+                   'onCancel' : function(file) {
+                   },
+                   //开始上传
+                   'onUploadStart' : function(file) {
+
+                   },
+                   //上传成功
+                   'onUploadSuccess' : function(file, data, response) {
+                       //有数据从后台返回
+                       //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
+                       var obj = JSON.parse(data);
+                       if (obj.msg.indexOf("成功")>0) {
+                           var type = obj.path.split(".")[1]
+                           $('#s_video').val(obj.path);
+                       } else {
+                           layer.alert('提示', obj.msg);
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onUploadError' : function(file, errorCode,
+                                              errorMsg, errorString) {
+                       switch (errorCode) {
+                           case -100:
+                               alert("上传的文件数量已经超出系统限制的"
+                                   + $('#file_upload2').uploadify(
+                                       'settings',
+                                       'queueSizeLimit') + "个文件！");
+                               break;
+                           case -120:
+                               alert("文件大小异常！");
+                               break;
+                           case -130:
+                               alert("文件 类型不正确！");
+                               break;
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onSelectError' : function(file, errorCode,
+                                              errorMsg) {
+                       var msgText = "上传失败\n";
+                       switch (errorCode) {
+                           case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                               msgText += "文件大小为0";
+                               break;
+                           case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+                               msgText += "文件格式不正确，仅限 "
+                                   + $('#file_upload2').uploadify(
+                                       'settings', 'fileTypeExts');
+                               break;
+                           case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                               msgText += "文件大小超过限制( "
+                                   + $('#file_upload2')
+                                       .uploadify('settings',
+                                           'fileSizeLimit')
+                                   + " )";
+                               break;
+                           default:
+                               msgText += "错误代码：" + errorCode + "\n"
+                                   + errorMsg;
+                       }
+                       alert(msgText);
+                   }
+               });
+
+   }
+
+
+   function fileupload3() {
+       //初始化附件上传
+       $("#file_upload3")
+           .uploadify(
+               {
+                   'auto' : false,
+                   'swf' : '/static/js/uploadify/uploadify.swf',//引入uploadify.swf
+                   'uploader' : '/files/uploadfile.do',//后台处理的请求
+                   'queueID' : 'fileQueue',//与下面的id对应  ，队列ID，用来展示上传进度的
+                   'queueSizeLimit' : 1,//同时上传文件的个数
+                   'fileObjName' : 'm_file',
+                   'multi' : false,//允许多文件同时上传
+                   'fileTypeDesc' : 'Media Files',
+                   'fileTypeExts' : '*.doc;*.docx;*.ppt;*.pptx;*.pdf;*.xlsx;*.xls',
+                   'sizeLimit' : 10000000000, //设置单个文件大小限制
+                   'buttonText' : '选择附件',
+                   'removeTimeout' : 10,
+                   'height' : 25,//按钮高度
+                   //'itemTemplate' : itemTemplate,
+                   'onQueueComplete' : function() {//文件上传队列处理完毕后触发
+                       b = true;
+                   },
+                   'onSelect' : function(file) {
+                       b = false;
+                       var fileQueueSize = $("#fileQueue3").children().length;
+                       //alert('The file ' + file.name +'--'+ file.size+' = was added to the queue.'+fileQueueSize);
+                   },
+                   'onCancel' : function(file) {
+                   },
+                   //开始上传
+                   'onUploadStart' : function(file) {
+
+                   },
+                   //上传成功
+                   'onUploadSuccess' : function(file, data, response) {
+                       //有数据从后台返回
+                       //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
+                       var obj = JSON.parse(data);
+                       if (obj.msg.indexOf("成功")>0) {
+                           var type = obj.path.split(".")[1]
+                           $('#s_file').val(obj.path);
+                       } else {
+                           layer.alert('提示', obj.msg);
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onUploadError' : function(file, errorCode,
+                                              errorMsg, errorString) {
+                       switch (errorCode) {
+                           case -100:
+                               alert("上传的文件数量已经超出系统限制的"
+                                   + $('#file_upload3').uploadify(
+                                       'settings',
+                                       'queueSizeLimit') + "个文件！");
+                               break;
+                           case -120:
+                               alert("文件大小异常！");
+                               break;
+                           case -130:
+                               alert("文件 类型不正确！");
+                               break;
+                       }
+                   },
+                   //上传失败 //附件格式不正确，请上传JPG、BMP、PNG格式文件，大小不超过3MB
+                   'onSelectError' : function(file, errorCode,
+                                              errorMsg) {
+                       var msgText = "上传失败\n";
+                       switch (errorCode) {
+                           case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+                               msgText += "文件大小为0";
+                               break;
+                           case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+                               msgText += "文件格式不正确，仅限 "
+                                   + $('#file_upload3').uploadify(
+                                       'settings', 'fileTypeExts');
+                               break;
+                           case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+                               msgText += "文件大小超过限制( "
+                                   + $('#file_upload3')
+                                       .uploadify('settings',
+                                           'fileSizeLimit')
+                                   + " )";
+                               break;
+                           default:
+                               msgText += "错误代码：" + errorCode + "\n"
+                                   + errorMsg;
+                       }
+                       alert(msgText);
+                   }
+               });
+
+   }
+
+
+</script>
+<body>
+
+
+<form id='domainInfoForm' method="post" action=""
+      enctype="multipart/form-data">
+    <table border=0
+           style="margin-top: 20px; overflow:scroll;  border-collapse: separate; border-spacing: 15px; margin-left: 20px;height: 100%;">
+           <input  type="hidden" name="s_music" value id="s_music"/>
+           <input  type="hidden" name="s_video" value id="s_video"/>
+           <input  type="hidden" name="s_file" value id="s_file"/>
+        <tr>
+            <td>标题</td>
+            <td><input type='text' id='s_title' name="s_title"
+                       style="width: 200px" required="true" /><span>  不得超过10个汉字</span></td>
+        </tr>
+
+        <tr>
+            <td>分类</td>
+            <td> <select  id="s_typeid" name="s_typeid"  style="width: 200px" required="true" >
+                <option value="">-请选择-</option>
+
+            </select><span>  选择分类</span></td>
+        </tr>
+
+        <tr>
+            <td>标签</td>
+            <td> <select  id="s_label_id" name="s_label_id"  style="width: 200px" required="true" >
+                <option value="">-请选择-</option>
+
+            </select><span>  选择标签</span></td>
+        </tr>
+
+        <tr>
+            <td>排序</td>
+            <td><input type='text' id='s_writer' name="s_writer"
+                       style="width: 200px" /><span>  素材作者，可不填</span></td>
+        </tr>
+
+        <tr>
+            <td>排序</td>
+            <td><input type='text' id='s_rand' name="s_rand"
+                       style="width: 200px" required="true" /><span>  必须为正整数，按从大到小排序</span></td>
+        </tr>
+
+        <tr>
+            <td>是否审核</td>
+            <td> <select  id="s_audit" name="s_audit"  style="width: 200px" required="true" >
+
+                <option value=0>不审核</option>
+                <option value=1>审核</option>
+                </select><span>  选择是否审核通过</span></td>
+        </tr>
+
+        <tr>
+            <td>素材使用描述</td>
+            <td><textarea type='text' id='s_descript' name="s_descript"
+                       style="width: 200px" required="true" ></textarea><span> 素材使用描述，做为检索字段</span></td>
+        </tr>
+
+        <tr>
+            <td>描述简介</td>
+            <td><textarea type='text' id='s_brief' name="s_brief"
+                          style="width: 200px" required="true" ></textarea><span> 描述简介，做为识别此素材的标准</span></td>
+        </tr>
+
+        <tr>
+            <td>选择icon</td>
+            <td><input type="file"  id='filename' name="logos" onChange="javascript:setImagePreviews()"  /></td>
+        </tr>
+
+        <tr>
+            <td>预览图片</td>
+            <td><div style="height: 200px" id="ImgPr"></td>
+        </tr>
+
+        <tr>
+            <td>选择图片</td>
+            <td><input type="file"  id='filename2' name="pics" onChange="javascript:setImagePreviews2()"  /></td>
+        </tr>
+
+        <tr>
+            <td>预览图片</td>
+            <td><div style="height: 200px"  id="ImgPr2"></td>
+        </tr>
+        <tr>
+            <td>音频文件</td>
+            <td><input type="file" name="file_upload" id="file_upload" /> <a
+                    href="javascript:$('#file_upload').uploadify('upload')"
+                    style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择mp3,wma,waf音频文件</span></td>
+        </tr>
+        <tr>
+            <td>
+                <div id="fileList1"></div>
+            </td>
+            <td>
+                <div id="fileQueue1"></div>
+            </td>
+            <td>
+        </tr>
+
+        <tr>
+            <td>视频文件</td>
+            <td><input type="file" name="file_upload2" id="file_upload2" /> <a
+                    href="javascript:$('#file_upload2').uploadify('upload')"
+                    style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择mp4,avi视频文件</span></td>
+        </tr>
+        <tr>
+            <td>
+                <div id="fileList2"></div>
+            </td>
+            <td>
+                <div id="fileQueue2"></div>
+            </td>
+            <td>
+        </tr>
+
+        <tr>
+            <td>其他文件</td>
+            <td><input type="file" name="file_upload3" id="file_upload3" /> <a
+                    href="javascript:$('#file_upload3').uploadify('upload')"
+                    style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择doc,docx,ppt,pptx,pdf,xlsx,xls类型文件</span></td>
+        </tr>
+        <tr>
+            <td>
+                <div id="fileList"></div>
+            </td>
+            <td>
+                <div id="fileQueue"></div>
+            </td>
+            <td>
+        </tr>
+
+
+        <tr>
+            <td>富文本</td>
+            <td> <script id="editor" type="text/plain" name="s_content" style="width:1000px;height:350px;"></script></td>
+        </tr>
+
+
+    </table>
+    <div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
+        <input type="reset" class="btn btn-sm btn-info reset radius2 "
+               onclick="window.parent.opentab('/scontent/scontent.shtml','素材管理');"
+               value="返回" /> <input type="submit" class="btn btn-sm btn-info  "
+                                    value="确认">
+    </div>
+    <div class="clr"></div>
+
+</form>
+
+</body>
+<script type="text/javascript" charset="utf-8" src="../../static/js/source/ueditor.js"></script>
+</html>

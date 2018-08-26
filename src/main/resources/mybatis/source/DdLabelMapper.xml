@@ -21,7 +21,7 @@
     <if test="s_lname!=null and s_lname!=''">
       s_lname like  CONCAT('%', #{s_lname}, '%') and
     </if>
-    s_state=1
+    s_state=1 order by s_r_time desc
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
     </if>

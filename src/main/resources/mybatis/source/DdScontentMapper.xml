@@ -36,6 +36,56 @@
   <sql id="Blob_Column_List" >
     s_content
   </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.source.DdScontent"  resultMap="BaseResultMap">
+    select dd_scontent.*,dd_stype.s_name,dd_label.s_lname from dd_scontent
+    left join dd_stype on dd_scontent.s_typeid=dd_stype.s_typeid
+    left join dd_label on dd_scontent.s_label_id=dd_label.s_label_id
+    where 1=1
+    <if test="s_typeid!=null">
+      and dd_scontent.s_typeid= #{s_typeid}
+    </if>
+    <if test="s_label_id!=null">
+      and  dd_scontent.s_label_id= #{s_label_id}
+    </if>
+    <if test="s_title!=null and s_title!=''">
+      and (dd_scontent.s_title like  CONCAT('%', #{s_title}, '%') or  dd_scontent.s_descript like  CONCAT('%', #{s_title}, '%'))
+    </if>
+    and dd_scontent.s_state=1
+    order by dd_scontent.s_r_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdScontent" >
+    select count(0) from dd_scontent where 1=1
+    <if test="s_typeid!=null">
+      and  s_typeid= #{s_typeid}
+    </if>
+    <if test="s_label_id!=null">
+      and  s_label_id= #{s_label_id}
+    </if>
+    <if test="s_title!=null and s_title!=''">
+      and  (s_title like  CONCAT('%', #{s_title}, '%') or  s_descript like  CONCAT('%', #{s_title}, '%'))
+    </if>
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <!--查询分类-->
+  <select id="queryType" resultType="com.dongdao.gqwl.model.source.DdStype"   >
+    select s_typeid,s_name from dd_stype where s_state=1
+  </select>
+
+
+  <!--查询分类-->
+  <select id="queryLabel" resultType="com.dongdao.gqwl.model.source.DdLabel"   >
+    select s_label_id,s_lname from dd_label where s_state=1
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

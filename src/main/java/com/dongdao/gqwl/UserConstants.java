@@ -11,6 +11,8 @@ public final class UserConstants {
 
   public static final String UPLOADFOLDER= URLUtils.getUrlMap().get("upload.folder");
 
+  public static final String FTPPATH= URLUtils.getUrlMap().get("FTP");
+
   /**
    * 系统管理员
    */
