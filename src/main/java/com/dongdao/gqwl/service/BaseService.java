@@ -58,5 +58,7 @@ public abstract class BaseService<T> {
     public List<T> queryType() throws Exception{
         return getMapper().queryType();
     }
-
+    public List<T> queryByList(BaseModel model) throws Exception{
+        return getMapper().queryByList(model);
+    }
 }
