@@ -28,6 +28,7 @@ public interface BaseMapper<T> {
 
     int updateByPrimaryKeySelective(T record);
 
-    public List<T> queryType();
-
+    List<T> queryType();
+    List<T> queryLabel();
+    public T selectByPrimaryKey(Object id);
 }
