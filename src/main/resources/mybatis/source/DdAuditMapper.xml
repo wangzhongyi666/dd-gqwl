@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.source.DdAuditMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.source.DdAudit" >
+    <id column="s_audit_id" property="s_audit_id" jdbcType="BIGINT" />
+    <result column="s_contentid" property="s_contentid" jdbcType="BIGINT" />
+    <result column="smessage" property="smessage" jdbcType="VARCHAR" />
+    <result column="s_r_time" property="s_r_time" jdbcType="VARCHAR" />
+    <result column="w_uid" property="w_uid" jdbcType="VARCHAR" />
+    <result column="s_state" property="s_state" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+    <result column="s_title" property="s_title" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.s_audit_id, t.s_contentid, t.smessage, t.s_r_time, t.w_uid, t.s_state, t.filed1, t.filed2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_audit
+    where s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+  </select>
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    select
+    <include refid="Base_Column_List" />,s.s_title,u.nickName
+    from dd_audit t
+    left join dd_scontent s on t.s_contentid = s.s_contentid
+    left join sys_user u on t.w_uid = u.id
+    where 1=1
+    <if test="s_audit_id != null" >
+      and s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+    </if>
+    <if test="s_title != null and s_title != ''" >
+      and (s.s_title like  CONCAT('%', #{s_title}, '%') or  u.nickName like  CONCAT('%', #{s_title}, '%'))
+    </if>
+    order by t.s_r_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    select count(0) from dd_audit t
+    left join dd_scontent s on t.s_contentid = s.s_contentid
+    left join sys_user u on t.w_uid = u.id
+    where 1=1
+    <if test="s_audit_id != null" >
+      and t.s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+    </if>
+    <if test="s_title != null and s_title!=''" >
+      and (s.s_title like  CONCAT('%', #{s_title}, '%') or  u.nickName like  CONCAT('%', #{s_title}, '%'))
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_audit
+    where s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    insert into dd_audit (s_audit_id, s_contentid, smessage,
+      s_r_time, w_uid, s_state,
+      filed1, filed2)
+    values (#{s_audit_id,jdbcType=BIGINT}, #{s_contentid,jdbcType=BIGINT}, #{smessage,jdbcType=VARCHAR},
+      #{s_r_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=VARCHAR}, #{s_state,jdbcType=INTEGER},
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    insert into dd_audit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="s_audit_id != null" >
+        s_audit_id,
+      </if>
+      <if test="s_contentid != null" >
+        s_contentid,
+      </if>
+      <if test="smessage != null" >
+        smessage,
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time,
+      </if>
+      <if test="w_uid != null" >
+        w_uid,
+      </if>
+      <if test="s_state != null" >
+        s_state,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="s_audit_id != null" >
+        #{s_audit_id,jdbcType=BIGINT},
+      </if>
+      <if test="s_contentid != null" >
+        #{s_contentid,jdbcType=BIGINT},
+      </if>
+      <if test="smessage != null" >
+        #{smessage,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    update dd_audit
+    <set >
+      <if test="s_contentid != null" >
+        s_contentid = #{s_contentid,jdbcType=BIGINT},
+      </if>
+      <if test="smessage != null" >
+        smessage = #{smessage,jdbcType=VARCHAR},
+      </if>
+      <if test="s_r_time != null" >
+        s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        w_uid = #{w_uid,jdbcType=VARCHAR},
+      </if>
+      <if test="s_state != null" >
+        s_state = #{s_state,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
+    update dd_audit
+    set s_contentid = #{s_contentid,jdbcType=BIGINT},
+      smessage = #{smessage,jdbcType=VARCHAR},
+      s_r_time = #{s_r_time,jdbcType=VARCHAR},
+      w_uid = #{w_uid,jdbcType=VARCHAR},
+      s_state = #{s_state,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where s_audit_id = #{s_audit_id,jdbcType=BIGINT}
+  </update>
+</mapper>
