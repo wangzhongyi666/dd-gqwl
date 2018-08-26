@@ -62,14 +62,17 @@
                             rowlist1[3]=row.s_m_time;
                             rowlist1[4]=row.w_uid;
 
-                            if(purview){
+                            if(puredit){
                                 rowlist1[5]="<a href=\"javascript:void(0)\" a1="+row.s_typeid+" a2="+row.s_name+" " +
-                                    "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
-                                    "<a href=\"javascript:void(0)\" a1="+row.s_typeid+" onclick=\"deleteType(this)\" " +
-                                    "class=\"text-primary ml10\">删除</a>";
-                            }else{
+                                    "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>";
+
+                            }/*else{
                                 rowlist1[5]="<a href=\"javascript:void(0)\" class=\"text-primary ml10\">编1辑</a>"+
                                     "<a href=\"javascript:void(0)\" class=\"text-primary ml10\">删1除</a>";
+                            }*/
+                            if(purdelete){
+                                rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.s_typeid+" onclick=\"deleteType(this)\" " +
+                                    "class=\"text-primary ml10\">删除</a>";
                             }
 
                         }else{
@@ -213,7 +216,7 @@
     /*<![CDATA[*/
     var btn = $("#ifWd",parent.document).attr("src");
     var btnsUrl = [[${session.session_menubtn_map}]];
-    console.log(btnsUrl)
+    console.log(btnsUrl);
     function isPurview(btnUrl){
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }

@@ -6,14 +6,19 @@ import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class DdScontentService<T> extends BaseService<T> {
+public class ScontentService<T> extends BaseService<T> {
 
     @Autowired
-    private DdScontentMapper<DdScontent> ddScontentMapper;
+    private DdScontentMapper<DdScontent> ddStypeMapper;
 
     public DdScontentMapper<DdScontent> getMapper() {
-        return ddScontentMapper;
+        return ddStypeMapper;
     }
 
+    public List<DdScontent> queryByList(DdScontent model){
+        return ddStypeMapper.queryByList(model);
+    }
 }
