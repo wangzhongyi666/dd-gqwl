@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 @Order(1)
 //重点
-@WebFilter(filterName = "login", urlPatterns = "/*")
+@WebFilter(filterName = "login", urlPatterns = {"*.do","*.shtml"})
 public class UrlFilter implements Filter {
 
     @Autowired(required = false)
