@@ -37,7 +37,7 @@ public class MainAction extends BaseAction {
 
     @Auth(verifyLogin=false,verifyURL=false)
     @RequestMapping(value = "/login.shtml")
-    public String home(HttpServletRequest request, HttpServletResponse response) {
+    public String login(HttpServletRequest request, HttpServletResponse response) {
         return "login";
     }
     @ResponseBody
@@ -234,5 +234,18 @@ public class MainAction extends BaseAction {
     public void  logout(HttpServletRequest request,HttpServletResponse response) throws Exception{
         SessionUtils.removeUser(request);
         response.sendRedirect(URLUtils.get("msUrl")+"/guangqi/login.shtml");
+    }
+
+
+    /**
+     * 首页
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @Auth(verifyLogin=false,verifyURL=false)
+    @RequestMapping("/home.shtml")
+    public String home(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        return "home";
     }
 }
