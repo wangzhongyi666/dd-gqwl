@@ -18,11 +18,11 @@ public class Constant {
 	 * @author lu
 	 *
 	 */
-	public static enum SuperAdmin {
+	public enum SuperAdmin {
 		NO(0, "否"), YES(1,"是");
 		public int key;
 		public String value;
-		private SuperAdmin(int key, String value) {
+		SuperAdmin(int key, String value) {
 			this.key = key;
 			this.value = value;
 		}

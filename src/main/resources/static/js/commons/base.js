@@ -115,7 +115,7 @@ var YiYa={
 			 	complete:function(){
 			 	
 			 	}
-			 }
+			 };
 			 YiYa.ajaxSubmit(form,option);
 	},
 	saveForm:function(form,callback){
@@ -166,7 +166,7 @@ var YiYa={
 				}
 		});
 	}
-}
+};
 
 /*表单转成json数据*/
 $.fn.serializeObject = function() {
@@ -183,5 +183,5 @@ $.fn.serializeObject = function() {
         }
     });
     return o;
-}
+};
 /*]]>*/

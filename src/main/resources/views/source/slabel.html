@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片分类管理</title>
+    <title>图片标签管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -47,10 +47,10 @@
             async: false,
             success : function(result) {
                 var datalist=result.rows;
-                const  rowlist=new Array();
+                const  rowlist=[];
                 if(datalist!=null &&  datalist.length>0){
                     for(var i=0;pageSize>i;i++){
-                        const rowlist1=new Array();
+                        const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
                             rowlist1[0]=row.s_label_id;

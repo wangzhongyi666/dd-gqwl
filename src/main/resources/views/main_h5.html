@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>365灵活通</title>
+<title>主页</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../static/font-awesome/css/font-awesome.min.css"/>
@@ -695,7 +695,7 @@
         if(pwd!=pwd2){
             layer.alert("两次密码不一致");
             return;
-        };
+        }
         $.ajax({
             url :'/handApp/updatePayPwd.do',
             type : 'POST',
@@ -761,7 +761,7 @@
         $('.popbox-container').fadeIn();
         $('.popbox-overlay').css({
             "height": $(document).height() + 'px'
-        })
+        });
 
         var _height = $(obj).height();
         var _width = $(obj).width();
@@ -795,7 +795,7 @@
             }, "slow");
 
             $('.popbox-container').fadeOut();
-        })
+        });
 
         $('.popbox-overlay').click(function(){
             $(this).siblings('.popbox-wrapper').animate({
@@ -803,7 +803,7 @@
             }, "slow");
 
             $('.popbox-container').fadeOut();
-        })
+        });
         if(objId=='set2'){
             var ty=$(event).attr("a1");
             $("#paytel").val($("#telhi").val());

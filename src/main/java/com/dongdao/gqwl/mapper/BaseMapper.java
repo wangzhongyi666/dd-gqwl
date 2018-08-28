@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface BaseMapper<T> {
 
-    public void add(T t);
+    void add(T t);
 
-    public void update(T t);
+    void update(T t);
 
-    public void updateBySelective(T t);
+    void updateBySelective(T t);
 
-    public void delete(Object id);
+    void delete(Object id);
 
-    public int queryByCount(BaseModel model);
+    int queryByCount(BaseModel model);
 
-    public List<T> queryByList(BaseModel model);
+    List<T> queryByList(BaseModel model);
 
-    public T queryById(Object id);
+    T queryById(Object id);
 
     int deleteByPrimaryKey(Object id);
 
@@ -30,5 +30,5 @@ public interface BaseMapper<T> {
 
     List<T> queryType();
     List<T> queryLabel();
-    public T selectByPrimaryKey(Object id);
+    T selectByPrimaryKey(Object id);
 }

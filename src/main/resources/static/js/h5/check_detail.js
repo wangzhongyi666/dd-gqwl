@@ -65,12 +65,12 @@ function getlist(pageNum,pageSize){
         async: false,
         success : function(result) {
             var datalist=result.rows;
-            console.log(datalist)
-            const  rowlist=new Array();
+            console.log(datalist);
+            const  rowlist=[];
             if(datalist!=null &&  datalist.length>0){
                 for(var i=0;datalist.length>i;i++){
                     var row=datalist[i];
-                    const rowlist1=new Array();
+                    const rowlist1=[];
                     if(row.status==1){
                         rowlist1[0]=row.inseuranceCycle;
                     }else{

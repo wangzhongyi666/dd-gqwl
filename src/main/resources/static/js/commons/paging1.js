@@ -68,23 +68,23 @@
                 pageIndex--;
                 if (pageIndex < 1) pageIndex = 1;
                 handles(pageIndex);
-            })
+            });
 
             nextPage.on('click', function() {
                 pageIndex++;
                 if (pageIndex > lis.length) pageIndex = lis.length;
                 handles(pageIndex);
-            })
+            });
 
             firstPage.on('click', function() {
                 pageIndex = 1;
                 handles(pageIndex);
-            })
+            });
 
             lastPage.on('click', function() {
                 pageIndex = totalPages;
                 handles(pageIndex);
-            })
+            });
 
             jumpBtn.on('click', function() {
                 var jumpNum = parseInt(jumpText.val().replace(/\D/g, ''));
@@ -93,12 +93,12 @@
                     handles(pageIndex);
                     jumpText.val(jumpNum);
                 }
-            })
+            });
 
             lis.on('click', function() {
                 pageIndex = $(this).index() + 1;
                 handles(pageIndex);
-            })
+            });
 
             function handles(pageIndex) {
                 lis.removeClass('sel-page').eq(pageIndex - 1).addClass('sel-page');
@@ -119,7 +119,7 @@
 
             handles(that.options.pageNo); // 初始化页码位置
         }
-    }
+    };
     $.fn.paging = function(options) {
         return new Paging($(this), options);
     }

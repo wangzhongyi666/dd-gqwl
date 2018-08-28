@@ -51,10 +51,10 @@ function getlist(pageNum,pageSize){
         async: false,
         success : function(result) {
             var datalist=result.rows;
-            const  rowlist=new Array();
+            const  rowlist=[];
             if(datalist!=null &&  datalist.length>0){
                 for(var i=0;pageSize>i;i++){
-                    const rowlist1=new Array();
+                    const rowlist1=[];
                     if(i<datalist.length){
                         var row=datalist[i];
                         rowlist1[0]=row.name;

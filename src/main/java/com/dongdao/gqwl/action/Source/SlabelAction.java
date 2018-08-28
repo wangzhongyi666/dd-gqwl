@@ -40,7 +40,7 @@ public class SlabelAction extends BaseAction {
 
 
     @RequestMapping("/slabelDataList.do")
-    public void roleDataList(DdLabel model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void roleDataList(DdLabel model, HttpServletRequest request, HttpServletResponse response) {
 
         List<DdLabel> dataList = LabelService.queryByList(model);
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));

@@ -86,7 +86,7 @@ public class MainAction extends BaseAction {
     }
     @Auth(verifyURL=false)
     @RequestMapping("/main.shtml")
-    public ModelAndView main( HttpServletRequest request)throws Exception{
+    public ModelAndView main( HttpServletRequest request) {
         Map<String,Object>  context = getRootMap();
         SysUser user = SessionUtils.getUser(request);
 
@@ -173,11 +173,10 @@ public class MainAction extends BaseAction {
      * @param oldPwd
      * @param password
      * @return
-     * @throws Exception
      */
     @Auth(verifyLogin=false,verifyURL=false)
     @RequestMapping("/modifyPwd")
-    public void modifyPwd(String oldPwd,String password,HttpServletRequest request,HttpServletResponse response) throws Exception{
+    public void modifyPwd(String oldPwd,String password,HttpServletRequest request,HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user == null){
             sendFailureMessage(response, "对不起,登录超时.");
@@ -241,11 +240,10 @@ public class MainAction extends BaseAction {
      * 首页
      * @param request
      * @param response
-     * @throws Exception
      */
     @Auth(verifyLogin=false,verifyURL=false)
     @RequestMapping("/home.shtml")
-    public String home(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    public String home(HttpServletRequest request,HttpServletResponse response) {
         return "home";
     }
 }

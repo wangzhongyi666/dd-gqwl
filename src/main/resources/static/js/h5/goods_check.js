@@ -46,7 +46,7 @@ function enterExchange(e){
     var name = $("#name").text();
     var address_id = $("#address_id").text();
     var pay_pwd = $("#pay_pwd").val();
-    var goods_id = $("#goods_id").val()
+    var goods_id = $("#goods_id").val();
     //判断剩余积分是否足够购买该商品
     $.ajax({
         url :'/handApp/enterExchange.do',

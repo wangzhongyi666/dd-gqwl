@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片管理</title>
+    <title>编辑素材</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -57,7 +57,7 @@
            } else {
                return this._bkGetActionUrl.call(this, action);
            }
-       }
+       };
        var felObj = $("#s_typeid");
        var selObj=$('#s_label_id');
        var telObj=$('#s_audit');
@@ -163,7 +163,7 @@
                        //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
                        var obj = JSON.parse(data);
                        if (obj.msg.indexOf("成功")>0) {
-                           var type = obj.path.split(".")[1]
+                           var type = obj.path.split(".")[1];
                            $('#s_music').val(obj.path);
                        } else {
                            layer.alert('提示', obj.msg);
@@ -256,7 +256,7 @@
                        //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
                        var obj = JSON.parse(data);
                        if (obj.msg.indexOf("成功")>0) {
-                           var type = obj.path.split(".")[1]
+                           var type = obj.path.split(".")[1];
                            $('#s_video').val(obj.path);
                        } else {
                            layer.alert('提示', obj.msg);
@@ -350,7 +350,7 @@
                        //alert('The file ' + file.name +'-         size:-'+ file.size+'          data:= ='+data+"  --      -  response:"+response);
                        var obj = JSON.parse(data);
                        if (obj.msg.indexOf("成功")>0) {
-                           var type = obj.path.split(".")[1]
+                           var type = obj.path.split(".")[1];
                            $('#s_file').val(obj.path);
                        } else {
                            layer.alert('提示', obj.msg);
@@ -473,7 +473,7 @@
 
         <tr>
             <td>选择icon</td>
-            <td><input type="file"  id='filename' name="logos"  onChange="javascript:setImagePreviews()"  /></td>
+            <td><input type="file"  id='filename' name="logos"  onChange="setImagePreviews()"  /></td>
         </tr>
 
         <tr>
@@ -483,7 +483,7 @@
 
         <tr>
             <td>选择图片</td>
-            <td><input type="file"  id='filename2' name="pics" onChange="javascript:setImagePreviews2()"  /></td>
+            <td><input type="file"  id='filename2' name="pics" onChange="setImagePreviews2()"  /></td>
         </tr>
 
         <tr>

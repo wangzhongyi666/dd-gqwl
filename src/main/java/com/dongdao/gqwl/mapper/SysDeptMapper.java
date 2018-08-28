@@ -33,14 +33,14 @@ public interface SysDeptMapper<T> extends BaseMapper {
             "<if test=\"dre_type != null \"> AND m.dre_type = #{dre_type} </if>"+
             "<if test=\"num1 != null and num2 !=null \"> limit #{num1},#{num2}</if>"+
             "</script>")
-    public List<SysDept> queryByList(SysDeptModel model);
+    List<SysDept> queryByList(SysDeptModel model);
 
     @Select("<script>SELECT *,(SELECT GROUP_CONCAT(c.`name`)  " +
             "FROM sys_dept c where c.deleted = 0 and m.deptId = c.parentId GROUP BY m.parentId ) AS subDeptNames," +
             "(SELECT COUNT(*) FROM sys_dept c WHERE c.parentId = m.id) AS subCount "+
             "FROM sys_dept m WHERE m.deleted = 0  and (m.tank =3 or m.parentId is NULL)"+
             "order by m.deptId</script>")
-    public List<SysDept> queryByList1(SysDeptModel model);
+    List<SysDept> queryByList1(SysDeptModel model);
 
     @Select("<script>SELECT * from sys_dept where parentId=#{parentId}</script>")
     List<SysDept> getDeptByParentId(@Param("parentId") Integer parentId);
@@ -60,10 +60,10 @@ public interface SysDeptMapper<T> extends BaseMapper {
             "<if test=\"dre_type != null \"> AND m.dre_type = #{dre_type} </if>"+
             "<if test=\"num1 != null and num2 !=null \"> limit #{num1},#{num2}</if>"+
             "</script>")
-    public Integer queryByCount(SysDeptModel model);
+    Integer queryByCount(SysDeptModel model);
 
     @Select("select * from sys_dept where deptId = #{deptId}")
-    public SysDept queryByDept(@Param("deptId")Integer deptId);
+    SysDept queryByDept(@Param("deptId") Integer deptId);
 
     @Select("<script>SELECT * FROM sys_dept  WHERE  deleted = 0 " +
             "<if test=\"parentId == null\"> and parentId IS NULL </if>"+

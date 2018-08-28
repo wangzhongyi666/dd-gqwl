@@ -16,7 +16,7 @@ $(document).ready(function() {
 });
 
 function countlist(pageSize){
-    var pictitle=$("#jname").val()
+    var pictitle=$("#jname").val();
     var pictype=$("#pictype").val();
         $.ajax({
         url :'/pic/piccount.do',

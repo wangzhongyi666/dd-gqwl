@@ -6,11 +6,11 @@ public class BaseBean {
      * @author lu
      *
      */
-    public static enum STATE {
+    public enum STATE {
         ENABLE(0, "可用"), DISABLE(1,"禁用");
         public int key;
         public String value;
-        private STATE(int key, String value) {
+        STATE(int key, String value) {
             this.key = key;
             this.value = value;
         }
@@ -29,11 +29,11 @@ public class BaseBean {
      * @author lu
      *
      */
-    public static enum DELETED {
+    public enum DELETED {
         NO(0, "未删除"), YES(1,"已删除");
         public int key;
         public String value;
-        private DELETED(int key, String value) {
+        DELETED(int key, String value) {
             this.key = key;
             this.value = value;
         }

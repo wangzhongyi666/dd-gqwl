@@ -98,7 +98,7 @@ public class ExcelUtil {
 			e.printStackTrace();
 			// 如果是Exception，则直接抛出
 			if (e instanceof Exception) {
-				throw (Exception) e;
+				throw e;
 
 				// 否则将其它异常包装成Exception再抛出
 			} else {
@@ -184,7 +184,7 @@ public class ExcelUtil {
 			e.printStackTrace();
 			// 如果是Exception，则直接抛出
 			if (e instanceof Exception) {
-				throw (Exception) e;
+				throw e;
 
 				// 否则将其它异常包装成Exception再抛出
 			} else {
@@ -243,7 +243,7 @@ public class ExcelUtil {
 		if (fileName == null || fileName.trim().equals("")) {
 			// 设置默认文件名为当前时间：年月日时分秒
 			fileName = new SimpleDateFormat("yyyyMMddhhmmss")
-					.format(new Date()).toString();
+					.format(new Date());
 		}
 
 		// 设置response头信息
@@ -262,7 +262,7 @@ public class ExcelUtil {
 
 			// 如果是Exception，则直接抛出
 			if (e instanceof Exception) {
-				throw (Exception) e;
+				throw e;
 
 				// 否则将其它异常包装成Exception再抛出
 			} else {
@@ -304,7 +304,7 @@ public class ExcelUtil {
 		if (fileName == null || fileName.trim().equals("")) {
 			// 设置默认文件名为当前时间：年月日时分秒
 			fileName = new SimpleDateFormat("yyyyMMddhhmmss")
-					.format(new Date()).toString();
+					.format(new Date());
 		}
 
 		// 设置response头信息
@@ -325,7 +325,7 @@ public class ExcelUtil {
 
 			// 如果是Exception，则直接抛出
 			if (e instanceof Exception) {
-				throw (Exception) e;
+				throw e;
 
 				// 否则将其它异常包装成Exception再抛出
 			} else {
@@ -356,7 +356,7 @@ public class ExcelUtil {
 
 		// 设置默认文件名为当前时间：年月日时分秒
 		String fileName = new SimpleDateFormat("yyyyMMddhhmmss").format(
-				new Date()).toString();
+				new Date());
 
 		listToExcel(list, fieldMap, sheetName, sheetSize, response, fileName);
 	}
@@ -427,14 +427,14 @@ public class ExcelUtil {
 
 				// 设置默认文件名为当前时间：年月日时分秒
 				String fileName = new SimpleDateFormat("yyyyMMddhhmmss").format(
-						new Date()).toString();
+						new Date());
 
 
 				// 如果文件名没提供，则使用时间戳
 				if (fileName == null || fileName.trim().equals("")) {
 					// 设置默认文件名为当前时间：年月日时分秒
 					fileName = new SimpleDateFormat("yyyyMMddhhmmss")
-							.format(new Date()).toString();
+							.format(new Date());
 				}
 
 				// 设置response头信息
@@ -500,7 +500,7 @@ public class ExcelUtil {
 						e.printStackTrace();
 						// 如果是Exception，则直接抛出
 						if (e instanceof Exception) {
-							throw (Exception) e;
+							throw e;
 
 							// 否则将其它异常包装成Exception再抛出
 						} else {
@@ -513,7 +513,7 @@ public class ExcelUtil {
 
 					// 如果是Exception，则直接抛出
 					if (e instanceof Exception) {
-						throw (Exception) e;
+						throw e;
 
 						// 否则将其它异常包装成Exception再抛出
 					} else {
@@ -561,7 +561,7 @@ public class ExcelUtil {
 				for (int j = 0; j < sheet.getColumns(); j++) {
 					Cell currentCell = sheet.getCell(j, i);
 					if (currentCell == null
-							|| "".equals(currentCell.getContents().toString())) {
+							|| "".equals(currentCell.getContents())) {
 						nullCols++;
 					}
 				}
@@ -584,7 +584,7 @@ public class ExcelUtil {
 
 			// 获取Excel中的列名
 			for (int i = 0; i < firstRow.length; i++) {
-				excelFieldNames[i] = firstRow[i].getContents().toString()
+				excelFieldNames[i] = firstRow[i].getContents()
 						.trim();
 			}
 
@@ -652,8 +652,7 @@ public class ExcelUtil {
 					int col = colMap.get(cnNormalName);
 
 					// 获取当前单元格中的内容
-					String content = sheet.getCell(col, i).getContents()
-							.toString().trim();
+					String content = sheet.getCell(col, i).getContents().trim();
 
 					// 给对象赋值
 					setFieldValueByName(enNormalName, content, entity);
@@ -665,7 +664,7 @@ public class ExcelUtil {
 			e.printStackTrace();
 			// 如果是Exception，则直接抛出
 			if (e instanceof Exception) {
-				throw (Exception) e;
+				throw e;
 
 				// 否则将其它异常包装成Exception再抛出
 			} else {
@@ -887,7 +886,7 @@ public class ExcelUtil {
 		for (int i = 0; i < ws.getColumns(); i++) {
 			int colWith = 0;
 			for (int j = 0; j < ws.getRows(); j++) {
-				String content = ws.getCell(i, j).getContents().toString();
+				String content = ws.getCell(i, j).getContents();
 				int cellWith = content.length();
 				if (colWith < cellWith) {
 					colWith = cellWith;

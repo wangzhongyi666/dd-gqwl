@@ -7,7 +7,7 @@ $(function(){
             $(".side").hide();
             $("#ifWd").contents().find(".sopen").show();
         });
-})
+});
 $(function(){
     $('.sopen').click(
         function(){
@@ -17,7 +17,7 @@ $(function(){
             $("#ifWd" , parent.document).css({'width':heigh+'px'});
             $(".sclose" , parent.document).show();
         })
-})
+});
 //视频左侧下拉
 $(function(){
 	$('.navlist dd').hide();
@@ -42,7 +42,7 @@ function shadboxFun(objId){
     $('.popbox-container').fadeIn();
     $('.popbox-overlay').css({
         "height": $(document).height() + 'px'
-    })
+    });
 
     var _height = $(obj).height();
     var _width = $(obj).width();
@@ -75,7 +75,7 @@ function shadboxFun(objId){
         }, "slow");
 
         $('.popbox-container').fadeOut();
-    })
+    });
 
     $('.popbox-overlay').click(function(){
         $(this).siblings('.popbox-wrapper').animate({
@@ -91,7 +91,7 @@ function shadboxFun1(objId,event){
     $('.popbox-container').fadeIn();
     $('.popbox-overlay').css({
         "height": $(document).height() + 'px'
-    })
+    });
 
     var _height = $(obj).height();
     var _width = $(obj).width();
@@ -125,7 +125,7 @@ function shadboxFun1(objId,event){
         }, "slow");
 
         $('.popbox-container').fadeOut();
-    })
+    });
 
     $('.popbox-overlay').click(function(){
         $(this).siblings('.popbox-wrapper').animate({
@@ -133,7 +133,7 @@ function shadboxFun1(objId,event){
         }, "slow");
 
         $('.popbox-container').fadeOut();
-    })
+    });
     if(objId=='detail' || objId=='detail1'){
         var name = $(event).parent().parent().find("td").eq(1).text();
         var number = $(event).parent().parent().find("td").eq(2).text();
@@ -304,7 +304,7 @@ Date.prototype.Format = function (fmt) { //author: meizz
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
-}
+};
 
 function qx(e) {
     $(".popbox-container").parents('.popbox-wrapper').animate({

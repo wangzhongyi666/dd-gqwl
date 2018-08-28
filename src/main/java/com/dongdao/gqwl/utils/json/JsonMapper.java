@@ -58,8 +58,7 @@ public class JsonMapper extends ObjectMapper {
 		this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>(){
 			@Override
 			public void serialize(Object value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
+					SerializerProvider provider) throws IOException {
 				jgen.writeString("");
 			}
         });
@@ -67,8 +66,7 @@ public class JsonMapper extends ObjectMapper {
 		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>(){
 			@Override
 			public void serialize(String value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-					JsonProcessingException {
+					SerializerProvider provider) throws IOException {
 				jgen.writeString(StringEscapeUtils.unescapeHtml(value));
 			}
         }));

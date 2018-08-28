@@ -84,7 +84,7 @@ public class SysAction extends BaseAction {
     }
     //获取用户总数
     @RequestMapping("/userCountDataList.do")
-    public void userDataCount(SysUserModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void userDataCount(SysUserModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -144,7 +144,7 @@ public class SysAction extends BaseAction {
 
     //获取审核列表
     @RequestMapping("/roleDataList.do")
-    public void roleDataList(SysRoleModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void roleDataList(SysRoleModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -160,7 +160,7 @@ public class SysAction extends BaseAction {
     }
     //获取用户总数
     @RequestMapping("/roleDataCount.do")
-    public void roleDataCount(SysRoleModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void roleDataCount(SysRoleModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -190,7 +190,7 @@ public class SysAction extends BaseAction {
 
     //获取审核列表
     @RequestMapping("/deptDataList.do")
-    public void deptDataList(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void deptDataList(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -211,7 +211,7 @@ public class SysAction extends BaseAction {
     }
     //获取用户总数
     @RequestMapping("/deptDataCount.do")
-    public void deptDataCount(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void deptDataCount(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -248,7 +248,7 @@ public class SysAction extends BaseAction {
 
     //获取审核列表
     @RequestMapping("/queryDeptData.do")
-    public void queryDeptData(Integer id, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void queryDeptData(Integer id, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -264,7 +264,7 @@ public class SysAction extends BaseAction {
 
     //获取审核列表
     @RequestMapping("/deptSubDataList")
-    public void deptSubDataList(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void deptSubDataList(SysDeptModel model, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         if(user==null){
             HtmlUtil.writerJson(response, "登录超时！");
@@ -280,7 +280,7 @@ public class SysAction extends BaseAction {
 
     //获取用户总数
     @RequestMapping("/deleteRole.do")
-    public void deleteRole(Integer id, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void deleteRole(Integer id, HttpServletRequest request, HttpServletResponse response) {
         SysUser user = SessionUtils.getUser(request);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         if(user==null){
@@ -425,7 +425,7 @@ public class SysAction extends BaseAction {
      * @param response
      */
     @RequestMapping(value = "/addDept.do")
-    public void addDept(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response)throws Exception {
+    public void addDept(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         SysDept sd = sysDeptService.getDescDept();
         model.setDeptId(sd.getDeptId()+1);
@@ -451,7 +451,7 @@ public class SysAction extends BaseAction {
      * @param response
      */
     @RequestMapping(value = "/deleteDept.do")
-    public void deleteDept(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response)throws Exception {
+    public void deleteDept(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
 
         sysDeptService.deleteDept(model);
@@ -465,7 +465,7 @@ public class SysAction extends BaseAction {
      * @param response
      */
     @RequestMapping(value = "/delUser.do")
-    public void delUser(Integer id ,HttpServletRequest request, HttpServletResponse response)throws Exception {
+    public void delUser(Integer id ,HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
 
         sysUserService.delUser(id);
@@ -473,7 +473,7 @@ public class SysAction extends BaseAction {
         HtmlUtil.writerJson(response, jsonMap);
     }
     @RequestMapping(value = "/getDeptByParentId.do")
-    public void getDeptByParentId(Integer parentId ,HttpServletRequest request, HttpServletResponse response)throws Exception {
+    public void getDeptByParentId(Integer parentId ,HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
 
         List<SysDept> deptlist=sysDeptService.getDeptByParentId(parentId);
@@ -482,7 +482,7 @@ public class SysAction extends BaseAction {
         HtmlUtil.writerJson(response, jsonMap);
     }
     @RequestMapping(value = "/updateDeptByDeptId.do")
-    public void updateDeptByDeptId(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response)throws Exception {
+    public void updateDeptByDeptId(SysDeptModel model ,HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
 
         try {

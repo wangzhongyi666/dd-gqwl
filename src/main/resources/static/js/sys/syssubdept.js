@@ -57,11 +57,11 @@ function getlist(pageNum,pageSize){
         async: false,
         success : function(result) {
             var datalist=result.rows;
-            const  rowlist=new Array();
+            const  rowlist=[];
             if(datalist!=null &&  datalist.length>0){
                 for(var i=0;datalist.length>i;i++){
                     var row=datalist[i];
-                    const rowlist1=new Array();
+                    const rowlist1=[];
 
                     rowlist1[0]=row.name;
                     rowlist1[1]=row.rank;

@@ -65,7 +65,7 @@ public class ScontentAction extends BaseAction {
     }
 
     @RequestMapping("/scontentDataList.do")
-    public void roleDataList(DdScontent model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void roleDataList(DdScontent model, HttpServletRequest request, HttpServletResponse response) {
 
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());

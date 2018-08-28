@@ -10,11 +10,11 @@ public abstract class BaseService<T> {
     public abstract BaseMapper<T> getMapper();
 
 
-    public void add(T t)  throws Exception{
+    public void add(T t) {
         getMapper().add(t);
     }
 
-    public void update(T t)  throws Exception{
+    public void update(T t) {
         getMapper().update(t);
     }
 
@@ -23,7 +23,7 @@ public abstract class BaseService<T> {
         getMapper().updateBySelective(t);
     }
 
-    public void delete(Object... ids) throws Exception{
+    public void delete(Object... ids) {
         if(ids == null || ids.length < 1){
             return;
         }
@@ -32,7 +32,7 @@ public abstract class BaseService<T> {
         }
     }
 
-    public int queryByCount(BaseModel model)throws Exception{
+    public int queryByCount(BaseModel model) {
         return getMapper().queryByCount(model);
     }
 
@@ -40,31 +40,31 @@ public abstract class BaseService<T> {
 //		return getMapper().queryByList(model);
 //	}
 
-    public T queryById(Object id) throws Exception{
+    public T queryById(Object id) {
         return getMapper().queryById(id);
     }
 
-    public int deleteByPrimaryKey(Object id) throws Exception{
+    public int deleteByPrimaryKey(Object id) {
         return getMapper().deleteByPrimaryKey(id);
     }
-    public int insertSelective(T record) throws Exception{
+    public int insertSelective(T record) {
         return getMapper().insertSelective(record);
     }
 
-    public int updateByPrimaryKeySelective(T record) throws Exception{
+    public int updateByPrimaryKeySelective(T record) {
         return getMapper().updateByPrimaryKeySelective(record);
     }
 
-    public List<T> queryType() throws Exception{
+    public List<T> queryType() {
         return getMapper().queryType();
     }
-    public List<T> queryLabel() throws Exception{
+    public List<T> queryLabel() {
         return getMapper().queryLabel();
     }
     public  T selectByPrimaryKey(Object id){
         return getMapper().selectByPrimaryKey(id);
     }
-    public List<T> queryByList(BaseModel model) throws Exception{
+    public List<T> queryByList(BaseModel model) {
         return getMapper().queryByList(model);
     }
 }

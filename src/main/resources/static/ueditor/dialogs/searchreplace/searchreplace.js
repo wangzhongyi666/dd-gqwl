@@ -56,7 +56,7 @@ function switchTab( tabParentId ) {
 $G('searchtab').onmousedown = function(){
     $G('search-msg').innerHTML = '';
     $G('replace-msg').innerHTML = ''
-}
+};
 //是否区分大小写
 function getMatchCase(id) {
     return $G(id).checked ? true : false;

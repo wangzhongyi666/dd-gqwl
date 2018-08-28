@@ -59,11 +59,7 @@ public class VerifyFormat {
 	}
 
 	public static boolean verifyFormat(String fileType) {
-		if (FILE_TYPE_MAP.get(fileType)) {
-			return true;
-		} else {
-			return false;
-		}
+        return FILE_TYPE_MAP.get(fileType);
 	}
 
 }

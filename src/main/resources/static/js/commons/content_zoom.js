@@ -56,7 +56,7 @@
 		var height      = window.innerHeight || (window.document.documentElement.clientHeight || window.document.body.clientHeight);
 		var x           = window.pageXOffset || (window.document.documentElement.scrollLeft || window.document.body.scrollLeft);
 		var y           = window.pageYOffset || (window.document.documentElement.scrollTop || window.document.body.scrollTop);
-		var window_size = {'width':width, 'height':height, 'x':x, 'y':y}
+		var window_size = {'width':width, 'height':height, 'x':x, 'y':y};
 	
 		var width              = (zoom_width || content_div.width()) + 40;
 		var height             = (zoom_height || content_div.height()) + 40;
@@ -105,7 +105,7 @@
   		}
 			zoom_close.show();
 			zooming = false;
-    })
+    });
     return false;
   }
   
@@ -134,4 +134,4 @@
 		return false;
 	  }
   
-}
+};

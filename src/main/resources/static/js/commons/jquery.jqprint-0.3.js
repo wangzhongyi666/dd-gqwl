@@ -59,7 +59,7 @@
         
         (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).focus();
         setTimeout( function() { (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).print(); if (tab) { tab.close(); } }, 1000);
-    }
+    };
     
     $.fn.jqprint.defaults = {
 		debug: false,
