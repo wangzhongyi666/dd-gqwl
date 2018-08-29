@@ -1,19 +1,8 @@
 package com.dongdao.gqwl.action;
 
-import com.dongdao.gqwl.UserConstants;
-import com.dongdao.gqwl.bean.*;
-import com.dongdao.gqwl.model.*;
-import com.dongdao.gqwl.service.*;
 import com.dongdao.gqwl.utils.*;
-import com.dongdao.gqwl.bean.*;
-import com.dongdao.gqwl.model.*;
-import com.dongdao.gqwl.service.*;
-import com.dongdao.gqwl.utils.*;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,10 +17,8 @@ import javax.net.ssl.TrustManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
