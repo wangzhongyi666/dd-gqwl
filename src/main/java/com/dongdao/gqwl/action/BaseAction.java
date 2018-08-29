@@ -251,10 +251,7 @@ public class BaseAction {
     }
 
     public static boolean notNull(String string) {
-        if (string != null & !"".equals(string)) {
-            return true;
-        }
-        return false;
+        return string != null & !"".equals(string);
     }
 
 
@@ -268,7 +265,7 @@ public class BaseAction {
     }
 
     /*********************uploadify上传方法***************************/
-    public void uploadify(MultipartFile file, String folder,HttpServletResponse response,HttpServletRequest request) throws IOException,NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void uploadify(MultipartFile file, String folder,HttpServletResponse response,HttpServletRequest request) throws IOException {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         // 文件原名
         String fileName = file.getOriginalFilename().toLowerCase();

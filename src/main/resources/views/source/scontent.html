@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片管理</title>
+    <title>素材管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -67,14 +67,14 @@
                 }
             });
 
-    })
+    });
 
     function getlist(pageNum,pageSize){
       /*  // <![CDATA
         var menus = [[${menuList}]];
         alert(menus);
         // ]]>*/
-        var pictitle=$("#jname").val()
+        var pictitle=$("#jname").val();
         var s_typeid=$("#s_typeid").val();
         var s_label_id=$("#s_label_id").val();
             $.ajax({
@@ -91,10 +91,10 @@
             async: false,
             success : function(result) {
                 var datalist=result.rows;
-                const  rowlist=new Array();
+                const  rowlist=[];
                 if(datalist!=null &&  datalist.length>0){
                     for(var i=0;pageSize>i;i++){
-                        const rowlist1=new Array();
+                        const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
                             rowlist1[0]=row.s_name;
@@ -192,7 +192,7 @@
             </div>
 
         <div class="clearfix">
-            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="javascript:window.parent.opentab('/scontent/scontent_add.shtml','添加素材')">添加素材</a>
+            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/scontent/scontent_add.shtml','添加素材')">添加素材</a>
             </div>
         <div id="tabdiv" style="overflow:auto">
             <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">

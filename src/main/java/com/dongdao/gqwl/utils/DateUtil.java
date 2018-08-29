@@ -203,10 +203,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期时间,格式为:YYYYMMDDHHMISS
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getNowLongTime() throws Exception
-	{
+     */
+	public static String getNowLongTime() {
 		String nowTime = "";
 		try
 		{
@@ -224,10 +222,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期,格式为:YYYYMMDD
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getNowShortDate() throws Exception
-	{
+     */
+	public static String getNowShortDate() {
 		String nowDate = "";
 		try
 		{
@@ -245,10 +241,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期,格式为:YYYY-MM-DD
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getNowFormateDate() throws Exception
-	{
+     */
+	public static String getNowFormateDate() {
 		String nowDate = "";
 		try
 		{
@@ -266,10 +260,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期,格式为:yyyy-MM-dd HH:mm:ss
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getNowPlusTime() throws Exception
-	{
+     */
+	public static String getNowPlusTime() {
 		String nowDate = "";
 		try
 		{
@@ -287,10 +279,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期,格式为:yyyy-MM-dd HH:mm:ss
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getPlusTime(Date date) throws Exception
-	{
+     */
+	public static String getPlusTime(Date date) {
 		if(date == null ) return null;
 		try
 		{
@@ -327,10 +317,8 @@ public class DateUtil
 	/**
 	 * Descrption:取得当前日期到毫秒极,格式为:yyyyMMddHHmmssSSSS
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getNowPlusTimeMill() throws Exception
-	{
+     */
+	public static String getNowPlusTimeMill() {
 		String nowDate = "";
 		try
 		{
@@ -429,10 +417,8 @@ public class DateUtil
 	 * 根据秒数返回时分秒
 	 * @param _second 秒数
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getTimeBySecond(String _second) throws Exception
-	{
+     */
+	public static String getTimeBySecond(String _second) {
 		String returnTime = "";
 		long longHour = 0;
 		long longMinu = 0;
@@ -463,10 +449,8 @@ public class DateUtil
 	 * 根据毫秒数返回时分秒毫秒
 	 * @param ms_second 秒数
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String getTimeBySecond(long ms_second) throws Exception
-	{
+     */
+	public static String getTimeBySecond(long ms_second) {
 		String returnTime = "";
 		long longHour = 0;
 		long longMinu = 0;
@@ -627,10 +611,8 @@ public class DateUtil
 	 * @param _dateTime 传入的原时间串
 	 * @param _format 格式符,YYYYMMDDHH24MISS,YYYYMMDDHH12MISS
 	 * @return String
-	 * @throws Exception
-	 */
-	public static String formatDateTime(String _dateTime, String _format) throws Exception
-	{
+     */
+	public static String formatDateTime(String _dateTime, String _format) {
 		String returnValue = "";
 		String formatString = _format.toUpperCase();
 		String strYear = "";
@@ -1389,10 +1371,7 @@ public class DateUtil
 			return true;
 		else if (Integer.parseInt(temp1) == Integer.parseInt(temp2))
 		{
-			if (Integer.parseInt(temp3) >= Integer.parseInt(temp4))
-				return true;
-			else
-				return false;
+            return Integer.parseInt(temp3) >= Integer.parseInt(temp4);
 		}
 		else
 			return false;
@@ -1417,10 +1396,7 @@ public class DateUtil
 			return true;
 		else if (Integer.parseInt(temp1) == Integer.parseInt(temp2))
 		{
-			if (Integer.parseInt(temp3) > Integer.parseInt(temp4))
-				return true;
-			else
-				return false;
+            return Integer.parseInt(temp3) > Integer.parseInt(temp4);
 		}
 		else
 			return false;
@@ -2506,13 +2482,9 @@ public class DateUtil
 		}
 
 		// true if endDate after startDate
-		if (endDate.after(startDate))
-		{
-			return true;
-		}
+        return endDate.after(startDate);
 
-		return false;
-	}
+    }
 
 	//-----------------------------------------------------------------------
 	// returns full timestamp format
@@ -2627,7 +2599,7 @@ public class DateUtil
 
 		String str = DateUtil.format(date, mFormatIso8601);
 		StringBuffer sb = new StringBuffer();
-		sb.append(str.substring(0, str.length() - 2));
+		sb.append(str, 0, str.length() - 2);
 		sb.append(":");
 		sb.append(str.substring(str.length() - 2));
 		return sb.toString();
@@ -2705,8 +2677,7 @@ public class DateUtil
 		return returnDate;
 	}
 	//add by huyanzhi
-	public static String addDate(String date, String type, int into) throws Exception
-	{
+	public static String addDate(String date, String type, int into) {
 		String Sdate = "";
 		try
 		{
@@ -2733,8 +2704,7 @@ public class DateUtil
 		}
 		return Sdate;
 	}
-	public static String addDate(String date, String into) throws Exception
-	{
+	public static String addDate(String date, String into) {
 		String Sdate = "";
 		try
 		{
@@ -2763,8 +2733,7 @@ public class DateUtil
 	}
 	//
 
-	public static String addValidateDate(String date, String into) throws Exception
-	{
+	public static String addValidateDate(String date, String into) {
 		String Sdate = "";
 		try
 		{
@@ -3257,7 +3226,7 @@ public class DateUtil
 
 		result = (c2.get(Calendar.YEAR)-c1.get(Calendar.YEAR))*12+c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
 
-		return result == 0 ? 0 : result;
+		return result;
 
 	}
     /**
@@ -3392,8 +3361,7 @@ public class DateUtil
 	          boolean leap;
 	          if (year % 4 == 0) {
 	              if (year % 100 == 0) {
-	                   if (year % 400 == 0) leap = true;
-	                   else leap = false;
+                      leap = year % 400 == 0;
 	              }
 	                else leap = true;
 	          }
@@ -3472,25 +3440,8 @@ public class DateUtil
 		Pattern p = Pattern.compile(rexp);
 		Matcher startM = p.matcher(start);
 
-		if(startM.matches() == false){
-			return false;
-
-		}
-		return true;/*else{
-			String sfh = start.charAt(4)+"";
-			String[] startTime = start.split(sfh);
-
-			Calendar startC = Calendar.getInstance();
-			startC.set(Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]), Integer.parseInt(startTime[2]));
-
-			boolean b = startC.before(end);
-			if(b){
-				return true;
-			}else{
-				return false;
-			}
-		}*/
-	}
+        return startM.matches() != false;
+    }
 
 	public static boolean validateFormats(String start ){
 		//这个正则匹配的是日期格式为:yyyy/MM/dd或者yyyy-MM-dd
@@ -3500,10 +3451,6 @@ public class DateUtil
 		Pattern p = Pattern.compile(rexp);
 		Matcher startM = p.matcher(start);
 
-		if(startM.matches() == false){
-			return false;
-
-		}
-		return true;
-	}
+        return startM.matches() != false;
+    }
 }

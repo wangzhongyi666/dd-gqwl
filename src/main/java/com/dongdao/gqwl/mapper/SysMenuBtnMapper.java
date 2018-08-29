@@ -16,5 +16,5 @@ public interface SysMenuBtnMapper<T> extends BaseMapper<T>{
      * @return
      */
     @Select(" select * from sys_role_rel where level=3")
-    public List<SysMenu> getMenuBtnByUser(@Param("userId")Integer userId);
+    List<SysMenu> getMenuBtnByUser(@Param("userId") Integer userId);
 }

@@ -2,9 +2,11 @@ package com.dongdao.gqwl.action.Source;
 
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.bean.SysUser;
+import com.dongdao.gqwl.model.source.DdAudit;
 import com.dongdao.gqwl.model.source.DdLabel;
 import com.dongdao.gqwl.model.source.DdScontent;
 import com.dongdao.gqwl.model.source.DdStype;
+import com.dongdao.gqwl.service.source.DdAuditService;
 import com.dongdao.gqwl.service.source.STypeService;
 import com.dongdao.gqwl.service.source.ScontentService;
 import com.dongdao.gqwl.utils.Auth;
@@ -34,6 +36,9 @@ public class ScontentAction extends BaseAction {
     @Autowired
     public ScontentService scontentService;
 
+    @Autowired
+    public DdAuditService<DdAudit> ddAudiService;
+
     @RequestMapping(value = "/scontent.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView scontent(HttpServletRequest request, HttpServletResponse response) {
@@ -60,7 +65,7 @@ public class ScontentAction extends BaseAction {
     }
 
     @RequestMapping("/scontentDataList.do")
-    public void roleDataList(DdScontent model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void roleDataList(DdScontent model, HttpServletRequest request, HttpServletResponse response) {
 
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
@@ -167,11 +172,22 @@ public class ScontentAction extends BaseAction {
     @RequestMapping("/passscontent.do")
     public void passscontent(DdScontent model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        SysUser user = SessionUtils.getUser(request);
+        DdAudit audit=new DdAudit();
+        audit.setS_contentid(model.getS_contentid());
+        audit.setS_r_time(DateUtil.getNowPlusTime());
+        audit.setW_uid(user.getId()+"");
+
         if(model.getS_audit()==1){
             model.setS_audit(0);
+            audit.setS_state(0);
+            audit.setSmessage("撤销审核成功");
         }else if(model.getS_audit()==0){
             model.setS_audit(1);
+            audit.setS_state(1);
+            audit.setSmessage("提交审核成功");
         }
+        ddAudiService.insertSelective(audit);
         int num= scontentService.updateByPrimaryKeySelective(model);
 
         if(num==1){

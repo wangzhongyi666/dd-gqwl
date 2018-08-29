@@ -42,7 +42,7 @@ $(function(){
 $(function(){
 	$("#btnLogin").live('click', function() {
 		$("#loginForm").submit(YiYa.login.toLogin());
-	})
+	});
 	
 		$("#pwd").bind('keyup', function(event) {
 			if (event.keyCode == "13") {

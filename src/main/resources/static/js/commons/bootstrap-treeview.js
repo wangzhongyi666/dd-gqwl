@@ -697,7 +697,7 @@
 		badge: '<span class="badge"></span>'
 	};
 
-	Tree.prototype.css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}'
+	Tree.prototype.css = '.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}';
 
 
 	/**
@@ -922,8 +922,8 @@
 			while (parentNode) {
 				this.setExpandedState(parentNode, true, options);
 				parentNode = this.getParent(parentNode);
-			};
-		}, this));
+            }
+        }, this));
 
 		this.render();
 	};

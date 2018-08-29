@@ -62,7 +62,7 @@ public interface SysUserMapper<T> extends BaseMapper<T>{
     @Insert("insert into sys_user(email,pwd,nickName,state,loginCount,loginTime,jid,createBy,updateBy,superAdmin,deptId,tel,ophone,createTime) values("+
                 "#{email},#{pwd},#{nickName},#{state},#{loginCount},#{loginTime},#{jid},#{createBy},#{updateBy},#{superAdmin},#{deptId},#{tel},#{ophone},now())")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    public Integer add(SysUserModel model);
+    Integer add(SysUserModel model);
 
     @Update("update sys_user set pwd = #{pwd} where id = #{id}")
     Integer updatePwd(@Param("id")Integer id, @Param("pwd")String pwd);

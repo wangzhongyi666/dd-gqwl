@@ -40,7 +40,7 @@ public class SysUserService<T> extends BaseService<T>{
         return sysUserMapper.queryById(id);
     }
 
-    public List<SysUser> queryByList(SysUserModel model) throws Exception {
+    public List<SysUser> queryByList(SysUserModel model) {
         return sysUserMapper.queryByList(model);
     }
 

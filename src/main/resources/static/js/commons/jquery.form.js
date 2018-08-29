@@ -343,8 +343,7 @@ $.fn.ajaxSubmit = function(options) {
                 $io.remove(); 
                 xhr.responseXML = null;
             }, 100);
-        };
-        
+        }
         function toXml(s, doc) {
             if (window.ActiveXObject) {
                 doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -354,8 +353,8 @@ $.fn.ajaxSubmit = function(options) {
             else
                 doc = (new DOMParser()).parseFromString(s, 'text/xml');
             return (doc && doc.documentElement && doc.documentElement.tagName != 'parsererror') ? doc : null;
-        };
-    };
+        }
+    }
 };
 $.fn.ajaxSubmit.counter = 0; // used to create unique iframe ids
 
@@ -447,17 +446,15 @@ function clickHandler(e) {
     }
     // clear form vars
     setTimeout(function() { $form.clk = $form.clk_x = $form.clk_y = null; }, 10);
-};
-
-function submitHandler() {
+}
+     function submitHandler() {
     // retrieve options from hash
     var id = this.formPluginId;
     var options = $.fn.ajaxForm.optionHash[id];
     $(this).ajaxSubmit(options);
     return false;
-};
-
-/**
+}
+     /**
  * ajaxFormUnbind unbinds the event handlers that were bound by ajaxForm
  *
  * @name   ajaxFormUnbind

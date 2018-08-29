@@ -38,7 +38,7 @@ public class SypeAction extends BaseAction {
 
 
     @RequestMapping("/stypeDataList.do")
-    public void roleDataList(DdStype model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void roleDataList(DdStype model, HttpServletRequest request, HttpServletResponse response) {
 
         List<DdStype> dataList = PicTypeService.queryByList(model);
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));

@@ -38,7 +38,7 @@ public class PicSourceAction extends BaseAction {
 
     //分页数据
     @RequestMapping("/picDataList.do")
-    public void roleDataList(DdPicsource model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void roleDataList(DdPicsource model, HttpServletRequest request, HttpServletResponse response) {
 
         List<DdPicsource> dataList = picSourceService.queryByList(model);
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));

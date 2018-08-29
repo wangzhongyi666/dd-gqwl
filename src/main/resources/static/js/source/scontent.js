@@ -13,7 +13,7 @@ $(document).ready(function() {
 });
 
 function countlist(pageSize){
-    var pictitle=$("#jname").val()
+    var pictitle=$("#jname").val();
     var s_typeid=$("#s_typeid").val();
     var s_label_id=$("#s_label_id").val();
         $.ajax({

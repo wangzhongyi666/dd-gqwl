@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图片分类管理</title>
+    <title>审核管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -45,22 +45,22 @@
             async: false,
             success : function(result) {
                 var datalist=result.rows;
-                const  rowlist=new Array();
+                const  rowlist=[];
                 if(datalist!=null &&  datalist.length>0){
                     for(var i=0;pageSize>i;i++){
-                        const rowlist1=new Array();
+                        const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
                             rowlist1[0]=row.s_audit_id;
                             rowlist1[1]=row.s_title;
                             rowlist1[2]=row.smessage;
                             rowlist1[3]=row.s_r_time;
-                            rowlist1[4]=row.nickName;
-
+                            rowlist1[4]=row.email;
+                            rowlist1[5]=row.s_descript;
                             if(row.s_state==0){
-                                rowlist1[5]="未通过";
+                                rowlist1[6]="已撤销";
                             }else{
-                                rowlist1[5]="已通过";
+                                rowlist1[6]="已通过";
                             }
 
                         }else{
@@ -70,6 +70,7 @@
                             rowlist1[3]='';
                             rowlist1[4]='';
                             rowlist1[5]='';
+                            rowlist1[6]='';
 
                         }
                         rowlist[i]=rowlist1;
@@ -109,6 +110,7 @@
                 <th style="width: 170px;">审核反馈</th>
                 <th style="width: 170px;">审核时间</th>
                 <th style="width: 170px;">操作人</th>
+                <th style="width: 170px;">素材使用描述</th>
                 <th style="width: 170px;">操作</th>
             </tr>
             </thead>
@@ -130,7 +132,7 @@
     /*<![CDATA[*/
     var btn = $("#ifWd",parent.document).attr("src");
     var btnsUrl = [[${session.session_menubtn_map}]];
-    console.log(btnsUrl)
+    console.log(btnsUrl);
     function isPurview(btnUrl){
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }

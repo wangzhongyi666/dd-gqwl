@@ -2087,7 +2087,7 @@ var CodeMirror = (function() {
             }
         }
         return ln;
-    }
+    };
     Line.prototype = {
         // Replace a piece of a line, keeping the styles around it intact.
         replace: function(from, to_, text) {

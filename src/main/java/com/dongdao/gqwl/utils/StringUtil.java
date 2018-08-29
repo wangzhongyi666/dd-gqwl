@@ -221,14 +221,7 @@ public class StringUtil
 		{
 			return false;
 		}
-		else if (inStr.equals("null"))
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		else return !inStr.equals("null");
 	}
 	
 	/**
@@ -521,7 +514,7 @@ public class StringUtil
 			end = str.indexOf(">");
 			if (start > 0)
 			{
-				buff.append(str.substring(0, start));
+				buff.append(str, 0, start);
 			}
 			if (end > 0 && end <= str.length())
 			{
@@ -587,7 +580,7 @@ public class StringUtil
 		int pos;
 		while ((pos = source.indexOf(oldString, posStart)) >= 0)
 		{
-			output.append(source.substring(posStart, pos));
+			output.append(source, posStart, pos);
 			output.append(newString);
 			posStart = pos + lengOfold;
 		}
@@ -699,15 +692,11 @@ public class StringUtil
 	}
 	*/
 	//判断是否含有中文，如果含有中文返回ture
-	public static boolean containsChinese(String str) throws UnsupportedEncodingException
-	{
+	public static boolean containsChinese(String str) {
 
-		if (str.length() < (str.getBytes()).length)
-			return true;
+        return str.length() < (str.getBytes()).length;
 
-		return false;
-
-		//	  for (int i = 0; i < username.length(); i++) {
+        //	  for (int i = 0; i < username.length(); i++) {
 		//		String unit=Character.toString(username.charAt(i));
 		//		byte[] unitByte=unit.getBytes("GBK");
 		////  		((unitByte[0]+256)*256 + (unitByte[1]+256)) <= 0xFEFE)
@@ -762,7 +751,7 @@ public class StringUtil
 	 */
 	public static String arrayToString(String[] arrs)
 	{
-		StringBuffer result= new StringBuffer("");
+		StringBuffer result= new StringBuffer();
 		if(arrs != null && arrs.length >0){
 			for(int i=0;i<arrs.length;i++){
 				
@@ -790,7 +779,7 @@ public class StringUtil
 	 */
 	public static String arrayToString(Object[] arrs)
 	{
-		StringBuffer result= new StringBuffer("");
+		StringBuffer result= new StringBuffer();
 		if(arrs != null && arrs.length >0){
 			for(int i=0;i<arrs.length;i++){
 				
@@ -952,7 +941,7 @@ public class StringUtil
 			char c = s.charAt(i);
 			if (c == '"' || c == '\'' || c == '\\' || c == '>' || c < 0x20) {
 				StringBuffer b = new StringBuffer(ln + 4);
-				b.append(s.substring(0, i));
+				b.append(s, 0, i);
 				while (true) {
 					if (c == '"') {
 						b.append("\\\"");
@@ -1153,7 +1142,7 @@ public class StringUtil
      *@param  padding 超出长度后，尾加上字符，如"..."，可以为空
      *@return 返回结果 如果内容没有超出指定的长度。则返回原字符串，超出长度后则截取到指定的长度的内容
      */
-    public static String subStr(String content,Integer length,String padding) throws UnsupportedEncodingException{
+    public static String subStr(String content,Integer length,String padding) {
     	String str = "";
     	int paddSize =  StringUtils.isBlank(padding)? 0 : padding.length();
     	//如果内容为空，或者小于指定的长度。则返回原内容

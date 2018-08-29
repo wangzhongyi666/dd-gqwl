@@ -14,14 +14,14 @@ public interface SysMenuMapper<T> extends BaseMapper<T> {
      * @return
      */
     @Select("<script>select id,name,url,parentId,actions,imgclass from sys_menu where deleted= 0 and parentId is null<if test=\"menuId !=null \">and id != #{menuId}</if> order by rank</script>")
-    public List<SysMenu> getRootMenu(@Param("menuId")Integer menuId);
+    List<SysMenu> getRootMenu(@Param("menuId") Integer menuId);
 
     /**
      * 获取子菜单
      * @return
      */
     @Select("select id,name,url,parentId,actions,imgclass from sys_menu where deleted= 0 and parentId is not null order by rank")
-    public List<SysMenu> getChildMenu();
+    List<SysMenu> getChildMenu();
 
     /**
      * 根据用户id查询父菜单菜单

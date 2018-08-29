@@ -20,7 +20,7 @@ function setImagePreviews() {
         docObj.select();
         docObj.blur();
         var imgSrc = document.selection.createRange().text;
-        alert(imgSrc)
+        alert(imgSrc);
         var localImagId = document.getElementById("img1");
         //必须设置初始大小
         localImagId.style.width = "auto";
@@ -55,7 +55,7 @@ function setImagePreviews2() {
         docObj.select();
         docObj.blur();
         var imgSrc = document.selection.createRange().text;
-        alert(imgSrc)
+        alert(imgSrc);
         var localImagId = document.getElementById("img2");
         //必须设置初始大小
         localImagId.style.width = "auto";

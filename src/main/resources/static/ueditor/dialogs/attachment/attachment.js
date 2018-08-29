@@ -33,7 +33,7 @@
         if(!id) return;
         var i, bodyId, tabs = $G('tabhead').children;
         for (i = 0; i < tabs.length; i++) {
-            bodyId = tabs[i].getAttribute('data-content-id')
+            bodyId = tabs[i].getAttribute('data-content-id');
             if (bodyId == id) {
                 domUtils.addClass(tabs[i], 'focus');
                 domUtils.addClass($G(bodyId), 'focus');
@@ -145,8 +145,7 @@
                 uploader,
                 actionUrl = editor.getActionUrl(editor.getOpt('fileActionName')),
                 fileMaxSize = editor.getOpt('fileMaxSize'),
-                acceptExtensions = (editor.getOpt('fileAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');;
-
+                acceptExtensions = (editor.getOpt('fileAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');
             if (!WebUploader.Uploader.support()) {
                 $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
                 return;

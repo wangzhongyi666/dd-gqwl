@@ -45,11 +45,10 @@ public class HandAppAction extends BaseAction {
      *
      * @param request
      * @return
-     * @throws Exception
      */
     @Auth(verifyURL = false)
     @RequestMapping("/success.shtml")
-    public ModelAndView success(HttpServletRequest request) throws Exception {
+    public ModelAndView success(HttpServletRequest request) {
         Map<String, Object> context = getRootMap();
         return forword("h5/success", context);
     }
@@ -59,11 +58,10 @@ public class HandAppAction extends BaseAction {
      *
      * @param request
      * @return
-     * @throws Exception
      */
     @Auth(verifyURL = false)
     @RequestMapping("/aboutus.shtml")
-    public ModelAndView aboutus(HttpServletRequest request) throws Exception {
+    public ModelAndView aboutus(HttpServletRequest request) {
         Map<String, Object> context = getRootMap();
         return forword("h5/aboutus", context);
     }
@@ -73,11 +71,10 @@ public class HandAppAction extends BaseAction {
      *
      * @param request
      * @return
-     * @throws Exception
      */
     @Auth(verifyURL = false)
     @RequestMapping("/ush5.shtml")
-    public ModelAndView ush5(HttpServletRequest request) throws Exception {
+    public ModelAndView ush5(HttpServletRequest request) {
         Map<String, Object> context = getRootMap();
         return forword("h5/ush5", context);
     }
@@ -87,11 +84,10 @@ public class HandAppAction extends BaseAction {
      *
      * @param request
      * @return
-     * @throws Exception
      */
     @Auth(verifyURL = false)
     @RequestMapping("/paySuccess.shtml")
-    public ModelAndView paySuccess(String order_number, HttpServletRequest request) throws Exception {
+    public ModelAndView paySuccess(String order_number, HttpServletRequest request) {
         Map<String, Object> context = getRootMap();
         context.put("order_number", order_number);
         return forword("h5/pay_success", context);
@@ -107,14 +103,13 @@ public class HandAppAction extends BaseAction {
      * @param response
      * @param request
      * @return
-     * @throws Exception
      */
     @ResponseBody
     @Auth(verifyLogin = false, verifyURL = false)
     @RequestMapping("/uploadImgUrl")
     public Map<String, Object> uploadImgUrl(@RequestParam("file1") MultipartFile file1, Integer picType,
                                             String name, String identNum, String tel, HttpServletResponse response,
-                                            HttpServletRequest request) throws Exception {
+                                            HttpServletRequest request) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             String parhstr = request.getSession().getServletContext()
@@ -174,12 +169,11 @@ public class HandAppAction extends BaseAction {
      * 微信小程序支付获取openid
      *
      * @param code
-     * @throws Exception
      */
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/wxXPay.do")
-    public JSONObject wxXPay(String code, HttpServletRequest request) throws Exception {
+    public JSONObject wxXPay(String code, HttpServletRequest request) {
         String path = "https://api.weixin.qq.com/sns/jscode2session?appid=" + ConfigUtil.APPID + "&secret=" + ConfigUtil.APPSECRET + "&js_code=" + code + "&grant_type=authorization_code";
         JSONObject jsonObject = null;
         StringBuffer buffer = new StringBuffer();

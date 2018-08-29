@@ -1,4 +1,4 @@
-//×ó²àÏÔÊ¾Òþ²Ø
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
 $(function(){
 		$('.sopen').hide();
 		$('.sclose').click(
@@ -8,7 +8,7 @@ $(function(){
 				$(".side").hide();
 				$(".sopen").show();
 			});
-})
+});
 $(function(){
 		$('.sopen').click(
 			function(){
@@ -17,8 +17,8 @@ $(function(){
 				$(".rightbox").css({'width':'80%'});
 				$(".sclose").show();
 			})	
-})
-//×ó²àÏÂÀ­
+});
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 $(function(){
 	$('.navlist dd').hide();
 	$('.navlist dt.on').nextUntil('dt').show();
@@ -37,19 +37,19 @@ $(function(){
 });
 
 
-//¸²¸ÇÕûÌå
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 function shadboxFun(objId){
-	var obj = "#"+objId;  //¶ÔÏóID
+	var obj = "#"+objId;  //ï¿½ï¿½ï¿½ï¿½ID
 	
 	$('.popbox-container').fadeIn();
 	$('.popbox-overlay').css({
 		"height": $(document).height() + 'px'
-	})
+	});
 	
 	var _height = $(obj).height();
 	var _width = $(obj).width();
 	
-	//»ñÈ¡¶ÔÏó¾àÀë´°¿ÚÉÏ²¿ºÍ×ó²¿µÄ¾àÀë
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë´°ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½ï¿½ó²¿µÄ¾ï¿½ï¿½ï¿½
 	var _top = ($(window).height() - _height)/2 + "px";
 	var _left = ($(window).width() - _width)/2 + 'px';
 	$(obj).css({"left":_left});
@@ -60,12 +60,12 @@ function shadboxFun(objId){
 		var userAgent = window.navigator.userAgent.toLowerCase();
 		var version = $.browser.version;
 		
-		if(version!="6.0"){//Èç¹ûÊÇ·ÇIE6
+		if(version!="6.0"){//ï¿½ï¿½ï¿½ï¿½Ç·ï¿½IE6
 			$(obj).css({
 				"top": ($(window).height() - _height)/2 + 'px'
 			});
 		}
-		if(version=="6.0"){//Èç¹ûIE6
+		if(version=="6.0"){//ï¿½ï¿½ï¿½IE6
 			$(obj).css({
 				"top": ($(window).height() - _height)/2 + $(window).scrollTop() + 'px'
 			});
@@ -78,7 +78,7 @@ function shadboxFun(objId){
 		}, "slow");
 		
 		$('.popbox-container').fadeOut();				
-	})
+	});
 	
 	$('.popbox-overlay').click(function(){
 		$(this).siblings('.popbox-wrapper').animate({

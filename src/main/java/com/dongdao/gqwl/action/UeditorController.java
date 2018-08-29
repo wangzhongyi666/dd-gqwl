@@ -39,7 +39,7 @@ public class UeditorController extends  BaseAction{
 
     @RequestMapping(value="/imgUpload.do")
     @ResponseBody
-        public Map<String,Object> imgUpload(@Param(value="file") MultipartFile upfile, HttpServletRequest request) throws IOException , NoSuchAlgorithmException, UnsupportedEncodingException {
+        public Map<String,Object> imgUpload(@Param(value="file") MultipartFile upfile, HttpServletRequest request) {
         Map<String,Object> rs = new HashMap<String, Object>();
         MultipartHttpServletRequest mReq  =  null;
         MultipartFile file = null;

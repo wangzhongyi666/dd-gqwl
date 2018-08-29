@@ -9,9 +9,8 @@ $(function () {
 
 });
 
-;(function ($, window, document, undefined) {
-
-  var Calendar = function (elem, options) {
+(function ($, window, document, undefined) {
+    var Calendar = function (elem, options) {
     this.$calendar = elem;
 
     this.defaults = {
@@ -228,12 +227,11 @@ $(function () {
     day = day < 9 ? ('0' + day) : ('' + day);
 
     return year + month + day;
-  };
-
-  function changingStr(fDate) { // 字符串转日期
+  }
+    function changingStr(fDate) { // 字符串转日期
     var fullDate = fDate.split("-");
     
-    return new Date(fullDate[0], fullDate[1] - 1, fullDate[2]); 
-  };
+    return new Date(fullDate[0], fullDate[1] - 1, fullDate[2]);
 
+  }
 })(jQuery, window, document);

@@ -133,7 +133,7 @@ function initEvent () {
 
         renderCharts();
 
-    } )
+    } );
 
     $( ".table-view" ).delegate( ".data-item", "focus", function () {
 

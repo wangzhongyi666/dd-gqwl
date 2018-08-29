@@ -84,10 +84,8 @@ public class MethodUtil{
 	 * @param arrB
 	 *            需要转换的byte数组
 	 * @return 转换后的字符串
-	 * @throws Exception
-	 *             本方法不处理任何异常，所有异常全部抛出
-	 */
-	public static String byteArr2HexStr(byte[] arrB) throws Exception {
+     */
+	public static String byteArr2HexStr(byte[] arrB) {
 		int iLen = arrB.length;
 		// 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍
 		StringBuffer sb = new StringBuffer(iLen * 2);
@@ -113,11 +111,9 @@ public class MethodUtil{
 	 * @param strIn
 	 *            需要转换的字符串
 	 * @return 转换后的byte数组
-	 * @throws Exception
-	 *             本方法不处理任何异常，所有异常全部抛出
 	 * @author <a href="mailto:leo841001@163.com">LiGuoQing</a >
 	 */
-	public static byte[] hexStr2ByteArr(String strIn) throws Exception {
+	public static byte[] hexStr2ByteArr(String strIn) {
 		byte[] arrB = strIn.getBytes();
 		int iLen = arrB.length;
 

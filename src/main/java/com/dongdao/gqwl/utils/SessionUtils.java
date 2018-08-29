@@ -148,11 +148,8 @@ public final class SessionUtils {
 	  */
 	 public static boolean isAdmin(HttpServletRequest request){ //判断登录用户是否超级管理员
 		 SysUser user =  getUser(request);
-		 if(user == null  || user.getSuperAdmin() != Constant.SuperAdmin.YES.key){
-			 return false;
-		 }
-		 return true;
-	 }
+         return user != null && user.getSuperAdmin() == Constant.SuperAdmin.YES.key;
+     }
 	 
 	 
 	 
@@ -174,11 +171,8 @@ public final class SessionUtils {
 	  */
 	 public static boolean isAccessUrl(HttpServletRequest request,String url){ 
 		 List<String> accessUrls = (List)getAttr(request, SESSION_ACCESS_URLS);
-		 if(accessUrls == null ||accessUrls.isEmpty() || !accessUrls.contains(url)){
-			 return false;
-		 }
-		 return true;
-	 }
+         return accessUrls != null && !accessUrls.isEmpty() && accessUrls.contains(url);
+     }
 	 
 	 /**
 	  * 设置菜单按钮

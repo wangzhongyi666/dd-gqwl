@@ -62,7 +62,7 @@ public class ExceptionInterceptor extends HandlerInterceptorAdapter {
 		msg.append("[uri＝").append(request.getRequestURI()).append("]");
 		Enumeration<String>  enumer= request.getParameterNames();
 		while (enumer.hasMoreElements()) {
-			String name = (String) enumer.nextElement();
+			String name = enumer.nextElement();
 			String[] values = request.getParameterValues(name);
 			msg.append("异常拦截日志 [").append(name).append("=");
 			if(values != null){

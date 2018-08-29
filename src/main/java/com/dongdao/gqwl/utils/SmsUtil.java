@@ -58,7 +58,7 @@ public class SmsUtil {
 
             int i;
 
-            StringBuffer buf = new StringBuffer("");
+            StringBuffer buf = new StringBuffer();
             for (int offset = 0; offset < b.length; offset++) {
                 i = b[offset];
                 if (i < 0)
@@ -176,10 +176,10 @@ public class SmsUtil {
 
         System.out.println("XML字符串xmlString中的值：");
         Map<String,String> map = readStringXmlOut(xmlString);
-        Iterator<String> iters = (Iterator)map.keySet().iterator();
+        Iterator<String> iters = map.keySet().iterator();
         while (iters.hasNext()) {
             String key = iters.next(); // 拿到键
-            String val = map.get(key).toString(); // 拿到值
+            String val = map.get(key); // 拿到值
 
             System.out.println(key + "=" + val);
         }

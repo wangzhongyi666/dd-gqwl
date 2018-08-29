@@ -24,7 +24,7 @@
   </select>
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.source.DdAudit" >
     select
-    <include refid="Base_Column_List" />,s.s_title,u.nickName
+    <include refid="Base_Column_List" />,s.s_title,s.s_descript,u.email
     from dd_audit t
     left join dd_scontent s on t.s_contentid = s.s_contentid
     left join sys_user u on t.w_uid = u.id

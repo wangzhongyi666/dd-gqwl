@@ -56,8 +56,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		if( auth == null || auth.verifyURL()){	
 			//判断是否超级管理员
 			if(!SessionUtils.isAdmin(request)){
-				String menuUrl = StringUtils.remove( request.getRequestURI(),request.getContextPath());;
-				if(!SessionUtils.isAccessUrl(request, StringUtils.trim(menuUrl))){					
+				String menuUrl = StringUtils.remove( request.getRequestURI(),request.getContextPath());
+                if(!SessionUtils.isAccessUrl(request, StringUtils.trim(menuUrl))){
 					//日志记录
 					String userMail = SessionUtils.getUser(request).getEmail();
 					String msg ="URL权限验证不通过:[url="+menuUrl+"][email ="+ userMail+"]" ;
