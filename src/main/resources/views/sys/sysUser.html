@@ -41,7 +41,7 @@
         </form>
     </div>
 
-    <div class="clearfix">
+    <div class="clearfix" id="addUser">
         <a style="width:130px;" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="shadboxFun('add')">添加用户</a>
     </div>
     <div id="tabdiv" style="overflow:auto">
@@ -137,4 +137,20 @@
 
 </div>
 </body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var btn = $("#ifWd",parent.document).attr("src");
+    var btnsUrl = [[${session.session_menubtn_map}]];
+    function isPurview(btnUrl){
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+    $(function(){
+        var addUser = '/sys/addUser.do';
+        var addpurview = isPurview(addUser);
+        if(!addpurview){
+            $("#addUser").css("display","none");
+        }
+    })
+    /*]]>*/
+</script>
 </html>

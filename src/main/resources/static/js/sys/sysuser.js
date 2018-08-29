@@ -133,6 +133,8 @@ function countlist(pageSize){
 }
 function getlist(pageNum,pageSize){
     var ename=$("#ename").val();
+    var url = '/sys/delUser.do';
+    var purview = isPurview(url);
     $.ajax({
         url :'/sys/userDataList.do',
         type : 'POST',
@@ -163,8 +165,13 @@ function getlist(pageNum,pageSize){
                                 rowlist1[5]="<li>锁定</li>";
                             }
                         }
-                        rowlist1[6]="<a href='/flexiblebe/changepwd.shtml' class=\"text-primary ml10\">重置密码</a>"+
-                            "<a href=\"javascript:void(0)\" a1='"+row.id+"' onclick=\"shadboxFunDel(this)\" class=\"text-primary ml10\">删除</a>";
+                        if(purview){
+                            rowlist1[6]="<a href='/guangqi/changepwd.shtml' class=\"text-primary ml10\">重置密码</a>"+
+                                "<a href=\"javascript:void(0)\" a1='"+row.id+"' onclick=\"shadboxFunDel(this)\" class=\"text-primary ml10\">删除</a>";
+                        }else{
+                            rowlist1[6]="重置密码";
+                        }
+
                     }else{
                         rowlist1[0]='';
                         rowlist1[1]='';
