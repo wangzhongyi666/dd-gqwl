@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>角色管理</title>
@@ -43,7 +43,7 @@
                 </div>
             </form>
         </div>
-        <div class="clearfix">
+        <div class="clearfix" id="addRole">
         	<a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)" onclick="getTree(this)">添加角色</a>
         </div>
         <div id="tabdiv" style="overflow:auto">
@@ -114,6 +114,13 @@
     function isPurview(btnUrl){
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }
+    $(function(){
+        var addRole = '/sys/saveRole.do';
+        var addpurview = isPurview(addRole);
+        if(!addpurview){
+            $("#addRole").css("display","none");
+        }
+    })
     /*]]>*/
 </script>
 </html>
