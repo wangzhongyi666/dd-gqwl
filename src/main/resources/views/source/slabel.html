@@ -33,8 +33,10 @@
 <script>
     function getlist(pageNum,pageSize){
         var jname=$("#jname").val();
-        var url = '/slabel/updateslabel.do';
-        var purview = /*isPurview(url);*/true;
+        var url = '/slabel/deletelabel.do';
+        var deletes = '/slabel/updateslabel.do';
+        var purview = isPurview(deletes);
+        var purvdelete = isPurview(url);
         $.ajax({
             url :"/slabel/slabelDataList.do",
             type : 'POST',
@@ -58,15 +60,12 @@
                             rowlist1[2]=row.s_r_time;
                             rowlist1[3]=row.s_m_time;
                             rowlist1[4]=row.w_uid;
-
+                            rowlist1[5]="";
                             if(purview){
-                                rowlist1[5]="<a href=\"javascript:void(0)\" a1="+row.s_label_id+" a2="+row.s_lname+" " +
-                                    "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>"+
-                                    "<a href=\"javascript:void(0)\" a1="+row.s_label_id+" onclick=\"deleteType(this)\" " +
-                                    "class=\"text-primary ml10\">删除</a>";
-                            }else{
-                                rowlist1[5]="<a href=\"javascript:void(0)\" class=\"text-primary ml10\">编1辑</a>"+
-                                    "<a href=\"javascript:void(0)\" class=\"text-primary ml10\">删1除</a>";
+                                rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.s_label_id+" a2="+row.s_lname+" " +
+                                    "a3="+row.tsort+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>";
+                            }if(purvdelete){
+                                rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.s_label_id+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                             }
 
                         }else{
@@ -106,7 +105,7 @@
                 </div>
             </form>
         </div>
-        <div class="clearfix">
+        <div class="clearfix" id="addstype">
         	<a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加标签</a>
         </div>
         <div id="tabdiv" style="overflow:auto">
@@ -213,6 +212,14 @@
     function isPurview(btnUrl){
         return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
     }
+    $(function(){
+        var addcontent = '/slabel/addslabel.do';
+        var addpurview = isPurview(addcontent);
+        if(!addpurview){
+            $("#addstype").css("display","none");
+        }
+    })
+
     /*]]>*/
 </script>
 </html>

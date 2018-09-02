@@ -73,6 +73,7 @@
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
     </if>
+    and s_state=1
   </select>
 
   <!--查询分类-->

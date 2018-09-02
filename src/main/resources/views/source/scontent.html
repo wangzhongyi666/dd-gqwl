@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>素材管理</title>
+    <title>图片管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -74,6 +74,15 @@
         var menus = [[${menuList}]];
         alert(menus);
         // ]]>*/
+
+        var isdeletes="/scontent/deletescontent.do";
+        var isupdate="/scontent/updatescontent.do";
+        var ispass="/scontent/passscontent.do";
+        var purvdelete = isPurview(isdeletes);
+        console.log("==========================")
+        console.log(purvdelete)
+        var purvupdate = isPurview(isupdate);
+        var purvpass = isPurview(ispass);
         var pictitle=$("#jname").val();
         var s_typeid=$("#s_typeid").val();
         var s_label_id=$("#s_label_id").val();
@@ -112,16 +121,20 @@
                             rowlist1[8]=row.s_r_time;
                             rowlist1[9]=row.s_m_time;
                             rowlist1[10]=row.w_uid;
-                            rowlist1[11]="<a href=\"javascript:void(0)\" a1="+row.s_contentid+" a2="+row.s_lname+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>"+
-                                "<a href=\"javascript:void(0)\" a1="+row.s_contentid+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
-                            if(row.s_audit==0){
+                            rowlist1[11] = "";
+                            if(purvupdate){
+                                rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_contentid+" a2="+row.s_lname+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
+                            }if(purvdelete){
+                                rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_contentid+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+                            }if(purvpass&&row.s_audit==0){
                                 rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_contentid+" a2="+row.s_audit+" onclick=\"passscontent(this)\" class=\"text-primary ml10\">审核</a>";
-                            }else if(row.s_audit==1){
+
+                            }else if(purvpass&&row.s_audit==1){
                                 rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_contentid+" a2="+row.s_audit+" onclick=\"passscontent(this)\" class=\"text-primary ml10\">撤销审核</a>";
                             }
-                            rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_music+" a2="+row.s_audit+"  onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看音频</a>";
-                            rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_video+" a2="+row.s_audit+" onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看视频</a>";
-                            rowlist1[11]+="<a href=\"javascript:void(0)\" a1="+row.s_file+" a2="+row.s_audit+" onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看文件</a>";
+                            rowlist1[11] += "<a href=\"javascript:void(0)\" a1="+row.s_music+"   onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看音频</a>"+
+                            "<a href=\"javascript:void(0)\" a1="+row.s_video+" onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看视频</a>"+
+                            "<a href=\"javascript:void(0)\" a1="+row.s_file+"  onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看文件</a>";
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
@@ -191,7 +204,7 @@
                 </form>
             </div>
 
-        <div class="clearfix">
+        <div class="clearfix" id="addcontent">
             <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/scontent/scontent_add.shtml','添加素材')">添加素材</a>
             </div>
         <div id="tabdiv" style="overflow:auto">
@@ -228,4 +241,26 @@
 
 
 </body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function isPurview(btnUrl){
+        var btn = $("#ifWd",parent.document).attr("src");
+        var btnsUrl = [[${session.session_menubtn_map}]];
+        console.log(btn)
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+    $(function(){
+        var addcontent = '/scontent/addscontent.do';
+        var addpurview = isPurview(addcontent);
+        if(!addpurview){
+            $("#addcontent").css("display","none");
+        }
+    })
+
+    /*]]>*/
+
+
+</script>
 </html>

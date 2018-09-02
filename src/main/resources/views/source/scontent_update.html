@@ -49,10 +49,10 @@
        UE.Editor.prototype.getActionUrl = function(action) {
 
            if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
-               return 'http://localhost/ueditor/imgUpload.do';
+               return '/ueditor/imgUpload.do';
                //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
            }else  if (action == 'uploadvideo' ) {
-               return 'http://localhost/ueditor/imgUpload.do';
+               return '/ueditor/imgUpload.do';
                //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
            } else {
                return this._bkGetActionUrl.call(this, action);
@@ -420,10 +420,8 @@
         <tr>
             <td>标题</td>
             <td><input type='text' id='s_title' name="s_title"
-                       style="width: 200px" required="true" th:value="${SCONTENT.s_title}" /><span>  不得超过10个汉字</span></td>
-        </tr>
+                       style="width: 200px" required="true" th:value="${SCONTENT.s_title}" /><span>  不得超过20个汉字</span></td>
 
-        <tr>
             <td>分类</td>
             <td> <select  id="s_typeid" name="s_typeid"  style="width: 200px" required="true" >
                 <option value="">-请选择-</option>
@@ -437,9 +435,7 @@
                 <option value="">-请选择-</option>
 
             </select><span>  选择标签</span></td>
-        </tr>
 
-        <tr>
             <td> 作者</td>
             <td><input type='text' id='s_writer' name="s_writer"
                        style="width: 200px" th:value="${SCONTENT.s_writer}"/><span>  素材作者，可不填</span></td>
@@ -449,9 +445,7 @@
             <td>排序</td>
             <td><input type='text' id='s_rand' name="s_rand"
                        style="width: 200px" required="true" th:value="${SCONTENT.s_rand}"/><span>  必须为正整数，按从大到小排序</span></td>
-        </tr>
 
-        <tr>
             <td>是否审核</td>
             <td> <select  id="s_audit" name="s_audit"  style="width: 200px" required="true" >
 
@@ -463,9 +457,7 @@
             <td>素材使用描述</td>
             <td><textarea type='text' id='s_descript' name="s_descript"
                        style="width: 200px" required="true" th:text="${SCONTENT.s_descript}"></textarea><span> 素材使用描述，做为检索字段</span></td>
-        </tr>
 
-        <tr>
             <td>描述简介</td>
             <td><textarea type='text' id='s_brief' name="s_brief"
                           style="width: 200px" required="true" th:text="${SCONTENT.s_brief}"></textarea><span> 描述简介，做为识别此素材的标准</span></td>
@@ -474,52 +466,30 @@
         <tr>
             <td>选择icon</td>
             <td><input type="file"  id='filename' name="logos"  onChange="setImagePreviews()"  /></td>
-        </tr>
 
-        <tr>
-            <td>预览图片</td>
-            <td><div style="height: 200px" id="ImgPr"><img style="height: 180px;" th:src="|/uploads/${SCONTENT.s_icon}|"></td>
-        </tr>
-
-        <tr>
             <td>选择图片</td>
             <td><input type="file"  id='filename2' name="pics" onChange="setImagePreviews2()"  /></td>
         </tr>
 
         <tr>
             <td>预览图片</td>
-            <td><div style="height: 200px"  id="ImgPr2"><img style="height: 180px;" th:src="|/uploads/${SCONTENT.s_fimg}|"></td>
+            <td><div style="height: 0px" id="ImgPr"><img style="height: 180px;" th:src="|/uploads/${SCONTENT.s_icon}|"></td>
+        </tr>
+
+        <tr>
+            <td>预览图片</td>
+            <td><div style="height: 0px"  id="ImgPr2"><img style="height: 180px;" th:src="|/uploads/${SCONTENT.s_fimg}|"></td>
         </tr>
         <tr>
             <td>音频文件</td>
             <td><input type="file" name="file_upload" id="file_upload" /> <a
                     href="javascript:$('#file_upload').uploadify('upload')"
                     style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择mp3,wma,waf音频文件</span></td>
-        </tr>
-        <tr>
-            <td>
-                <div id="fileList1"></div>
-            </td>
-            <td>
-                <div id="fileQueue1"></div>
-            </td>
-            <td>
-        </tr>
 
-        <tr>
             <td>视频文件</td>
             <td><input type="file" name="file_upload2" id="file_upload2" /> <a
                     href="javascript:$('#file_upload2').uploadify('upload')"
                     style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择mp4,avi视频文件</span></td>
-        </tr>
-        <tr>
-            <td>
-                <div id="fileList2"></div>
-            </td>
-            <td>
-                <div id="fileQueue2"></div>
-            </td>
-            <td>
         </tr>
 
         <tr>
@@ -527,8 +497,7 @@
             <td><input type="file" name="file_upload3" id="file_upload3" /> <a
                     href="javascript:$('#file_upload3').uploadify('upload')"
                     style="float: left; padding-top: 6px; display: block">上传</a><span>  可以选择doc,docx,ppt,pptx,pdf,xlsx,xls类型文件</span></td>
-        </tr>
-        <tr>
+
             <td>
                 <div id="fileList"></div>
             </td>
@@ -539,13 +508,20 @@
         </tr>
 
 
-        <tr>
-            <td>富文本</td>
-            <td> <textarea id="editor" type="text/plain" name="s_content" style="width:1000px;height:350px;" th:text="${SCONTENT.s_content}"></textarea></td>
-        </tr>
-
 
     </table>
+
+    <div style=" margin-left: 20px;width: 100%;">
+
+        <div style=" margin-left: 20px;"><textarea id="editor" type="text/plain" name="s_content" style="width:1000px;height:350px;" th:text="${SCONTENT.s_content}"></textarea></div>
+    </div>
+
+    <div style=" margin-left: 20px;width: 100%;">
+        <!-- <div style=" margin-left: 20px;float: left;">富文本</div>-->
+        <div style=" margin-left: 20px;"> <script id="editor" type="text/plain" name="s_content" style="width:1000px;height:350px;"></script></div>
+
+    </div>
+
     <div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
         <input type="reset" class="btn btn-sm btn-info reset radius2 "
                onclick="window.parent.opentab('/scontent/scontent.shtml','素材管理');"

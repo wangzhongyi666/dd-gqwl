@@ -118,6 +118,15 @@ public class ScontentAction extends BaseAction {
         if(!"".equals(logopath)&logopath!=null){
             model.setS_icon(logopath);
         }
+        if("".equals(model.getS_music())){
+            model.setS_music(null);
+        }
+        if("".equals(model.getS_video())){
+            model.setS_video(null);
+        }
+        if("".equals(model.getS_file())){
+            model.setS_file(null);
+        }
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         SysUser user = SessionUtils.getUser(request);
         model.setW_uid(user.getEmail());
