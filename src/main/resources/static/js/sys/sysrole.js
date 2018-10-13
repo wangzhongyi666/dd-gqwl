@@ -15,8 +15,10 @@ $(document).ready(function() {
 
 });
 
+
 function countlist(pageSize){
     var jname=$("#jname").val();
+    console.log(jname)
     $.ajax({
         url :'/sys/roleDataCount.do',
         type : 'POST',

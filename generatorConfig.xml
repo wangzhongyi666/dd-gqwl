@@ -2,14 +2,14 @@
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
-<generatorConfiguration>
-    <!-- 数据库驱动包位置-->
+<generatorConfiguration>  
+	<!-- 数据库驱动包位置-->
     <classPathEntry  location="C:\work\dd-gqwl\mysql-connector-java-5.1.26.jar"/>
-    <context id="DB2Tables"  targetRuntime="MyBatis3">
-        <commentGenerator>
-            <property name="suppressDate" value="true"/>
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="true"/>
+    <context id="DB2Tables"  targetRuntime="MyBatis3">  
+        <commentGenerator>  
+            <property name="suppressDate" value="true"/>  
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->  
+            <property name="suppressAllComments" value="true"/>  
             <property name="mergeable" value="false"></property>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
@@ -18,25 +18,25 @@
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
-        <javaModelGenerator targetPackage="com.dongdao.gqwl.model.source"   targetProject="src/main/java">
+		 <javaModelGenerator targetPackage="com.dongdao.gqwl.model.websit"   targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="mybatis.source"  targetProject="src/main/resources">
+          <sqlMapGenerator targetPackage="mybatis.websit"  targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.dongdao.gqwl.mapper.source"
+                             targetPackage="com.dongdao.gqwl.mapper.websit"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <!-- 要生成哪些表-->
+       <!-- 要生成哪些表-->
 
 
-        <table schema="general" tableName="dd_videosource" domainObjectName="DdVideosource"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false" >
-            <property name="useActualColumnNames" value="true"/>
-        </table>
+		<table schema="general" tableName="G_seo" domainObjectName="GSeo"
+		    enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+		    enableSelectByExample="false" selectByExampleQueryId="false" >
+		    <property name="useActualColumnNames" value="true"/>
+		</table>
     </context>
 </generatorConfiguration>
