@@ -3,7 +3,7 @@ package com.dongdao.gqwl.model.websit;
 import com.dongdao.gqwl.model.BaseModel;
 
 public class GColumn extends BaseModel {
-    private Integer id;
+    private Integer c_id;
 
     private String g_name;
 
@@ -17,14 +17,23 @@ public class GColumn extends BaseModel {
 
     private String g_icon;
 
-    private Boolean g_state;
+    private Integer g_state;
+    private String nickName;
 
-    public Integer getId() {
-        return id;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Integer getC_id() {
+        return c_id;
+    }
+
+    public void setC_id(Integer c_id) {
+        this.c_id = c_id;
     }
 
     public String getG_name() {
@@ -75,11 +84,11 @@ public class GColumn extends BaseModel {
         this.g_icon = g_icon == null ? null : g_icon.trim();
     }
 
-    public Boolean getG_state() {
+    public Integer getG_state() {
         return g_state;
     }
 
-    public void setG_state(Boolean g_state) {
+    public void setG_state(Integer g_state) {
         this.g_state = g_state;
     }
 }

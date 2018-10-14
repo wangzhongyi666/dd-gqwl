@@ -2,41 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dongdao.gqwl.mapper.websit.GColumnMapper" >
   <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.websit.GColumn" >
-    <id column="Id" property="id" jdbcType="INTEGER" />
+    <id column="c_id" property="c_id" jdbcType="INTEGER" />
     <result column="G_name" property="g_name" jdbcType="VARCHAR" />
     <result column="G_fid" property="g_fid" jdbcType="INTEGER" />
     <result column="G_R_time" property="g_R_time" jdbcType="VARCHAR" />
     <result column="G_M_time" property="g_M_time" jdbcType="VARCHAR" />
     <result column="W_uid" property="w_uid" jdbcType="INTEGER" />
     <result column="G_icon" property="g_icon" jdbcType="VARCHAR" />
-    <result column="G_state" property="g_state" jdbcType="BIT" />
+    <result column="G_state" property="g_state" jdbcType="INTEGER" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, G_name, G_fid, G_R_time, G_M_time, W_uid, G_icon, G_state
+    c_id, G_name, G_fid, G_R_time, G_M_time, W_uid, G_icon, G_state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from G_column
-    where Id = #{id,jdbcType=INTEGER}
+    where c_id = #{c_id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from G_column
-    where Id = #{id,jdbcType=INTEGER}
+    where c_id = #{c_id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.GColumn" >
-    insert into G_column (Id, G_name, G_fid, 
+    insert into G_column ( c_id,G_name, G_fid,
       G_R_time, G_M_time, W_uid, 
       G_icon, G_state)
-    values (#{id,jdbcType=INTEGER}, #{g_name,jdbcType=VARCHAR}, #{g_fid,jdbcType=INTEGER}, 
+    values ( c_id,#{g_name,jdbcType=VARCHAR}, #{g_fid,jdbcType=INTEGER},
       #{g_R_time,jdbcType=VARCHAR}, #{g_M_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=INTEGER}, 
       #{g_icon,jdbcType=VARCHAR}, #{g_state,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.GColumn" >
     insert into G_column
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
+      <if test="c_id != null" >
+        c_id,
       </if>
       <if test="g_name != null" >
         G_name,
@@ -61,8 +62,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="c_id != null" >
+        #{c_id,jdbcType=INTEGER},
       </if>
       <if test="g_name != null" >
         #{g_name,jdbcType=VARCHAR},
@@ -112,7 +113,7 @@
         G_state = #{g_state,jdbcType=BIT},
       </if>
     </set>
-    where Id = #{id,jdbcType=INTEGER}
+    where c_id = #{c_id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.websit.GColumn" >
     update G_column
@@ -123,6 +124,21 @@
       W_uid = #{w_uid,jdbcType=INTEGER},
       G_icon = #{g_icon,jdbcType=VARCHAR},
       G_state = #{g_state,jdbcType=BIT}
-    where Id = #{id,jdbcType=INTEGER}
+    where c_id = #{c_id,jdbcType=INTEGER}
   </update>
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.GColumn" >
+    select
+    <include refid="Base_Column_List" />,u.nickName
+    from G_column t left join sys_user u on t.W_uid = u.id
+    where
+    G_state=1 order by t.G_R_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.GColumn" >
+    select count(0) from G_column where
+
+    G_state=1
+  </select>
 </mapper>

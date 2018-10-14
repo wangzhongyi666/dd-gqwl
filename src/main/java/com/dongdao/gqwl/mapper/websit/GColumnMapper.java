@@ -5,7 +5,7 @@ import com.dongdao.gqwl.model.websit.GColumn;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface GColumnMapper<T> extends BaseMapper<T> {
+public interface GColumnMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(GColumn record);

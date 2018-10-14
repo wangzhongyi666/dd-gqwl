@@ -5,7 +5,7 @@ import com.dongdao.gqwl.model.websit.GContent;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface GContentMapper<T> extends BaseMapper<T> {
+public interface GContentMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(GContent record);
