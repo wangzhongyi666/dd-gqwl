@@ -17,6 +17,25 @@
     from dd_jobtype
     where jobtypeid = #{jobtypeid,jdbcType=BIGINT}
   </select>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.website.job.DdJobtype"  resultMap="BaseResultMap">
+    select * from dd_jobtype
+
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.job.DdJobtype" >
+    select count(0) from dd_jobtype
+
+  </select>
+
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_jobtype
     where jobtypeid = #{jobtypeid,jdbcType=BIGINT}
