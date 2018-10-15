@@ -3,7 +3,7 @@ package com.dongdao.gqwl.model.websit;
 import com.dongdao.gqwl.model.BaseModel;
 
 public class GContent extends BaseModel {
-    private Integer id;
+    private Integer con_id;
 
     private Integer g_tid;
 
@@ -25,12 +25,32 @@ public class GContent extends BaseModel {
 
     private Integer g_state;
 
-    public Integer getId() {
-        return id;
+    private String nickName;
+
+    private String g_name;
+
+    public Integer getCon_id() {
+        return con_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCon_id(Integer con_id) {
+        this.con_id = con_id;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getG_name() {
+        return g_name;
+    }
+
+    public void setG_name(String g_name) {
+        this.g_name = g_name;
     }
 
     public Integer getG_tid() {

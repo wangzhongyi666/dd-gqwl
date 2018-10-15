@@ -5,7 +5,7 @@ import com.dongdao.gqwl.model.websit.GSeo;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface GSeoMapper<T> extends BaseMapper<T> {
+public interface GSeoMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(GSeo record);
