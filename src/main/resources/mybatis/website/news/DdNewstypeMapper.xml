@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.news.DdNewstypeMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    <id column="newstypeid" property="newstypeid" jdbcType="BIGINT" />
+    <result column="newstype" property="newstype" jdbcType="INTEGER" />
+    <result column="newstypename" property="newstypename" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="n_sort" property="n_sort" jdbcType="INTEGER" />
+    <result column="n_audit" property="n_audit" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    newstypeid, newstype, newstypename, isdelete, n_sort, n_audit, creattime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_newstype
+    where newstypeid = #{newstypeid,jdbcType=BIGINT}
+  </select>
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.website.news.DdNewstype"  resultMap="BaseResultMap">
+    select * from dd_newstype
+
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    select count(0) from dd_newstype
+
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_newstype
+    where newstypeid = #{newstypeid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    insert into dd_newstype (newstypeid, newstype, newstypename, 
+      isdelete, n_sort, n_audit, 
+      creattime)
+    values (#{newstypeid,jdbcType=BIGINT}, #{newstype,jdbcType=INTEGER}, #{newstypename,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER}, #{n_sort,jdbcType=INTEGER}, #{n_audit,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective"  keyProperty="newstypeid" useGeneratedKeys="true"  parameterType="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    insert into dd_newstype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newstypeid != null" >
+        newstypeid,
+      </if>
+      <if test="newstype != null" >
+        newstype,
+      </if>
+      <if test="newstypename != null" >
+        newstypename,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="n_sort != null" >
+        n_sort,
+      </if>
+      <if test="n_audit != null" >
+        n_audit,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newstypeid != null" >
+        #{newstypeid,jdbcType=BIGINT},
+      </if>
+      <if test="newstype != null" >
+        #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="newstypename != null" >
+        #{newstypename,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="n_sort != null" >
+        #{n_sort,jdbcType=INTEGER},
+      </if>
+      <if test="n_audit != null" >
+        #{n_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    update dd_newstype
+    <set >
+      <if test="newstype != null" >
+        newstype = #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="newstypename != null" >
+        newstypename = #{newstypename,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="n_sort != null" >
+        n_sort = #{n_sort,jdbcType=INTEGER},
+      </if>
+      <if test="n_audit != null" >
+        n_audit = #{n_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where newstypeid = #{newstypeid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.news.DdNewstype" >
+    update dd_newstype
+    set newstype = #{newstype,jdbcType=INTEGER},
+      newstypename = #{newstypename,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      n_sort = #{n_sort,jdbcType=INTEGER},
+      n_audit = #{n_audit,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR}
+    where newstypeid = #{newstypeid,jdbcType=BIGINT}
+  </update>
+</mapper>

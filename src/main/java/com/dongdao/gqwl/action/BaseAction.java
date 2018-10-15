@@ -257,11 +257,21 @@ public class BaseAction {
 
     public String EncoderByMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         //确定计算方法
-        MessageDigest md5= MessageDigest.getInstance("MD5");
-        BASE64Encoder base64en = new BASE64Encoder();
-        //加密后的字符串
-        String newstr=base64en.encode(md5.digest(str.getBytes("utf-8")));
-        return newstr;
+        byte[] hash = null;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(str.getBytes("utf-8"));
+        } catch (NoSuchAlgorithmException e) {
+
+        } catch (UnsupportedEncodingException e) {
+
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length );
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString().substring(2,18);
     }
 
     /*********************uploadify上传方法***************************/

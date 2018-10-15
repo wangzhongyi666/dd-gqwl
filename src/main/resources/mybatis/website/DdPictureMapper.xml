@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.DdPictureMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.DdPicture" >
+    <id column="picid" property="picid" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="pcontent" property="pcontent" jdbcType="VARCHAR" />
+    <result column="subhead" property="subhead" jdbcType="VARCHAR" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="p_sort" property="p_sort" jdbcType="INTEGER" />
+    <result column="ptype" property="ptype" jdbcType="INTEGER" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="p_audit" property="p_audit" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    picid, title, pcontent, subhead, picpath, p_sort, ptype, ispass, p_audit, isdelete, 
+    creattime, updatetime, filed1, filed2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_picture
+    where picid = #{picid,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.website.DdPicture"  resultMap="BaseResultMap">
+    select * from dd_picture
+    where
+    <if test="title!=null and title!=''">
+      title like  CONCAT('%', #{title}, '%') and
+    </if>
+
+    <if test="ptype!=null and ptype!=''">
+      ptype= #{ptype} and
+    </if>
+    1=1
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.DdPicture" >
+    select count(0) from dd_picture
+    where
+    <if test="title!=null and title!=''">
+      title  like  CONCAT('%', #{title}, '%') and
+    </if>
+
+    <if test="ptype!=null and ptype!=''">
+      ptype= #{ptype} and
+    </if>
+    1=1
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_picture
+    where picid = #{picid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
+    insert into dd_picture (picid, title, pcontent, 
+      subhead, picpath, p_sort, 
+      ptype, ispass, p_audit, 
+      isdelete, creattime, updatetime, 
+      filed1, filed2)
+    values (#{picid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{pcontent,jdbcType=VARCHAR}, 
+      #{subhead,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, #{p_sort,jdbcType=INTEGER}, 
+      #{ptype,jdbcType=INTEGER}, #{ispass,jdbcType=INTEGER}, #{p_audit,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, 
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
+    insert into dd_picture
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="picid != null" >
+        picid,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="pcontent != null" >
+        pcontent,
+      </if>
+      <if test="subhead != null" >
+        subhead,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="p_sort != null" >
+        p_sort,
+      </if>
+      <if test="ptype != null" >
+        ptype,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="p_audit != null" >
+        p_audit,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="picid != null" >
+        #{picid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pcontent != null" >
+        #{pcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="subhead != null" >
+        #{subhead,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="p_sort != null" >
+        #{p_sort,jdbcType=INTEGER},
+      </if>
+      <if test="ptype != null" >
+        #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="p_audit != null" >
+        #{p_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
+    update dd_picture
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pcontent != null" >
+        pcontent = #{pcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="subhead != null" >
+        subhead = #{subhead,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="p_sort != null" >
+        p_sort = #{p_sort,jdbcType=INTEGER},
+      </if>
+      <if test="ptype != null" >
+        ptype = #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="p_audit != null" >
+        p_audit = #{p_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where picid = #{picid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
+    update dd_picture
+    set title = #{title,jdbcType=VARCHAR},
+      pcontent = #{pcontent,jdbcType=VARCHAR},
+      subhead = #{subhead,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      p_sort = #{p_sort,jdbcType=INTEGER},
+      ptype = #{ptype,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      p_audit = #{p_audit,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where picid = #{picid,jdbcType=BIGINT}
+  </update>
+</mapper>

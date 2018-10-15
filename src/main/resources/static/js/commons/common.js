@@ -320,15 +320,12 @@ function is_purview(btn,btnUrl,btnsUrl,msUrl){
 
     var flag = false;
     $.each(btnsUrl,function (index,val) {
-
-        if(btnsU==index){
             $.each(val,function (i,v) {
                 if(btnUrl==v){
                     flag = true;
                     return flag;
                 }
             });
-        }
     });
     return flag;
 }

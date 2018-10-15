@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.DdProfileMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.DdProfile" >
+    <id column="proid" property="proid" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="entitle" property="entitle" jdbcType="VARCHAR" />
+    <result column="p_sort" property="p_sort" jdbcType="INTEGER" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="p_audit" property="p_audit" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+    <result column="pcontent" property="pcontent" jdbcType="LONGVARCHAR" />
+    <result column="ptcontent" property="ptcontent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    proid, type, title, entitle, p_sort, ispass, p_audit, creattime, updatetime, filed1, 
+    filed2,pcontent, ptcontent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+
+    from dd_profile
+    where proid = #{proid,jdbcType=BIGINT}
+  </select>
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.website.DdProfile"  resultMap="BaseResultMap">
+    select * from dd_profile
+     where
+    <if test="title!=null and title!=''">
+       title like  CONCAT('%', #{title}, '%') and
+    </if>
+
+    <if test="type!=null and type!=''">
+       type= #{type} and
+    </if>
+     1=1
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    select count(0) from dd_profile
+    where
+    <if test="title!=null and title!=''">
+       title  like  CONCAT('%', #{title}, '%') and
+    </if>
+
+    <if test="type!=null and type!=''">
+       type= #{type} and
+    </if>
+    1=1
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_profile
+    where proid = #{proid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    insert into dd_profile (proid, type, title, 
+      entitle, p_sort, ispass, 
+      p_audit, creattime, updatetime, 
+      filed1, filed2, pcontent, 
+      ptcontent)
+    values (#{proid,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{entitle,jdbcType=VARCHAR}, #{p_sort,jdbcType=INTEGER}, #{ispass,jdbcType=INTEGER}, 
+      #{p_audit,jdbcType=VARCHAR}, #{creattime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, 
+      #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER}, #{pcontent,jdbcType=LONGVARCHAR}, 
+      #{ptcontent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    insert into dd_profile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="proid != null" >
+        proid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="entitle != null" >
+        entitle,
+      </if>
+      <if test="p_sort != null" >
+        p_sort,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="p_audit != null" >
+        p_audit,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+      <if test="pcontent != null" >
+        pcontent,
+      </if>
+      <if test="ptcontent != null" >
+        ptcontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="proid != null" >
+        #{proid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="entitle != null" >
+        #{entitle,jdbcType=VARCHAR},
+      </if>
+      <if test="p_sort != null" >
+        #{p_sort,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="p_audit != null" >
+        #{p_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+      <if test="pcontent != null" >
+        #{pcontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ptcontent != null" >
+        #{ptcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    update dd_profile
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="entitle != null" >
+        entitle = #{entitle,jdbcType=VARCHAR},
+      </if>
+      <if test="p_sort != null" >
+        p_sort = #{p_sort,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="p_audit != null" >
+        p_audit = #{p_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+      <if test="pcontent != null" >
+        pcontent = #{pcontent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ptcontent != null" >
+        ptcontent = #{ptcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where proid = #{proid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    update dd_profile
+    set type = #{type,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      entitle = #{entitle,jdbcType=VARCHAR},
+      p_sort = #{p_sort,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      p_audit = #{p_audit,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER},
+      pcontent = #{pcontent,jdbcType=LONGVARCHAR},
+      ptcontent = #{ptcontent,jdbcType=LONGVARCHAR}
+    where proid = #{proid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.DdProfile" >
+    update dd_profile
+    set type = #{type,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      entitle = #{entitle,jdbcType=VARCHAR},
+      p_sort = #{p_sort,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      p_audit = #{p_audit,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where proid = #{proid,jdbcType=BIGINT}
+  </update>
+</mapper>

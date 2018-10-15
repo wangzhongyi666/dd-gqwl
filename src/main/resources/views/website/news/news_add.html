@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>添加介绍</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <!--<script src="../../static/js/source/news.js"></script>-->
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+
+    <!-- Uploadify文件上传 -->
+    <link href="../../static/js/uploadify/uploadify.css"   rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript"  src="../../static/js/source/uploadfile.js"></script>
+    <script type="text/javascript" src="../../static/js/commons/laydate/laydate.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+   $(function(){
+       laydate.render({
+           elem: '#newscreattime'
+       })
+       UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+       UE.Editor.prototype.getActionUrl = function(action) {
+
+           if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
+               return '/ueditor/imgUpload.do';
+               //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
+           }else  if (action == 'uploadvideo' ) {
+               return '/ueditor/imgUpload.do';
+               //'http://localhost:8080/imgUpload';为方法imgUpload的访问地址
+           } else {
+               return this._bkGetActionUrl.call(this, action);
+           }
+       };
+
+       var felObj=$('#newstype');
+       $.get('/news/querytype.do', {},
+           function(data) {
+               var data=data.newstype;
+               for (var i = 0; i < data.length; i++) {
+                   var value = data[i].newstype;
+                   var text = data[i].newstypename;
+                   felObj.append("<option value='"+value+"'>" + text
+                       + "</option>");
+
+               }
+           });
+       $('#domainInfoForm').form({
+           url : '/news/addnews.do',
+           onSubmit : function() {
+
+           },
+           success : function(data) {
+               var obj = JSON.parse(data);
+
+               if (obj.msg=="操作成功！") {
+                   layer.alert('添加成功');
+                   window.parent.opentab('/news/news.shtml','新闻资讯');
+               }  else {
+                   layer.alert('添加失败');
+               }
+           }
+       });
+
+
+   });
+
+   
+
+
+</script>
+<body>
+
+
+<form id='domainInfoForm' method="post" action=""
+      enctype="multipart/form-data">
+    <table border=0
+           style="margin-top: 20px; overflow:scroll;  border-collapse: separate; border-spacing: 15px; margin-left: 20px;height: 100%;">
+
+        <tr>
+            <td>标题</td>
+            <td>
+                <input type='text' id='newstitle' name="newstitle"
+                       style="width: 200px" required="true" /><span>  不得超过20个汉字</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>发布时间</td>
+            <td>
+               <!-- <input type='text' id='newscreattime' name="newscreattime"
+                          />-->
+                <input type="text" style="width: 200px" required="true"  class="laydate-icon" value="" name="newscreattime" id="newscreattime"/><span>  选择发布日期</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td> 摘要</td>
+            <td><textarea type='text' id='newsdigest' name="newsdigest"
+                          style="width: 200px" required="true" ></textarea><span> 新闻摘要，内容简介</span></td>
+        </tr>
+        <tr>
+            <td>资讯分类</td>
+            <td>
+                <select  id="newstype" name="newstype"  style="width: 200px" required="true" >
+                    <option value="">-请选择-</option>
+
+                </select>
+                <span>  选择资讯分类</span>
+            </td>
+        </tr>
+
+
+
+     <!--   <tr>
+            <td>排序</td>
+            <td><input type='text' id='p_sort' name="p_sort"
+                       style="width: 200px" required="true" /><span>  必须为正整数，按从大到小排序</span></td>
+      </tr>-->
+
+        <tr>
+            <td>是否置顶</td>
+            <td> <select  id="top" name="top"  style="width: 200px" required="true" >
+
+                <option value=0>不置顶</option>
+                <option value=1>置顶</option>
+            </select><span>  选择是否置顶</span></td>
+        </tr>
+
+        <tr>
+            <td>是否审核</td>
+            <td> <select  id="isdelete" name="isdelete"  style="width: 200px" required="true" >
+
+                <option value=2>不审核</option>
+                <option value=1>审核</option>
+                </select><span>  选择是否审核通过</span></td>
+        </tr>
+
+
+
+
+
+
+    </table>
+
+    <div style=" margin-left: 20px;width: 100%;">
+        <!-- <div style=" margin-left: 20px;float: left;">资讯内容</div>-->
+        <div style=" margin-left: 20px;"> <script id="editor" type="text/plain" name="newsbody" style="width:1000px;height:350px;"></script></div>
+
+    </div>
+    <div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
+        <input type="reset" class="btn btn-sm btn-info reset radius2 "
+               onclick="window.parent.opentab('/news/news.shtml','新闻资讯');"
+               value="返回" /> <input type="submit" class="btn btn-sm btn-info  "
+                                    value="确认">
+    </div>
+    <div class="clr"></div>
+
+</form>
+
+</body>
+<script type="text/javascript" charset="utf-8" src="../../static/js/source/ueditor.js"></script>
+</html>

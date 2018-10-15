@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.news.DdNewsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.news.DdNews" >
+    <id column="newsid" property="newsid" jdbcType="BIGINT" />
+    <result column="n_audit" property="n_audit" jdbcType="VARCHAR" />
+    <result column="newstitle" property="newstitle" jdbcType="VARCHAR" />
+    <result column="newssubhead" property="newssubhead" jdbcType="VARCHAR" />
+    <result column="newskeyword" property="newskeyword" jdbcType="VARCHAR" />
+    <result column="newstype" property="newstype" jdbcType="INTEGER" />
+    <result column="newspic" property="newspic" jdbcType="VARCHAR" />
+    <result column="newscreattime" property="newscreattime" jdbcType="VARCHAR" />
+    <result column="newshtml" property="newshtml" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="newswhere" property="newswhere" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="hits" property="hits" jdbcType="BIGINT" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="newsfrom" property="newsfrom" jdbcType="VARCHAR" />
+    <result column="n_sort" property="n_sort" jdbcType="INTEGER" />
+    <result column="newsdigest" property="newsdigest" jdbcType="LONGVARCHAR" />
+    <result column="newsbody" property="newsbody" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    newsid, n_audit, newstitle, newssubhead, newskeyword, newstype, newspic, newscreattime, 
+    newshtml, updatetime, newswhere, creattime, hits, top, isdelete, newsfrom, n_sort, newsdigest, newsbody
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+
+    from dd_news
+    where newsid = #{newsid,jdbcType=BIGINT}
+  </select>
+
+
+  <!-- 后台查找总数 -->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.dongdao.gqwl.model.website.news.DdNews">
+    select
+    count(*)
+    from dd_news
+    where
+    <if test="n_audit!= null and n_audit!=''">
+      <bind name="n_audit" value="'%'+n_audit+'%'" />
+      n_audit like #{n_audit,jdbcType=VARCHAR} and
+    </if>
+    <if test="newstitle!= null and newstitle!=''">
+      <bind name="newstitle" value="'%'+newstitle+'%'" />
+      newstitle like #{newstitle,jdbcType=VARCHAR} and
+    </if>
+    <if test="newstype!= null and newstype!=0">
+      newstype = #{newstype,jdbcType=INTEGER} and
+    </if>
+    <if test="newscreattime!= null and newscreattime!=''">
+      newscreattime = #{newscreattime,jdbcType=VARCHAR} and
+    </if>
+    <if test="top!= null">
+      top = #{top,jdbcType=INTEGER} and
+    </if>
+    (isdelete = 1 or isdelete =2)
+  </select>
+
+  <!-- 后台分页queryByList -->
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.news.DdNews">
+    select
+    dd_news.*,dd_newstype.newstypename from dd_news left join dd_newstype  on dd_news.newstype=dd_newstype.newstype
+    where
+
+      <if test="n_audit!= null and n_audit!=''">
+        <bind name="n_audit" value="'%'+n_audit+'%'" />
+        dd_news.n_audit like #{n_audit,jdbcType=VARCHAR} and
+      </if>
+
+
+      <if test="newstitle!= null and newstitle!=''">
+        <bind name="newstitle" value="'%'+newstitle+'%'" />
+        dd_news.newstitle like #{newstitle,jdbcType=VARCHAR} and
+      </if>
+
+
+      <if test="newstype!= null and newstype!=0">
+        dd_news.newstype = #{newstype,jdbcType=INTEGER} and
+      </if>
+
+
+      <if test="newscreattime!= null and newscreattime!=''">
+        dd_news.newscreattime = #{newscreattime,jdbcType=VARCHAR} and
+      </if>
+
+
+      <if test="top!= null">
+        dd_news.top = #{top,jdbcType=INTEGER} and
+      </if>
+
+    (dd_news.isdelete=1 or dd_news.isdelete =2) order by dd_news.newscreattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <!--查询分类-->
+  <select id="queryType" resultType="com.dongdao.gqwl.model.website.news.DdNewstype"   >
+    select newstype,newstypename from dd_newstype
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_news
+    where newsid = #{newsid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
+    insert into dd_news (newsid, n_audit, newstitle, 
+      newssubhead, newskeyword, newstype, 
+      newspic, newscreattime, newshtml, 
+      updatetime, newswhere, creattime, 
+      hits, top, isdelete, 
+      newsfrom, n_sort, newsdigest, 
+      newsbody)
+    values (#{newsid,jdbcType=BIGINT}, #{n_audit,jdbcType=VARCHAR}, #{newstitle,jdbcType=VARCHAR}, 
+      #{newssubhead,jdbcType=VARCHAR}, #{newskeyword,jdbcType=VARCHAR}, #{newstype,jdbcType=INTEGER}, 
+      #{newspic,jdbcType=VARCHAR}, #{newscreattime,jdbcType=VARCHAR}, #{newshtml,jdbcType=VARCHAR},
+      #{updatetime,jdbcType=VARCHAR}, #{newswhere,jdbcType=INTEGER}, #{creattime,jdbcType=INTEGER},
+      #{hits,jdbcType=BIGINT}, #{top,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, 
+      #{newsfrom,jdbcType=VARCHAR}, #{n_sort,jdbcType=INTEGER}, #{newsdigest,jdbcType=LONGVARCHAR}, 
+      #{newsbody,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyProperty="newsid" useGeneratedKeys="true" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
+    insert into dd_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        newsid,
+      </if>
+      <if test="n_audit != null" >
+        n_audit,
+      </if>
+      <if test="newstitle != null" >
+        newstitle,
+      </if>
+      <if test="newssubhead != null" >
+        newssubhead,
+      </if>
+      <if test="newskeyword != null" >
+        newskeyword,
+      </if>
+      <if test="newstype != null" >
+        newstype,
+      </if>
+      <if test="newspic != null" >
+        newspic,
+      </if>
+      <if test="newscreattime != null" >
+        newscreattime,
+      </if>
+      <if test="newshtml != null" >
+        newshtml,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="newswhere != null" >
+        newswhere,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="hits != null" >
+        hits,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="newsfrom != null" >
+        newsfrom,
+      </if>
+      <if test="n_sort != null" >
+        n_sort,
+      </if>
+      <if test="newsdigest != null" >
+        newsdigest,
+      </if>
+      <if test="newsbody != null" >
+        newsbody,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        #{newsid,jdbcType=BIGINT},
+      </if>
+      <if test="n_audit != null" >
+        #{n_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="newstitle != null" >
+        #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newssubhead != null" >
+        #{newssubhead,jdbcType=VARCHAR},
+      </if>
+      <if test="newskeyword != null" >
+        #{newskeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="newstype != null" >
+        #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="newspic != null" >
+        #{newspic,jdbcType=VARCHAR},
+      </if>
+      <if test="newscreattime != null" >
+        #{newscreattime,jdbcType=VARCHAR},
+      </if>
+      <if test="newshtml != null" >
+        #{newshtml,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="newswhere != null" >
+        #{newswhere,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null" >
+        #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="newsfrom != null" >
+        #{newsfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="n_sort != null" >
+        #{n_sort,jdbcType=INTEGER},
+      </if>
+      <if test="newsdigest != null" >
+        #{newsdigest,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newsbody != null" >
+        #{newsbody,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
+    update dd_news
+    <set >
+      <if test="n_audit != null" >
+        n_audit = #{n_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="newstitle != null" >
+        newstitle = #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newssubhead != null" >
+        newssubhead = #{newssubhead,jdbcType=VARCHAR},
+      </if>
+      <if test="newskeyword != null" >
+        newskeyword = #{newskeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="newstype != null" >
+        newstype = #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="newspic != null" >
+        newspic = #{newspic,jdbcType=VARCHAR},
+      </if>
+      <if test="newscreattime != null" >
+        newscreattime = #{newscreattime,jdbcType=VARCHAR},
+      </if>
+      <if test="newshtml != null" >
+        newshtml = #{newshtml,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="newswhere != null" >
+        newswhere = #{newswhere,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="hits != null" >
+        hits = #{hits,jdbcType=BIGINT},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="newsfrom != null" >
+        newsfrom = #{newsfrom,jdbcType=VARCHAR},
+      </if>
+      <if test="n_sort != null" >
+        n_sort = #{n_sort,jdbcType=INTEGER},
+      </if>
+      <if test="newsdigest != null" >
+        newsdigest = #{newsdigest,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newsbody != null" >
+        newsbody = #{newsbody,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where newsid = #{newsid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
+    update dd_news
+    set n_audit = #{n_audit,jdbcType=VARCHAR},
+      newstitle = #{newstitle,jdbcType=VARCHAR},
+      newssubhead = #{newssubhead,jdbcType=VARCHAR},
+      newskeyword = #{newskeyword,jdbcType=VARCHAR},
+      newstype = #{newstype,jdbcType=INTEGER},
+      newspic = #{newspic,jdbcType=VARCHAR},
+      newscreattime = #{newscreattime,jdbcType=VARCHAR},
+      newshtml = #{newshtml,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      newswhere = #{newswhere,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=BIGINT},
+      top = #{top,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      newsfrom = #{newsfrom,jdbcType=VARCHAR},
+      n_sort = #{n_sort,jdbcType=INTEGER},
+      newsdigest = #{newsdigest,jdbcType=LONGVARCHAR},
+      newsbody = #{newsbody,jdbcType=LONGVARCHAR}
+    where newsid = #{newsid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
+    update dd_news
+    set n_audit = #{n_audit,jdbcType=VARCHAR},
+      newstitle = #{newstitle,jdbcType=VARCHAR},
+      newssubhead = #{newssubhead,jdbcType=VARCHAR},
+      newskeyword = #{newskeyword,jdbcType=VARCHAR},
+      newstype = #{newstype,jdbcType=INTEGER},
+      newspic = #{newspic,jdbcType=VARCHAR},
+      newscreattime = #{newscreattime,jdbcType=VARCHAR},
+      newshtml = #{newshtml,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      newswhere = #{newswhere,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      hits = #{hits,jdbcType=BIGINT},
+      top = #{top,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      newsfrom = #{newsfrom,jdbcType=VARCHAR},
+      n_sort = #{n_sort,jdbcType=INTEGER}
+    where newsid = #{newsid,jdbcType=BIGINT}
+  </update>
+</mapper>
