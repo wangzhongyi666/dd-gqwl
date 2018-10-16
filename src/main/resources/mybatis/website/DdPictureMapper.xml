@@ -66,6 +66,7 @@
     delete from dd_picture
     where picid = #{picid,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
     insert into dd_picture (picid, title, pcontent, 
       subhead, picpath, p_sort, 
@@ -78,6 +79,16 @@
       #{isdelete,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, 
       #{filed1,jdbcType=VARCHAR}, #{filed2,jdbcType=INTEGER})
   </insert>
+<!--查询前端图片-->
+  <select id="selectByType" resultType="HashMap" parameterType="java.lang.Integer" >
+    select
+    title, pcontent,picpath, ptype
+    from dd_picture
+    where ptype = #{ptype,jdbcType=INTEGER} and ispass=1 order by p_sort desc
+  </select>
+
+
+
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.DdPicture" >
     insert into dd_picture
     <trim prefix="(" suffix=")" suffixOverrides="," >

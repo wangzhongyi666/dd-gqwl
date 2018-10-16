@@ -20,6 +20,16 @@
     proid, type, title, entitle, p_sort, ispass, p_audit, creattime, updatetime, filed1, 
     filed2,pcontent, ptcontent
   </sql>
+
+
+  <select id="selectByType" resultType="HashMap" parameterType="java.lang.Integer" >
+    select
+    title,entitle,pcontent,ptcontent
+    from dd_profile
+    where type = #{type,jdbcType=INTEGER} and ispass=1 order by p_sort desc
+  </select>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -27,6 +37,7 @@
     from dd_profile
     where proid = #{proid,jdbcType=BIGINT}
   </select>
+
 
   <select id="queryByList" parameterType="com.dongdao.gqwl.model.website.DdProfile"  resultMap="BaseResultMap">
     select * from dd_profile

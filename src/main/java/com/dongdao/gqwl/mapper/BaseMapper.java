@@ -5,6 +5,7 @@ import com.dongdao.gqwl.model.source.DdLabel;
 import com.dongdao.gqwl.model.source.DdStype;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BaseMapper<T> {
 
@@ -31,4 +32,5 @@ public interface BaseMapper<T> {
     List<T> queryType();
     List<T> queryLabel();
     T selectByPrimaryKey(Object id);
+    public List<Map> selectByType(Object type);
 }

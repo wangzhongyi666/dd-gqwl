@@ -103,7 +103,13 @@
   <select id="queryType" resultType="com.dongdao.gqwl.model.website.news.DdNewstype"   >
     select newstype,newstypename from dd_newstype
   </select>
-
+  <!--查询前端新闻-->
+  <select id="selectByType" resultType="HashMap" parameterType="java.lang.Integer" >
+    select
+    newstype,newstitle,newsdigest, newsbody,newscreattime,top
+    from dd_news
+    where newstype = #{newstype,jdbcType=INTEGER} and isdelete=1 order by newscreattime desc
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_news

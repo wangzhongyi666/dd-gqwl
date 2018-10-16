@@ -4,6 +4,7 @@ import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.BaseModel;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class BaseService<T> {
 
@@ -66,5 +67,9 @@ public abstract class BaseService<T> {
     }
     public List<T> queryByList(BaseModel model) {
         return getMapper().queryByList(model);
+    }
+
+    public List<Map> selectByType(Object type){
+        return getMapper().selectByType(type);
     }
 }

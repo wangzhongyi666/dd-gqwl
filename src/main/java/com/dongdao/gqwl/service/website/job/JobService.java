@@ -8,6 +8,9 @@ import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class JobService<T> extends BaseService<T> {
 
@@ -18,6 +21,8 @@ public class JobService<T> extends BaseService<T> {
         return ddStypeMapper;
     }
 
-
+    public List<Map<String,Object>> queryArea(){
+        return getMapper().queryArea();
+    }
 
 }

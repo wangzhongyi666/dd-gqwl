@@ -79,7 +79,9 @@ public class UrlFilter implements Filter {
      * @param uri
      */
     public boolean isNeedFilter(String uri) {
-
+        if(uri.indexOf(".json")>0){
+            return false;
+        }
         for (String includeUrl : includeUrls) {
             if(includeUrl.equals(uri)) {
                 return false;
