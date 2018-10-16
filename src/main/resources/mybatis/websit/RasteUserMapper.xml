@@ -163,9 +163,9 @@
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
     select
-    <include refid="Base_Column_List" />,u.nickName,c.g_name
+    <include refid="Base_Column_List" />
     from raste_user t
-    where t.state=1
+    where t.state != 2
     <if test="jname!=null">
       and tel like CONCAT('%', #{jname}, '%')
     </if>
@@ -176,7 +176,7 @@
   </select>
   <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
     select count(0) from raste_user t
-    where t.state=1
+    where t.state != 2
     <if test="jname!=null">
       and tel like CONCAT('%', #{jname}, '%')
     </if>

@@ -1,5 +1,4 @@
 /*<![CDATA[*/
-var nodId=0;
 $(document).ready(function() {
     $('#pageSizeInp').val(10);
     countlist($('#pageSizeInp').val());
@@ -10,7 +9,7 @@ $(document).ready(function() {
     $(".pagebtn").on('click',function(){
         $(".active").removeClass("active");
         $(this).parent().addClass("active");
-        getlist1($(this).text(),$('#pageSizeInp').val());
+        getlist($(this).text(),$('#pageSizeInp').val());
     });
 
 });
@@ -19,12 +18,13 @@ function countlist(pageSize){
     var jname=$("#jname").val();
     var createtime=$("createtime1").val();
     $.ajax({
-        url :'/rasteuser/rasteuserCount.do',
+        url :'/rastemassage/rastemassageCount.do',
         type : 'POST',
         timeout : 20000,
         data:{
             createtime:createtime,
             tel:jname,
+            state:0,
             pageSize:pageSize
         },
         async: false,
@@ -36,21 +36,16 @@ function countlist(pageSize){
                 slideSpeed: 600, // 缓动速度。单位毫秒
                 jump: true, //是否支持跳转
                 callback: function(page) { // 回调函数
-                    getlist1(page,pageSize);
+                    getlist(page,pageSize);
                 }
             })
         }
     });
 }
-
-function edit(e){
-    $("#webid").val($(e).attr("a1"));
-    shadboxFun('edit');
-}
 function goon(){
     var a=$('#pageNumInp').val();
     if(a!=null && a>0){
-        getlist1(a,$('#pageSizeInp').val())
+        getlist(a,$('#pageSizeInp').val())
     }else{
         alert("请输入页数!");
     }
@@ -59,8 +54,6 @@ function goon(){
 
 function getTree(e){
     shadboxFun1('add');
-
-
 }
 
 function saveType(){
@@ -88,15 +81,16 @@ function saveType(){
     });
 
 }
-function deleteType(e){
+function passType(e){
     var id = $(e).attr("a1");
-    if(confirm("确认删除吗！")){
+    if(confirm("确认通过吗！")){
         $.ajax({
-            url :'/rasteuser/deleterasteuser.do',
+            url :'/rasteuser/updaterasteuser.do',
             type : 'POST',
             timeout : 20000,
             data:{
-                id:id
+                id:id,
+                state:1
             },
             async: false,
             success : function(result) {
@@ -105,12 +99,36 @@ function deleteType(e){
                 if(result.msg=="操作成功！"){
                     countlist($('#pageSizeInp').val());
                 }
+
             }
         });
     }
 
 }
+function repassType(e){
+    var id = $(e).attr("a1");
+    if(confirm("确认驳回吗！")){
+        $.ajax({
+            url :'/rasteuser/updaterasteuser.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                id:id,
+                state:2
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.msg);
 
+                if(result.msg=="操作成功！"){
+                    countlist($('#pageSizeInp').val());
+                }
+
+            }
+        });
+    }
+
+}
 // 验证函数
 function formValidate1(e) {
     var str = '';
@@ -133,28 +151,7 @@ function formValidate1(e) {
         updatetype();
     }
 }
-function updatetype(e){
-    var id = $(e).attr("a1");
-    if(confirm("确认修改吗！")){
-        $.ajax({
-            url :'/rasteuser/updaterasteuser.do',
-            type : 'POST',
-            timeout : 20000,
-            data:{
-                id:id,
-                state:0
-            },
-            async: false,
-            success : function(result) {
-                layer.alert(result.msg);
 
-                if(result.msg=="操作成功！"){
-                    countlist($('#pageSizeInp').val());
-                }
-            }
-        });
-    }
-}
 // 验证函数
 function formValidate(e) {
     var str = '';
@@ -209,6 +206,58 @@ function checkEmail(str){
         return true;
     }else{
         return false;
+    }
+}
+
+function imgChange(a,type,event){
+    var a1="lie";
+    if(a==1){
+        a1="qian";
+    }
+    $(event).attr("name","file"+a);
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjcectURL != undefined) {
+            url = window.createOjcectURL(file);
+        } else if (window.URL != undefined) {
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) {
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    var path = "";
+    if(a==1){
+        path = getObjectURL(document.getElementById("logo").files[0]);
+    }else{
+        path = getObjectURL(document.getElementById("two_bar_codes").files[0]);
+    }
+    $("#"+a1+"inp"+type).val(path);
+    $("#"+a1+"inp"+type).attr("name",a1+"inp");
+    $("#"+a1+"img"+type).css('background',"url("+path+") center center no-repeat");
+    $("#"+a1+"img"+type).css('background-size',"100% 100%");
+}
+
+function saveMassage(){
+    if($("#massageform").form('validate')){
+        $("#massageform").form('submit', {
+            url:'/rastemassage/addrestemassage.do?address='+$("#address").val()+'&tel='+$("#tel").val()+'&phone='+$("#phone").val()+
+            '&email='+$("#email").val()+'&e_mail='+$("#e_mail").val()+'&record='+$("#record").val()+'&itude='+$("#itude").val(),
+            success:function(data){
+                var c = jQuery.parseJSON(data);
+                if(c.success){
+                    layer.alert(c.msg,{
+                        anim: 1,
+                        btn: ['确定'],
+                        yes:function(){
+                            window.location.replace("/resatemassage/resatemassage.shtml");
+                        }
+                    });
+                }else{
+                    layer.alert(c.msg);
+                }
+            }
+        });
     }
 }
 /*]]>*/
