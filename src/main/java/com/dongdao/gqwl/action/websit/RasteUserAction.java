@@ -70,8 +70,10 @@ public class RasteUserAction extends BaseAction {
     @RequestMapping("/deleterasteuser.do")
     public void deleteType(RasteUser model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-
-        int num= rasteUserService.deleteByPrimaryKey(model.getId());
+        RasteUser model1 = new RasteUser();
+        model1.setId(model.getId());
+        model1.setState(2);
+        int num= rasteUserService.updateByPrimaryKeySelective(model1);
         if(num==1){
             jsonMap.put("msg", "操作成功！");
         }else{
@@ -89,7 +91,7 @@ public class RasteUserAction extends BaseAction {
         model.setLogin_type(0);
         model.setLogin_num(0);
         model.setPwd(model==null||model.getTel()==null?"123456":model.getTel().substring(7));
-        model.setState(1);
+        model.setState(0);
         model.setLogin_type(1);
         int num= rasteUserService.insertSelective(model);
         if(num==1){
@@ -101,5 +103,28 @@ public class RasteUserAction extends BaseAction {
         HtmlUtil.writerJson(response, jsonMap);
 
     }
-    
+    @RequestMapping(value = "/auditrasteuser.shtml")
+    @Auth(verifyLogin = false, verifyURL = false)
+    public ModelAndView auditRasteuser(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> context = getRootMap();
+        return forword("websit/auditrasteuser", context);
+    }
+
+    //审核
+    @RequestMapping("/updaterasteuser.do")
+    public void updateType(RasteUser model,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        RasteUser model1 = new RasteUser();
+        model1.setId(model.getId());
+        model1.setState(model.getState());
+        int num= rasteUserService.updateByPrimaryKeySelective(model1);
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
 }
