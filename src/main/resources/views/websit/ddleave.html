@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户留言</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/webist/ddleave.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+
+    <!-- Uploadify文件上传 -->
+    <link href="../../static/js/uploadify/uploadify.css"   rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript"  src="../../static/js/source/uploadfile.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<script>
+    $(function(){
+        laydate.render({
+            elem: '#createtime1',
+            // type: 'month',
+            format: 'yyyy-MM-dd',
+            show: false
+        });
+    })
+    function getlist(pageNum,pageSize){
+        var jname = $("#jname").val();
+        var createtime = $("#createtime1").val();
+
+        var updateurl='/ddleave/updateddleave.do';
+        var updateview = isPurview(updateurl);
+
+        $.ajax({
+            url :'/ddleave/ddleaveDataList.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                createtime:createtime,
+                tel:jname,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=[];
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=[];
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            rowlist1[0]=row.leave_id;
+                            rowlist1[1]=row.phone;
+                            rowlist1[2]=row.email;
+                            rowlist1[3]=row.leave;
+                            var rowlist4 = "";
+                            /*if(updateview){
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.id+"  a2="+row.name+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>";
+                            }*/
+                            rowlist4+="<a href=\"javascript:void(0)\" a1="+row.leave_id+" onclick=\"showLeave(this)\" class=\"text-primary ml10\">查看留言</a>";
+                            if(updateview){
+                                rowlist4+="<a href=\"javascript:void(0)\" a1="+row.leave_id+" a1='2' onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+
+                                if(row.state==0){
+                                    rowlist4+="<a href=\"javascript:void(0)\" a1="+row.leave_id+" a2='1' onclick=\"deleteType(this)\" class=\"text-primary ml10\">审核</a>";
+                                }else{
+                                    rowlist4+="<a href=\"javascript:void(0)\" a1="+row.leave_id+" a2='0' onclick=\"deleteType(this)\" class=\"text-primary ml10\">核销审核</a>";
+                                }
+
+                            }
+                            rowlist1[4] = rowlist4;
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"userDataList");
+            }
+        });
+    }
+</script>
+
+<body>
+<div class="rightIframe pull-right">
+    <div class="sopen"></div>
+    <div class="menu fontS20">用户管理</div>
+    <div class="search">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-md-1 control-label">注册时间</label>
+                <div class="col-md-2">
+                    <input type="text" class="laydate-icon form-control" value="" id="createtime1"/>
+                </div>
+                <div class="col-md-4 search_list">
+                    <input type="text" class="form-control" name="jname" id="jname" placeholder="手机号" />
+                    <span class="fa fa-search"></span>
+                </div>
+                <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+            </div>
+        </form>
+    </div>
+   <!-- <div class="clearfix" id="addUser">
+        <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
+    </div>-->
+    <div id="tabdiv" style="overflow:auto">
+        <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+            <thead>
+            <tr>
+                <th style="width: 60px;">序号</th>
+                <th style="width: 120px;">手机号</th>
+                <th style="width: 120px;">email</th>
+                <th>留言</th>
+                <th style="width: 120px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="userDataList">
+
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="pageSizeInp"/>
+    <div>
+        <div class="box" id="box">
+
+        </div>
+    </div>
+
+</div>
+
+<!--弹出框-->
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="show">
+        <input type="hidden" id="webid" />
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">编辑信息</span>
+            </div>
+            <div class="detail_box">
+                <span>留言</span><textarea name="leave" id="leave" style="width:450px;" class="txt txt3" readonly="ture"></textarea></li>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var btn = $("#ifWd",parent.document).attr("src");
+    var btnsUrl = [[${session.session_menubtn_map}]];
+    console.log(btnsUrl);
+    function isPurview(btnUrl){
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+    $(function(){
+        var addcontent = '/rasteuser/addrasteuser.do';
+        var addpurview = isPurview(addcontent);
+        if(!addpurview){
+            $("#addgcolumn").css("display","none");
+        }
+    })
+
+    /*]]>*/
+</script>
+</html>

@@ -6,12 +6,14 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="leave" property="leave" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    leave_id, phone, email, leave
+    leave_id, phone, email, `leave`,state,createtime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from dd_leave
     where leave_id = #{leave_id,jdbcType=INTEGER}
@@ -21,10 +23,10 @@
     where leave_id = #{leave_id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.DdLeave" >
-    insert into dd_leave (leave_id, phone, email, 
-      leave)
-    values (#{leave_id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{leave,jdbcType=VARCHAR})
+    insert into dd_leave ( phone, email,
+      `leave`,state,createtime)
+    values ( #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{leave,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{leave,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.DdLeave" >
     insert into dd_leave
@@ -39,7 +41,13 @@
         email,
       </if>
       <if test="leave != null" >
-        leave,
+        `leave`,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createtime != null" >
+        createtime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -55,6 +63,12 @@
       <if test="leave != null" >
         #{leave,jdbcType=VARCHAR},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.websit.DdLeave" >
@@ -69,6 +83,12 @@
       <if test="leave != null" >
         leave = #{leave,jdbcType=VARCHAR},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
     </set>
     where leave_id = #{leave_id,jdbcType=INTEGER}
   </update>
@@ -76,7 +96,25 @@
     update dd_leave
     set phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      leave = #{leave,jdbcType=VARCHAR}
+      `leave` = #{leave,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=VARCHAR}
     where leave_id = #{leave_id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.GColumn" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_leave
+    where
+    state!=2 order by createtime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.GColumn" >
+    select count(0) from dd_leave where
+
+    state!=2
+  </select>
 </mapper>

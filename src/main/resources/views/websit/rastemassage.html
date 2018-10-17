@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>用户审核</title>
+    <title>网站信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -81,19 +81,14 @@
                             rowlist1[7]=row.e_mail;
                             rowlist1[8]=row.record;
                             rowlist1[9]=row.itude;
-                            if(row.state==1){
-                                rowlist1[10]='是';
-                            }else{
-                                rowlist1[10]='否';
-                            }
-                            rowlist1[11] = "";
-                            var rowlist11="<a href='javascript:void(0)' a1="+row.id+"onclick='passType(this)' class='text-primary ml10'>删除</a>";
+                            var rowlist11="<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='passType(this)' class='text-primary ml10'>删除</a>"+
+                                "<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='updateshow(this)' class='text-primary ml10'>编辑</a>";
                             if(row.state==0){
-                                rowlist11+="<a href='javascript:void(0)'a1="+row.id+" onclick='repassType(this)' class='text-primary ml10'>审核</a>";
+                                rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='repassType(this)' class='text-primary ml10'>审核</a>";
                             }else{
-                                rowlist11+="<a href='javascript:void(0)' a1="+row.id+" onclick='repassType(this)' class=\"text-primary ml10\">撤销审核</a>";
+                                rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='0' onclick='repassType(this)' class=\"text-primary ml10\">撤销审核</a>";
                             }
-                            rowlist1[11] = rowlist11;
+                            rowlist1[10] = rowlist11;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
@@ -107,7 +102,6 @@
                             rowlist1[8]='';
                             rowlist1[9]='';
                             rowlist1[10]='';
-                            rowlist1[11]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -122,7 +116,7 @@
 <div class="rightIframe pull-right">
     <div class="sopen"></div>
     <div class="menu fontS20">网站信息</div>
-    <div class="search">
+    <!--<div class="search">
         <form class="form-horizontal" role="form">
             <div class="form-group">
                 <label class="col-md-1 control-label">注册时间</label>
@@ -136,7 +130,7 @@
                 <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
             </div>
         </form>
-    </div>
+    </div>-->
     <div class="clearfix" id="addUser">
         <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
     </div>
@@ -144,17 +138,17 @@
         <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
             <thead>
             <tr>
-                <th style="width: 170px;">序号</th>
-                <th style="width: 170px;">logo</th>
-                <th style="width: 170px;">二维码</th>
+                <th style="width: 70px;">序号</th>
+                <th style="width: 200px;">logo</th>
+                <th style="width: 200px;">二维码</th>
                 <th style="width: 170px;">地址</th>
-                <th style="width: 170px;">电话</th>
-                <th style="width: 170px;">手机</th>
+                <th style="width: 120px;">电话</th>
+                <th style="width: 120px;">手机</th>
                 <th style="width: 170px;">邮箱</th>
                 <th style="width: 170px;">电子邮件</th>
                 <th style="width: 170px;">备案</th>
-                <th style="width: 170px;">经纬度</th>
-
+                <th style="width: 80px;">经纬度</th>
+                <th style="width: 120px;">操作</th>
             </tr>
             </thead>
             <tbody id="userDataList">
@@ -185,6 +179,7 @@
                 <ul class="addbox pb60">
                     <!--<div id="androiddiv">-->
                     <form id="massageform"  enctype='multipart/form-data'  class='ui-form' method='post'>
+                        <input name="massage_id" id="massage_id" type="hidden"/>
                         <li style="float:left;">
                             <span>logo</span>
                             <i >
@@ -226,7 +221,8 @@
                     </form>
                     <!--</div>-->
                     <li style="margin-left:140px;float:left;">
-                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="saveMassage()" value="保存"/>
+                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="saveMassage()" id="savemassage" value="保存"/>
+                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="updateMassage()" id="updatemassage"value="保存"/>
                         <!--<input style="width:160px;" class="btn btn-warning btn-lg btn-radius mr10" type="submit" onclick="qxApp()" value="取消"/>-->
                     </li>
                 </ul>

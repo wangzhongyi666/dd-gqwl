@@ -418,7 +418,7 @@ input[type="radio"] {
 }
 input[type="radio"]:checked {background:url(../images/radio2.png) no-repeat;}
 .addbox{width:880px;}
-.addbox li{clear:both;margin-top:30px;}
+.addbox li{clear:both;margin-top:10px;}
 .addbox li span{
 	display:inline-block;
 	width:120px;

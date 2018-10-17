@@ -11,6 +11,26 @@ public class DdLeave extends BaseModel {
 
     private String leave;
 
+    private Integer state;
+
+    private String createtime;
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
+    }
+
     public Integer getLeave_id() {
         return leave_id;
     }

@@ -54,8 +54,64 @@ function goon(){
 
 function getTree(e){
     shadboxFun1('add');
+    $("#savemassage").show();
+    $("#updatemassage").hide();
 }
+function updateshow(e){
+    shadboxFun1('add');
+    $("#savemassage").hide();
+    $("#updatemassage").show();
 
+    var massage_id = $(e).attr("a1");
+    $.ajax({
+        url :'/rastemassage/getrastemassage.do',
+        type : 'POST',
+        timeout : 20000,
+        data:{
+            massage_id:massage_id
+        },
+        async: false,
+        success : function(result) {
+            console.log(result.data)
+            $("#qianinp1").val(result.data.logo);
+            $("#qianimg1").css('background',"url("+result.data.logo+") center center no-repeat");
+            $("#qianimg1").css('background-size',"100% 100%");
+
+            $("#lieinp1").val(result.data.two_bar_codes);
+            $("#lieimg1").css('background',"url("+result.data.two_bar_codes+") center center no-repeat");
+            $("#lieimg1").css('background-size',"100% 100%");
+
+            $("#address").val(result.data.address);
+            $("#tel").val(result.data.tel);
+            $("#phone").val(result.data.phone);
+            $("#email").val(result.data.email);
+            $("#e_mail").val(result.data.e_mail);
+            $("#record").val(result.data.record);
+            $("#itude").val(result.data.itude);
+        }
+    });
+}
+function updateMassage(e){
+    if($("#massageform").form('validate')){
+        $("#massageform").form('submit', {
+            url:'/rastemassage/addrastemassage.do',
+            success:function(data){
+                var c = jQuery.parseJSON(data);
+                if(c.success){
+                    layer.alert(c.msg,{
+                        anim: 1,
+                        btn: ['确定'],
+                        yes:function(){
+                            window.location.replace("/rastemassage/rastemassage.shtml");
+                        }
+                    });
+                }else{
+                    layer.alert(c.msg);
+                }
+            }
+        });
+    }
+}
 function saveType(){
     var name= $("#name").val();
     var tel= $("#tel").val();
@@ -107,6 +163,7 @@ function passType(e){
 }
 function repassType(e){
     var id = $(e).attr("a1");
+    var state = $(e).attr("a2");
     if(confirm("确认驳回吗！")){
         $.ajax({
             url :'/rasteuser/updaterasteuser.do',
@@ -114,7 +171,7 @@ function repassType(e){
             timeout : 20000,
             data:{
                 id:id,
-                state:2
+                state:state
             },
             async: false,
             success : function(result) {
@@ -241,8 +298,7 @@ function imgChange(a,type,event){
 function saveMassage(){
     if($("#massageform").form('validate')){
         $("#massageform").form('submit', {
-            url:'/rastemassage/addrestemassage.do?address='+$("#address").val()+'&tel='+$("#tel").val()+'&phone='+$("#phone").val()+
-            '&email='+$("#email").val()+'&e_mail='+$("#e_mail").val()+'&record='+$("#record").val()+'&itude='+$("#itude").val(),
+            url:'/rastemassage/addrastemassage.do',
             success:function(data){
                 var c = jQuery.parseJSON(data);
                 if(c.success){
@@ -250,7 +306,7 @@ function saveMassage(){
                         anim: 1,
                         btn: ['确定'],
                         yes:function(){
-                            window.location.replace("/resatemassage/resatemassage.shtml");
+                            window.location.replace("/rastemassage/rastemassage.shtml");
                         }
                     });
                 }else{

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/ddLeave")
+@RequestMapping("/ddleave")
 public class DdLeaveAction extends BaseAction {
 
     private final static Logger log= Logger.getLogger(DdLeaveAction.class);
@@ -34,11 +34,11 @@ public class DdLeaveAction extends BaseAction {
     @Autowired
     public DdLeaveService<DdLeave> ddLeaveService;
 
-    @RequestMapping(value = "/ddLeave.shtml")
+    @RequestMapping(value = "/ddleave.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/ddLeave", context);
+        return forword("websit/ddleave", context);
     }
 
 
@@ -69,15 +69,12 @@ public class DdLeaveAction extends BaseAction {
 
     }
 
-/*    //审核
-    @RequestMapping("/ddleavetemassage.do")
-    public void updateType(Ddleave model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    //审核
+    @RequestMapping("/deleteddleave.do")
+    public void updateType(DdLeave model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        RasteMassage model1 = new RasteMassage();
-        model1.setMassage_id(model.getMassage_id());
-        model1.setState(2);
-        model1.setUpdatetime(DateUtil.getNowPlusTime());
-        int num= ddleaveService.updateByPrimaryKeySelective(model1);
+
+        int num= ddLeaveService.updateByPrimaryKeySelective(model);
         if(num==1){
             jsonMap.put("msg", "操作成功！");
         }else{
@@ -86,5 +83,16 @@ public class DdLeaveAction extends BaseAction {
 
         HtmlUtil.writerJson(response, jsonMap);
 
-    }*/
+    }
+
+
+    //查看
+    @RequestMapping("/getddleave.do")
+    public void getddleave(DdLeave model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        DdLeave model1 = ddLeaveService.selectByPrimaryKey(model.getLeave_id());
+        jsonMap.put("data",model1);
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
 }
