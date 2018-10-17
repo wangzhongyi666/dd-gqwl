@@ -42,7 +42,7 @@
             </ul>
         </div>
         <div class="first">
-            <a class="cur" href="javascript:void(0);" th:onclick="'javascript:opentab(\''+${msUrl}+@{/guangqi/home.shtml}+'\',\''+${msUrl}+'\')'" >
+            <a class="cur" href="javascript:void(0);" th:onclick="'javascript:opentab(\''+${msUrl}+@{/sys//sysUser.do}+'\',\''+${msUrl}+'\')'" >
                 <em class="pull-left"></em>首页
             </a>
         </div>
@@ -61,7 +61,7 @@
     </div>
 
     <div id="tabs" style="overflow-x: hidden;">
-        <iframe id="ifWd" frameborder="0" th:src="@{/guangqi/pictype/pictype.shtml}" scrolling="no" onload="setIframeHeight(this)"></iframe>
+        <iframe id="ifWd" frameborder="0" th:src="@{/sys/sysUser.do}" scrolling="no" onload="setIframeHeight(this)"></iframe>
     </div>
 </div>
 <script th:inline="javascript" type="text/javascript">
