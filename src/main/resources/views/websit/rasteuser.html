@@ -97,7 +97,7 @@
                                 if(row.state==0){
                                     rowlist9+="<a href=\"javascript:void(0)\" a1="+row.id+" a2='1' onclick=\"updateType(this)\" class=\"text-primary ml10\">审核</a>";
                                 }else{
-                                    rowlist9+="<a href=\"javascript:void(0)\" a1="+row.id+" a2='0' onclick=\"updateType(this)\" class=\"text-primary ml10\">核销审核</a>";
+                                    rowlist9+="<a href=\"javascript:void(0)\" a1="+row.id+" a2='0' onclick=\"updateType(this)\" class=\"text-primary ml10\">撤销审核</a>";
                                 }
 
                             }
@@ -143,9 +143,9 @@
             </div>
         </form>
     </div>
-    <div class="clearfix" id="addUser">
+    <!--<div class="clearfix" id="addUser">
         <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
-    </div>
+    </div>-->
     <div id="tabdiv" style="overflow:auto">
         <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
             <thead>

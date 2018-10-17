@@ -84,10 +84,10 @@
         leave = #{leave,jdbcType=VARCHAR},
       </if>
       <if test="state != null" >
-        #{state,jdbcType=INTEGER},
+        state = #{state,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
-        #{createtime,jdbcType=VARCHAR},
+        createtime = #{createtime,jdbcType=VARCHAR},
       </if>
     </set>
     where leave_id = #{leave_id,jdbcType=INTEGER}

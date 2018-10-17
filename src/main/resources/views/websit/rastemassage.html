@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>网站信息</title>
+    <title>基础信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -77,18 +77,20 @@
                             rowlist1[3]=row.address;
                             rowlist1[4]=row.tel;
                             rowlist1[5]=row.phone;
-                            rowlist1[6]=row.email;
-                            rowlist1[7]=row.e_mail;
-                            rowlist1[8]=row.record;
-                            rowlist1[9]=row.itude;
+                            rowlist1[6]=row.inquire_tel;
+                            rowlist1[7]=row.email;
+                            rowlist1[8]=row.e_mail;
+                            rowlist1[9]=row.record;
+                            rowlist1[10]=row.itude;
+
                             var rowlist11="<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='passType(this)' class='text-primary ml10'>删除</a>"+
                                 "<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='updateshow(this)' class='text-primary ml10'>编辑</a>";
-                            if(row.state==0){
+                            /*if(row.state==0){
                                 rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='repassType(this)' class='text-primary ml10'>审核</a>";
                             }else{
                                 rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='0' onclick='repassType(this)' class=\"text-primary ml10\">撤销审核</a>";
-                            }
-                            rowlist1[10] = rowlist11;
+                            }*/
+                            rowlist1[11] = rowlist11;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
@@ -101,7 +103,7 @@
                             rowlist1[7]='';
                             rowlist1[8]='';
                             rowlist1[9]='';
-                            rowlist1[10]='';
+                            rowlist1[11]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -131,9 +133,9 @@
             </div>
         </form>
     </div>-->
-    <div class="clearfix" id="addUser">
+<!--    <div class="clearfix" id="addUser">
         <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
-    </div>
+    </div>-->
     <div id="tabdiv" style="overflow:auto">
         <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
             <thead>
@@ -144,6 +146,7 @@
                 <th style="width: 170px;">地址</th>
                 <th style="width: 120px;">电话</th>
                 <th style="width: 120px;">手机</th>
+                <th style="width: 120px;">垂询电话</th>
                 <th style="width: 170px;">邮箱</th>
                 <th style="width: 170px;">电子邮件</th>
                 <th style="width: 170px;">备案</th>
@@ -210,6 +213,7 @@
                         </li>
                         <li style="float:left;">
                             <span>e_mail</span><input style="width:180px;" name="e_mail" id="e_mail" class="txt txt1" type="text"/>
+                            <label style="margin-left: 40px;">垂询电话</label><input style="width:180px;" name="inquire_tel" id="inquire_tel" class="txt txt1" type="text"/>
                         </li>
                         <li style="float:left;">
                             <span>备案</span><input style="width:450px;" name="record" id="record" class="txt txt1" type="text"/>

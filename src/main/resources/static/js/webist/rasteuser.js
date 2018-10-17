@@ -133,7 +133,7 @@ function formValidate1(e) {
         updatetype();
     }
 }
-function updatetype(e){
+function updateType(e){
     var id = $(e).attr("a1");
     if(confirm("确认修改吗！")){
         $.ajax({

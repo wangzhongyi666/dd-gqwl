@@ -75,7 +75,7 @@ public class RasteMassageAction extends BaseAction {
         RasteMassage model1 = new RasteMassage();
         model1.setMassage_id(model.getMassage_id());
         model1.setState(2);
-        model1.setUpdatetime(DateUtil.getNowPlusTime());
+        //model1.setUpdatetime(DateUtil.getNowPlusTime());
         int num= rasteMassageService.updateByPrimaryKeySelective(model1);
         if(num==1){
             jsonMap.put("msg", "操作成功！");
@@ -170,8 +170,10 @@ public class RasteMassageAction extends BaseAction {
 
         int num= rasteMassageService.insertSelective(model);
         if(num==1){
+            jsonMap.put("code",1);
             jsonMap.put("msg", "操作成功！");
         }else{
+            jsonMap.put("code",2);
             jsonMap.put("msg", "操作失败！");
         }
 
@@ -263,8 +265,10 @@ public class RasteMassageAction extends BaseAction {
         }
         int num= rasteMassageService.updateByPrimaryKeySelective(model);
         if(num==1){
+            jsonMap.put("code",1);
             jsonMap.put("msg", "操作成功！");
         }else{
+            jsonMap.put("code",2);
             jsonMap.put("msg", "操作失败！");
         }
         HtmlUtil.writerJson(response, jsonMap);

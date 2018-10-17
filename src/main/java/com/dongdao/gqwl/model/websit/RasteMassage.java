@@ -32,6 +32,16 @@ public class RasteMassage extends BaseModel {
 
     private String updatetime;
 
+    private String inquire_tel;
+
+    public String getInquire_tel() {
+        return inquire_tel;
+    }
+
+    public void setInquire_tel(String inquire_tel) {
+        this.inquire_tel = inquire_tel;
+    }
+
     public String getE_mail() {
         return e_mail;
     }

@@ -97,7 +97,7 @@ function updateMassage(e){
             url:'/rastemassage/addrastemassage.do',
             success:function(data){
                 var c = jQuery.parseJSON(data);
-                if(c.success){
+                if(c.code==1){
                     layer.alert(c.msg,{
                         anim: 1,
                         btn: ['确定'],
@@ -301,7 +301,7 @@ function saveMassage(){
             url:'/rastemassage/addrastemassage.do',
             success:function(data){
                 var c = jQuery.parseJSON(data);
-                if(c.success){
+                if(c.code==1){
                     layer.alert(c.msg,{
                         anim: 1,
                         btn: ['确定'],
