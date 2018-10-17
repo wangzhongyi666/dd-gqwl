@@ -36,10 +36,10 @@ function formValidate(e) {
     }
 
     // 判断地区
-    if($.trim($('#deptId').val()).length == 0) {
+/*    if($.trim($('#deptId').val()).length == 0) {
         str += '请选择地区\n';
         $('#deptId').focus();
-    }
+    }*/
 
     // 判断角色
     if($.trim($('#jid').val()).length == 0) {
@@ -71,6 +71,42 @@ function formValidate(e) {
         addUser(e);
     }
 }
+
+// 验证函数
+function formValidate1(e) {
+    var str = '';
+    // 判断角色
+    if($.trim($('#jid1').val()).length == 0) {
+        str += '请选择角色\n';
+        $('#jid1').focus();
+    }
+
+    // 判断名称
+    if($.trim($('#nickName1').val()).length == 0) {
+        str += '名称没有输入\n';
+        $('#nickName1').focus();
+    }
+    // 判断手机号码
+    if ($.trim($('#tel1').val()).length == 0) {
+        str += '手机号没有输入\n';
+        $('#tel1').focus();
+    } else {
+        if(isPhoneNo($.trim($('#tel1').val()) == false)) {
+            str += '手机号码不正确\n';
+            $('#tel1').focus();
+        }
+    }
+
+    // 如果没有错误则提交
+    if(str != '') {
+        layer.alert(str);
+        return false;
+    } else {
+        updateUser(e)
+    }
+}
+
+
 function qx(e) {
     $(".popbox-container").parents('.popbox-wrapper').animate({
         opacity: 'hide',top: '0px'
@@ -87,7 +123,7 @@ function addUser(e){
         data:{
             email:$("#email").val(),
             pwd:$("#pwd").val(),
-            deptId:$("#deptId").val(),
+            //deptId:$("#deptId").val(),
             tel:$("#tel").val(),
             jid:$("#jid").val(),
             nickName:$("#nickName").val(),
@@ -106,6 +142,34 @@ function addUser(e){
         }
     });
 }
+
+function updateUser(e){
+
+    $.ajax({
+        url :'/sys/updateuser.do',
+        type : 'POST',
+        timeout : 20000,
+        data:{
+            deptId:$("#deptId").val(),
+            tel:$("#tel").val(),
+            jid:$("#jid").val(),
+            nickName:$("#nickName").val()
+        },
+        async: false,
+        success : function(result) {
+            layer.alert(result.msg);
+            if(result.success){
+                $(".popbox-container").parents('.popbox-wrapper').animate({
+                    opacity: 'hide',top: '0px'
+                }, "slow");
+
+                $('.popbox-container').fadeOut();
+            }
+            countlist($('#pageSizeInp').val());
+        }
+    });
+}
+
 function countlist(pageSize){
     var ename=$("#ename").val();
     $.ajax({
@@ -167,6 +231,7 @@ function getlist(pageNum,pageSize){
                         }
                         if(purview){
                             rowlist1[6]="<a href='/guangqi/changepwd.shtml' class=\"text-primary ml10\">重置密码</a>"+
+                                "<a href=\"javascript:void(0)\" a1='"+row.id+"'onclick=\"shadboxFunUpdate(this)\" class=\"text-primary ml10\">编辑</a>"+
                                 "<a href=\"javascript:void(0)\" a1='"+row.id+"' onclick=\"shadboxFunDel(this)\" class=\"text-primary ml10\">删除</a>";
                         }else{
                             rowlist1[6]="重置密码";
@@ -197,6 +262,28 @@ function goon(){
         layer.alert("请输入页数!");
     }
 }
+function shadboxFunUpdate(e){
+    var id = $(e).attr("a1");
+    shadboxFun('eudit');
+    $.ajax({
+        url :'/sys/queryByUserId.do',
+        type : 'POST',
+        timeout : 20000,
+        data:{
+            id:id
+        },
+        async: false,
+        success : function(result) {
+            if(result.data!=null){
+                $("#jid1").val(result.data.jid);
+                $("#nickName1").val(result.data.nickName);
+                $("#tel1").val(result.data.tel);
+            }
+
+        }
+    });
+}
+
 function shadboxFunDel(e){
    var id = $(e).attr("a1");
 //询问框

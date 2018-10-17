@@ -59,4 +59,8 @@ public class SysUserService<T> extends BaseService<T>{
     public Integer delUser(@Param("id")Integer id){
         return getMapper().delUser(id);
     }
+
+    public Integer updateInfo(SysUserModel model){
+        return getMapper().updateInfo(model);
+    }
 }

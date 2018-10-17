@@ -134,6 +134,36 @@ public class SysAction extends BaseAction {
         sendSuccessMessage(response,"注册成功！");
     }
 
+
+    @RequestMapping("/queryByUserId")
+    public void queryByUserId(Integer id, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        SysUser user = SessionUtils.getUser(request);
+        if(user==null){
+            HtmlUtil.writerJson(response, "登录超时！");
+            return;
+        }
+        SysUser sysuser=sysUserService.queryById(id);
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        jsonMap.put("data", sysuser);
+        HtmlUtil.writerJson(response, jsonMap);
+    }
+
+    //添加用户
+    @RequestMapping("/updateuser.do")
+    public void updateUser(SysUserModel model, HttpServletRequest request, HttpServletResponse response){
+        SysUser user = SessionUtils.getUser(request);
+        if(user==null){
+            sendFailureMessage(response, "登录超时！");
+            return;
+        }
+
+        model.setUpdateTime(new Date());
+        sysUserService.updateInfo(model);
+        sendSuccessMessage(response,"注册成功！");
+    }
+
+
+
     @RequestMapping(value = "/sysRole.do")
     public ModelAndView sysRole(HttpServletRequest request, HttpServletResponse response) {
         SysDeptModel model = new SysDeptModel();
@@ -494,4 +524,6 @@ public class SysAction extends BaseAction {
         jsonMap.put("msg", "操作成功！");
         HtmlUtil.writerJson(response, jsonMap);
     }
+
+
 }

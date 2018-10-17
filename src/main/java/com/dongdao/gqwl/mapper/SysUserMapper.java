@@ -70,4 +70,17 @@ public interface SysUserMapper<T> extends BaseMapper<T>{
 
     @Update("update sys_user set state = 1  where id = #{id}")
     Integer delUser(@Param("id")Integer id);
+
+
+
+    @Update("<script>update sys_user set id = id" +
+            "<if test=\"jid != null and jid != ''\">,jid = #{jid}</if> " +
+            "<if test=\"nickName != null and nickName != ''\">,nickName = #{nickName}</if> " +
+            "<if test=\"email != null and email != ''\">,email = #{email}</if> " +
+            "<if test=\"tel != null and tel != ''\">,tel = #{tel}</if> " +
+            "<if test=\"updateTime != null and updateTime != ''\">,updateTime = #{updateTime}</if> " +
+            "where id = #{id} "+
+             "</script>")
+    Integer updateInfo(SysUserModel model);
+
 }
