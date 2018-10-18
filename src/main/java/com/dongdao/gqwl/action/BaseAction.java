@@ -8,13 +8,8 @@ import com.dongdao.gqwl.utils.VerifyFormat;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
-import sun.misc.BASE64Encoder;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class BaseAction {
@@ -275,7 +269,7 @@ public class BaseAction {
     }
 
     /*********************uploadify上传方法***************************/
-    public void uploadify(MultipartFile file, String folder,HttpServletResponse response,HttpServletRequest request) throws IOException {
+    public void uploadify(MultipartFile file, String folder, HttpServletResponse response, HttpServletRequest request) throws IOException {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         // 文件原名
         String fileName = file.getOriginalFilename().toLowerCase();
