@@ -16,11 +16,12 @@
     <result column="longitude" property="longitude" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="VARCHAR" />
-    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />community_codes
+    <result column="community_codes" property="community_codes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     massage_id, logo, two_bar_codes, address, tel, phone, email, e_mail, record, itude,
-    longitude, state, createtime, updatetime,inquire_tel
+    longitude, state, createtime, updatetime,inquire_tel,community_codes
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -37,12 +38,12 @@
       address, tel, phone, 
       email, e_mail, record,
       itude, longitude, state, 
-      createtime, updatetime,inquire_tel)
+      createtime, updatetime,inquire_tel,community_codes)
     values (#{massage_id,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR}, #{two_bar_codes,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{e_mail,jdbcType=VARCHAR}, #{record,jdbcType=VARCHAR},
       #{itude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
-      #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR},#{inquire_tel})
+      #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR},#{inquire_tel},#{community_codes})
   </insert>
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
     insert into raste_massage
@@ -92,6 +93,9 @@
       <if test="inquire_tel != null" >
         inquire_tel,
       </if>
+      <if test="community_codes != null" >
+        community_codes,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="massage_id != null" >
@@ -138,6 +142,9 @@
       </if>
       <if test="inquire_tel != null" >
         #{inquire_tel,jdbcType=VARCHAR},
+      </if>
+      <if test="community_codes != null" >
+        #{community_codes,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -186,6 +193,9 @@
       <if test="inquire_tel != null" >
         inquire_tel = #{inquire_tel,jdbcType=VARCHAR},
       </if>
+      <if test="community_codes != null" >
+        community_codes = #{community_codes,jdbcType=VARCHAR},
+      </if>
     </set>
     where massage_id = #{massage_id,jdbcType=INTEGER}
   </update>
@@ -205,6 +215,7 @@
       createtime = #{createtime,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=VARCHAR},
       inquire_tel = #{inquire_tel,jdbcType=VARCHAR}
+      community_codes = #{community_codes,jdbcType=VARCHAR}
     where massage_id = #{massage_id,jdbcType=INTEGER}
   </update>
 

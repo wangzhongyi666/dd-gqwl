@@ -34,6 +34,16 @@ public class RasteMassage extends BaseModel {
 
     private String inquire_tel;
 
+    private String community_codes;
+
+    public String getCommunity_codes() {
+        return community_codes;
+    }
+
+    public void setCommunity_codes(String community_codes) {
+        this.community_codes = community_codes;
+    }
+
     public String getInquire_tel() {
         return inquire_tel;
     }

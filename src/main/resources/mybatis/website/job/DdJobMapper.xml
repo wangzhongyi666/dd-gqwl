@@ -24,7 +24,7 @@
     creattime, updatetime, ispass, isdelete, filed1, filed2
   </sql>
   <sql id="Page_Column_List" >
-   jobname, jarea, jcontent, jrequire, jsalary
+   jobname, jarea, jcontent, jrequire, jsalary,jobid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

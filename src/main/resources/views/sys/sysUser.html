@@ -93,7 +93,7 @@
                             <input type="password" class="form-control" name="pwd" id="pwd" placeholder="请输入密码" />
                         </div>
                     </div>
-                    <!--<div class="form-group">
+                    <div class="form-group">
                         <label class="col-md-3 col-xs-3 control-label">选择地区</label>
                         <div class="col-md-8 col-xs-6">
                             <select class="form-control" name="deptId" id="deptId">
@@ -101,7 +101,7 @@
                                 <option th:each="dept:${deptList}" th:value="${dept.deptId}" th:text="${dept.name }"></option>
                             </select>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3 col-xs-3 control-label">选择角色</label>
                         <div class="col-md-8 col-xs-6">
@@ -138,11 +138,20 @@
         <div class="popbox-body">
             <div class="safe_nav">
                 <span class="pull-right fa fa-close popbox-close fontS20"></span>
-                <span class="fontS16">添加用户</span>
+                <span class="fontS16">编辑用户</span>
             </div>
             <div class="detail_box">
                 <form class="form-horizontal" id="addUpdateForm" role="form">
-
+                    <input id="id1" type="hidden"/>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-3 control-label">选择地区</label>
+                        <div class="col-md-8 col-xs-6">
+                            <select class="form-control" name="deptId" id="deptId1">
+                                <option>请选择地区</option>
+                                <option th:each="dept:${deptList}" th:value="${dept.deptId}" th:text="${dept.name }"></option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-md-3 col-xs-3 control-label">选择角色</label>
                         <div class="col-md-8 col-xs-6">
