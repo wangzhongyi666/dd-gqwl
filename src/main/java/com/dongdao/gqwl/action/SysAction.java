@@ -31,7 +31,6 @@ import java.util.*;
 public class SysAction extends BaseAction {
 
     private final static Logger log= Logger.getLogger(SysAction.class);
-//dsaijjiiiiiiiiii=====================================
     @Autowired(required = false)
     // 自动注入，不需要生成set方法了，required=false表示没有实现类，也不会报错。
     public SysUserService sysUserService;
@@ -159,7 +158,7 @@ public class SysAction extends BaseAction {
 
         model.setUpdateTime(new Date());
         sysUserService.updateInfo(model);
-        sendSuccessMessage(response,"注册成功！");
+        sendSuccessMessage(response,"操作成功！");
     }
 
 

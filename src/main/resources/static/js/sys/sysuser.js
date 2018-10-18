@@ -144,16 +144,17 @@ function addUser(e){
 }
 
 function updateUser(e){
-
+console.log($("#jid1").val());
     $.ajax({
         url :'/sys/updateuser.do',
         type : 'POST',
         timeout : 20000,
         data:{
-            deptId:$("#deptId").val(),
-            tel:$("#tel").val(),
-            jid:$("#jid").val(),
-            nickName:$("#nickName").val()
+            deptId:$("#deptId1").val(),
+            tel:$("#tel1").val(),
+            jid:$("#jid1").val(),
+            nickName:$("#nickName1").val(),
+            id:$("#id1").val()
         },
         async: false,
         success : function(result) {
@@ -264,6 +265,7 @@ function goon(){
 }
 function shadboxFunUpdate(e){
     var id = $(e).attr("a1");
+    $("#id1").val(id);
     shadboxFun('eudit');
     $.ajax({
         url :'/sys/queryByUserId.do',
@@ -278,6 +280,7 @@ function shadboxFunUpdate(e){
                 $("#jid1").val(result.data.jid);
                 $("#nickName1").val(result.data.nickName);
                 $("#tel1").val(result.data.tel);
+                $("#deptId1").val(result.data.deptId);
             }
 
         }
