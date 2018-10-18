@@ -16,7 +16,7 @@
     <result column="longitude" property="longitude" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="VARCHAR" />
-    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />community_codes
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
     <result column="community_codes" property="community_codes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
