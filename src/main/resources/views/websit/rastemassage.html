@@ -74,14 +74,15 @@
                             rowlist1[0]=row.massage_id;
                             rowlist1[1]=row.logo;
                             rowlist1[2]=row.two_bar_codes;
-                            rowlist1[3]=row.address;
-                            rowlist1[4]=row.tel;
-                            rowlist1[5]=row.phone;
-                            rowlist1[6]=row.inquire_tel;
-                            rowlist1[7]=row.email;
-                            rowlist1[8]=row.e_mail;
-                            rowlist1[9]=row.record;
-                            rowlist1[10]=row.itude;
+                            rowlist1[3]=row.community_codes;
+                            rowlist1[4]=row.address;
+                            rowlist1[5]=row.tel;
+                            rowlist1[6]=row.phone;
+                            rowlist1[7]=row.inquire_tel;
+                            rowlist1[8]=row.email;
+                            rowlist1[9]=row.e_mail;
+                            rowlist1[10]=row.record;
+                            rowlist1[11]=row.itude;
 
                             var rowlist11= "<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='updateshow(this)' class='text-primary ml10'>编辑</a>";
                             /*if(row.state==0){
@@ -89,7 +90,7 @@
                             }else{
                                 rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='0' onclick='repassType(this)' class=\"text-primary ml10\">撤销审核</a>";
                             }*/
-                            rowlist1[11] = rowlist11;
+                            rowlist1[12] = rowlist11;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
@@ -103,6 +104,7 @@
                             rowlist1[9]='';
                             rowlist1[10]='';
                             rowlist1[11]='';
+                            rowlist1[12]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -142,6 +144,7 @@
                 <th style="width: 70px;">序号</th>
                 <th style="width: 200px;">logo</th>
                 <th style="width: 200px;">二维码</th>
+                <th style="width: 200px;">社区二维码</th>
                 <th style="width: 170px;">地址</th>
                 <th style="width: 120px;">电话</th>
                 <th style="width: 120px;">手机</th>
@@ -199,6 +202,16 @@
                                     <input type="file" class="webfile" name="file2" id="two_bar_codes" onchange="imgChange(2,1,this)" size="1" />
                                     <em id="lieimg1"></em>
                                     <input id="lieinp1" name="lieinp" type="hidden"/>
+                                </div>
+                            </i>
+                        </li>
+                        <li style="float:left;">
+                            <span>社区二维码</span>
+                            <i >
+                                <div class="uploadImg1">
+                                    <input type="file" class="webfile" name="file3" id="community_codes" onchange="imgChange(3,1,this)" size="1" />
+                                    <em id="sheimg1"></em>
+                                    <input id="sheinp1" name="sheinp" type="hidden"/>
                                 </div>
                             </i>
                         </li>

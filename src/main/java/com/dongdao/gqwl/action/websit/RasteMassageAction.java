@@ -88,7 +88,8 @@ public class RasteMassageAction extends BaseAction {
     }
     //添加
     @RequestMapping("/addrastemassage.do")
-    public void saceType(RasteMassage model, @RequestParam("file1") MultipartFile file1,@RequestParam("file2") MultipartFile file2, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void saceType(RasteMassage model, @RequestParam("file1") MultipartFile file1,@RequestParam("file2") MultipartFile file2,
+                         @RequestParam("file3")MultipartFile file3, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         model.setCreatetime(DateUtil.getNowPlusTime());
         model.setUpdatetime(DateUtil.getNowPlusTime());
@@ -112,6 +113,7 @@ public class RasteMassageAction extends BaseAction {
             return;
         }
 
+
         if ((file1!=null && file1.getSize() > 10485760)) {
             sendFailureMessage(response,"图片过大！");
             return;
@@ -130,6 +132,24 @@ public class RasteMassageAction extends BaseAction {
             return;
         }
         if ((file2!=null && file2.getSize() > 10485760)) {
+            sendFailureMessage(response,"图片过大！");
+            return;
+        }
+
+        String type3 = file3!=null && !org.apache.commons.lang.StringUtils.isBlank(
+                file3.getOriginalFilename())?file3.getOriginalFilename().substring(
+                file3.getOriginalFilename().lastIndexOf(".")):"";
+        if(type3.equals("") && model.getMassage_id()==null){
+            if(model.getCommunity_codes()==null){
+                sendFailureMessage(response,"请选择图片！");
+                return;
+            }
+        }
+        if ((!type3.equals("") && imgeArray.indexOf(type3.toUpperCase()) < 0)) {
+            sendFailureMessage(response,"文件格式错误！");
+            return;
+        }
+        if ((file3!=null && file3.getSize() > 10485760)) {
             sendFailureMessage(response,"图片过大！");
             return;
         }
@@ -167,6 +187,21 @@ public class RasteMassageAction extends BaseAction {
             model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type2);
         }
 
+        if(!type3.equals("")){
+            sjc=DateUtil.getNowPlusTimeMill();
+            path = parhstr+"aptitude"
+                    + java.io.File.separator
+                    + sjc
+                    +type3;
+            File f = new File(path);
+            // 创建文件夹
+            if (!f.exists()) {
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+            }
+            file3.transferTo(new File(path));
+            model.setCommunity_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type3);
+        }
 
         int num= rasteMassageService.insertSelective(model);
         if(num==1){
@@ -184,7 +219,8 @@ public class RasteMassageAction extends BaseAction {
     //审核
     @RequestMapping("/updaterastemassage.do")
     public void updateType(RasteMassage model,@RequestParam("file1") MultipartFile file1,@RequestParam("file2") MultipartFile file2,
-                           String qianinp1,String lieinp1,HttpServletRequest request, HttpServletResponse response) throws Exception {
+                           @RequestParam("file3")MultipartFile file3,String qianinp1,String lieinp1,String sheinp1,
+                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         model.setUpdatetime(DateUtil.getNowPlusTime());
         String parhstr=request.getSession().getServletContext()
@@ -263,6 +299,42 @@ public class RasteMassageAction extends BaseAction {
                 model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type2);
             }
         }
+
+        if(sheinp1!=null&&!sheinp1.equals("0")){
+            String type3 = file3!=null && !org.apache.commons.lang.StringUtils.isBlank(
+                    file3.getOriginalFilename())?file3.getOriginalFilename().substring(
+                    file3.getOriginalFilename().lastIndexOf(".")):"";
+            if(type3.equals("") && model.getMassage_id()==null){
+                if(model.getCommunity_codes()==null){
+                    sendFailureMessage(response,"请选择图片！");
+                    return;
+                }
+            }
+            if ((!type3.equals("") && imgeArray.indexOf(type3.toUpperCase()) < 0)) {
+                sendFailureMessage(response,"文件格式错误！");
+                return;
+            }
+            if ((file3!=null && file3.getSize() > 10485760)) {
+                sendFailureMessage(response,"图片过大！");
+                return;
+            }
+            if(!type3.equals("")){
+                sjc=DateUtil.getNowPlusTimeMill();
+                path = parhstr+"aptitude"
+                        + java.io.File.separator
+                        + sjc
+                        +type3;
+                File f = new File(path);
+                // 创建文件夹
+                if (!f.exists()) {
+                    f.getParentFile().mkdirs();
+                    f.createNewFile();
+                }
+                file3.transferTo(new File(path));
+                model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type3);
+            }
+        }
+
         int num= rasteMassageService.updateByPrimaryKeySelective(model);
         if(num==1){
             jsonMap.put("code",1);

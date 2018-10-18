@@ -81,6 +81,10 @@ function updateshow(e){
             $("#lieimg1").css('background',"url("+result.data.two_bar_codes+") center center no-repeat");
             $("#lieimg1").css('background-size',"100% 100%");
 
+            $("#sheinp1").val(result.data.community_codes);
+            $("#sheimg1").css('background',"url("+result.data.community_codes+") center center no-repeat");
+            $("#sheimg1").css('background-size',"100% 100%");
+
             $("#address").val(result.data.address);
             $("#tel").val(result.data.tel);
             $("#phone").val(result.data.phone);
@@ -270,6 +274,10 @@ function imgChange(a,type,event){
     var a1="lie";
     if(a==1){
         a1="qian";
+    }else if(a==2){
+        a1="lie";
+    }else if(a==3){
+        a1="she";
     }
     $(event).attr("name","file"+a);
     function getObjectURL(file) {
@@ -286,8 +294,10 @@ function imgChange(a,type,event){
     var path = "";
     if(a==1){
         path = getObjectURL(document.getElementById("logo").files[0]);
-    }else{
+    }else if(a==2){
         path = getObjectURL(document.getElementById("two_bar_codes").files[0]);
+    }else{
+        path = getObjectURL(document.getElementById("community_codes").files[0]);
     }
     $("#"+a1+"inp"+type).val(path);
     $("#"+a1+"inp"+type).attr("name",a1+"inp");
