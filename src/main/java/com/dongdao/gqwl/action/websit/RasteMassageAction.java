@@ -219,7 +219,7 @@ public class RasteMassageAction extends BaseAction {
     //审核
     @RequestMapping("/updaterastemassage.do")
     public void updateType(RasteMassage model,@RequestParam("file1") MultipartFile file1,@RequestParam("file2") MultipartFile file2,
-                           @RequestParam("file3")MultipartFile file3,String qianinp1,String lieinp1,String sheinp1,
+                           @RequestParam("file3")MultipartFile file3,String qianinp,String lieinp,String sheinp,
                            HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         model.setUpdatetime(DateUtil.getNowPlusTime());
@@ -229,7 +229,7 @@ public class RasteMassageAction extends BaseAction {
         String imgeArray = ".BMP,.DIB,.GIF,.JFIF,.JPE,.JPEG,.JPG,.PNG,.TIF,.TIFF,.ICO";
         String sjc = "";
         String path = "";
-        if(qianinp1!=null&&!qianinp1.equals("0")){
+        if(qianinp!=null&&!qianinp.equals("0")){
             String type1 = file1!=null && !org.apache.commons.lang.StringUtils.isBlank(
                     file1.getOriginalFilename())?file1.getOriginalFilename().substring(
                     file1.getOriginalFilename().lastIndexOf(".")):"";
@@ -265,15 +265,15 @@ public class RasteMassageAction extends BaseAction {
             }
         }
         //
-        if(lieinp1!=null&&!lieinp1.equals("0")){
+        if(lieinp!=null&&!lieinp.equals("0")){
             String type2 = file2!=null && !org.apache.commons.lang.StringUtils.isBlank(
                     file2.getOriginalFilename())?file2.getOriginalFilename().substring(
                     file2.getOriginalFilename().lastIndexOf(".")):"";
             if(type2.equals("") && model.getMassage_id()==null){
-                if(model.getTwo_bar_codes()==null){
+                /*if(model.getTwo_bar_codes()==null){
                     sendFailureMessage(response,"请选择图片！");
                     return;
-                }
+                }*/
             }
             if ((!type2.equals("") && imgeArray.indexOf(type2.toUpperCase()) < 0)) {
                 sendFailureMessage(response,"文件格式错误！");
@@ -300,7 +300,7 @@ public class RasteMassageAction extends BaseAction {
             }
         }
 
-        if(sheinp1!=null&&!sheinp1.equals("0")){
+        if(sheinp!=null&&!sheinp.equals("0")){
             String type3 = file3!=null && !org.apache.commons.lang.StringUtils.isBlank(
                     file3.getOriginalFilename())?file3.getOriginalFilename().substring(
                     file3.getOriginalFilename().lastIndexOf(".")):"";

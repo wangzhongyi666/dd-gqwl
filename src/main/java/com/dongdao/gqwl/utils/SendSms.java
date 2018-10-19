@@ -46,7 +46,6 @@ public class SendSms {
         String templateId = "4496306c9e144579ad980c36edaee634"; //模板ID
 
         //必填,短信接收人号码,多个号码之间用英文逗号分隔
-         receiver = "13313011315";
 
         //选填,短信状态报告接收地址,推荐使用域名,为空或者不填表示不接收状态报告
         String statusCallBack = "zhengshizhao0706@163.com";

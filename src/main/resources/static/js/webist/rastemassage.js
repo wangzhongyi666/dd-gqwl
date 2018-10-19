@@ -84,7 +84,7 @@ function updateshow(e){
             $("#sheinp1").val(result.data.community_codes);
             $("#sheimg1").css('background',"url("+result.data.community_codes+") center center no-repeat");
             $("#sheimg1").css('background-size',"100% 100%");
-
+            $("#massage_id").val(result.data.massage_id);
             $("#address").val(result.data.address);
             $("#tel").val(result.data.tel);
             $("#phone").val(result.data.phone);
@@ -98,7 +98,7 @@ function updateshow(e){
 function updateMassage(e){
     if($("#massageform").form('validate')){
         $("#massageform").form('submit', {
-            url:'/rastemassage/addrastemassage.do',
+            url:'/rastemassage/updaterastemassage.do',
             success:function(data){
                 var c = jQuery.parseJSON(data);
                 if(c.code==1){
@@ -299,8 +299,9 @@ function imgChange(a,type,event){
     }else{
         path = getObjectURL(document.getElementById("community_codes").files[0]);
     }
+    console.log(path);
     $("#"+a1+"inp"+type).val(path);
-    $("#"+a1+"inp"+type).attr("name",a1+"inp");
+    $("#"+a1+"inp"+type).data("name",a1+"inp");
     $("#"+a1+"img"+type).css('background',"url("+path+") center center no-repeat");
     $("#"+a1+"img"+type).css('background-size',"100% 100%");
 }

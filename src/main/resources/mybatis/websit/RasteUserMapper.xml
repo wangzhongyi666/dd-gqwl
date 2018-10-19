@@ -181,4 +181,18 @@
       and tel like CONCAT('%', #{jname}, '%')
     </if>
   </select>
+
+
+  <select id="queryByToLogin" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+    select
+    <include refid="Base_Column_List" />
+    from raste_user t
+    where t.state != 2
+    <if test="pwd!=null and pwd!=''">
+      and t.pwd = #{pwd}
+    </if>
+    <if test="tel!=null and tel!=''">
+      and tel = #{tel}
+    </if>
+  </select>
 </mapper>

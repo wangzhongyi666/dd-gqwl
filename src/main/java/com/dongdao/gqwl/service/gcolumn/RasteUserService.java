@@ -17,4 +17,7 @@ public class RasteUserService<T> extends BaseService<T> {
         return rasteUserMapper;
     }
 
+    public RasteUser queryByToLogin(RasteUser user){
+        return getMapper().queryByToLogin(user);
+    }
 }

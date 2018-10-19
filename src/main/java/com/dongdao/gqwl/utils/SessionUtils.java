@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.dongdao.gqwl.bean.SysUser;
+import com.dongdao.gqwl.model.websit.RasteUser;
 import org.apache.log4j.Logger;
 
 
@@ -20,6 +21,8 @@ public final class SessionUtils {
 	protected static final Logger logger = Logger.getLogger(SessionUtils.class);
 	
 	private static final String SESSION_USER = "session_user";
+
+	private static final String SESSION_RASTE_USER = "session_raste_user";
 
 	private static final String SESSION_VALIDATECODE = "session_validatecode";//验证码
 	
@@ -38,13 +41,29 @@ public final class SessionUtils {
 	 public static void setAttr(HttpServletRequest request,String key,Object value){
 		 request.getSession(true).setAttribute(key, value);
 	 }
-	 
-	 
+
+	/**
+	 * 设置用户信息 到session
+	 * @param request
+	 * @param user
+	 */
+	public static void setRasteUser(HttpServletRequest request,RasteUser user){
+		request.getSession(true).setAttribute(SESSION_RASTE_USER, user);
+	}
+
+
+	/**
+	 * 从session中获取用户信息
+	 * @param request
+	 * @return SysUser
+	 */
+	public static RasteUser getRasteUser(HttpServletRequest request){
+		return (RasteUser)request.getSession(true).getAttribute(SESSION_RASTE_USER);
+	}
 	 /**
 	  * 获取session的值
 	  * @param request
 	  * @param key
-	  * @param value
 	  */
 	 public static Object getAttr(HttpServletRequest request,String key){
 		 return request.getSession(true).getAttribute(key);
@@ -79,7 +98,6 @@ public final class SessionUtils {
 	 }
 	/**
 	 * 获取appkey 
-	 * @param request
 	 * @return
 	 */
 	 public static String getAppKey(){//uwd1c0sxurgk1  生产环境
@@ -87,7 +105,6 @@ public final class SessionUtils {
 	 }
 	 /**
 	  * 获取appSecret
-	  * @param request
 	  * @return
 	  */
 	 public static String getAppSecret(){//3jewcY1Gw2  生产环境
@@ -115,7 +132,7 @@ public final class SessionUtils {
 	 /**
 	  * 设置验证码 到session
 	  * @param request
-	  * @param user
+	  * @param validateCode
 	  */
 	 public static void setValidateCode(HttpServletRequest request,String validateCode){
 		 request.getSession(true).setAttribute(SESSION_VALIDATECODE, validateCode);
@@ -186,7 +203,7 @@ public final class SessionUtils {
 	 /**
 	  * 获取菜单按钮
 	  * @param request
-	  * @param btnMap
+	  * @param menuUri
 	  */
 	 public static List<String> getMemuBtnListVal(HttpServletRequest request,String menuUri){ //判断登录用户是否超级管理员
 		 Map btnMap  = (Map)getAttr(request, SESSION_MENUBTN_MAP);
