@@ -74,15 +74,15 @@ function updateshow(e){
         success : function(result) {
             console.log(result.data)
             $("#qianinp1").val(result.data.logo);
-            $("#qianimg1").css('background',"url("+result.data.logo+") center center no-repeat");
+            $("#qianimg1").css('background',"url(/uploads/"+result.data.logo+") center center no-repeat");
             $("#qianimg1").css('background-size',"100% 100%");
 
             $("#lieinp1").val(result.data.two_bar_codes);
-            $("#lieimg1").css('background',"url("+result.data.two_bar_codes+") center center no-repeat");
+            $("#lieimg1").css('background',"url(/uploads/"+result.data.two_bar_codes+") center center no-repeat");
             $("#lieimg1").css('background-size',"100% 100%");
 
             $("#sheinp1").val(result.data.community_codes);
-            $("#sheimg1").css('background',"url("+result.data.community_codes+") center center no-repeat");
+            $("#sheimg1").css('background',"url(/uploads/"+result.data.community_codes+") center center no-repeat");
             $("#sheimg1").css('background-size',"100% 100%");
             $("#massage_id").val(result.data.massage_id);
             $("#address").val(result.data.address);
