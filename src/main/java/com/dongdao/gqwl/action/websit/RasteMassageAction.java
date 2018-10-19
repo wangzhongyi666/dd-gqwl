@@ -153,54 +153,20 @@ public class RasteMassageAction extends BaseAction {
             sendFailureMessage(response,"图片过大！");
             return;
         }
-        String sjc = "";
-        String path = "";
+        String picpath = "";
         if(!type1.equals("")){
-            sjc=DateUtil.getNowPlusTimeMill();
-            path = parhstr+"aptitude"
-                    + java.io.File.separator
-                    + sjc
-                    +type1;
-            File f = new File(path);
-            // 创建文件夹
-            if (!f.exists()) {
-                f.getParentFile().mkdirs();
-                f.createNewFile();
-            }
-            file1.transferTo(new File(path));
-            model.setLogo(UserConstants.CRMURL + "aptitude/"+ sjc + type1);
+            picpath =uploadFile("rastemassage",file1,request);
+            model.setLogo(picpath);
         }
 
         if(!type2.equals("")){
-            sjc=DateUtil.getNowPlusTimeMill();
-            path = parhstr+"aptitude"
-                    + java.io.File.separator
-                    + sjc
-                    +type2;
-            File f = new File(path);
-            // 创建文件夹
-            if (!f.exists()) {
-                f.getParentFile().mkdirs();
-                f.createNewFile();
-            }
-            file2.transferTo(new File(path));
-            model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type2);
+            picpath=uploadFile("rastemassage",file2,request);
+            model.setTwo_bar_codes(picpath);
         }
 
         if(!type3.equals("")){
-            sjc=DateUtil.getNowPlusTimeMill();
-            path = parhstr+"aptitude"
-                    + java.io.File.separator
-                    + sjc
-                    +type3;
-            File f = new File(path);
-            // 创建文件夹
-            if (!f.exists()) {
-                f.getParentFile().mkdirs();
-                f.createNewFile();
-            }
-            file3.transferTo(new File(path));
-            model.setCommunity_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type3);
+            picpath=uploadFile("rastemassage",file3,request);
+            model.setCommunity_codes(picpath);
         }
 
         int num= rasteMassageService.insertSelective(model);
@@ -248,20 +214,10 @@ public class RasteMassageAction extends BaseAction {
                 sendFailureMessage(response,"图片过大！");
                 return;
             }
+            String picpath = "";
             if(!type1.equals("")){
-                sjc=DateUtil.getNowPlusTimeMill();
-                path = parhstr+"aptitude"
-                        + java.io.File.separator
-                        + sjc
-                        +type1;
-                File f = new File(path);
-                // 创建文件夹
-                if (!f.exists()) {
-                    f.getParentFile().mkdirs();
-                    f.createNewFile();
-                }
-                file1.transferTo(new File(path));
-                model.setLogo(UserConstants.CRMURL + "aptitude/"+ sjc + type1);
+                picpath =uploadFile("rastemassage",file1,request);
+                model.setLogo(picpath);
             }
         }
         //
@@ -283,20 +239,10 @@ public class RasteMassageAction extends BaseAction {
                 sendFailureMessage(response,"图片过大！");
                 return;
             }
+            String picpath = "";
             if(!type2.equals("")){
-                sjc=DateUtil.getNowPlusTimeMill();
-                path = parhstr+"aptitude"
-                        + java.io.File.separator
-                        + sjc
-                        +type2;
-                File f = new File(path);
-                // 创建文件夹
-                if (!f.exists()) {
-                    f.getParentFile().mkdirs();
-                    f.createNewFile();
-                }
-                file2.transferTo(new File(path));
-                model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type2);
+                picpath =uploadFile("rastemassage",file2,request);
+                model.setTwo_bar_codes(picpath);
             }
         }
 
@@ -318,20 +264,10 @@ public class RasteMassageAction extends BaseAction {
                 sendFailureMessage(response,"图片过大！");
                 return;
             }
+            String picpath = "";
             if(!type3.equals("")){
-                sjc=DateUtil.getNowPlusTimeMill();
-                path = parhstr+"aptitude"
-                        + java.io.File.separator
-                        + sjc
-                        +type3;
-                File f = new File(path);
-                // 创建文件夹
-                if (!f.exists()) {
-                    f.getParentFile().mkdirs();
-                    f.createNewFile();
-                }
-                file3.transferTo(new File(path));
-                model.setTwo_bar_codes(UserConstants.CRMURL + "aptitude/"+ sjc + type3);
+                picpath =uploadFile("rastemassage",file3,request);
+                model.setCommunity_codes(picpath);
             }
         }
 
