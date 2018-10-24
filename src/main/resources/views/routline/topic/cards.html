@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>我的一公里</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/routline/topic/cards.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script type="text/javascript" src="../../static/js/commons/laydate/laydate.js"></script>
+
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+
+    $(function () {
+        laydate.render({
+            elem: '#creattime'
+        })
+
+        var felObj=$('#topid');
+        $.get('/cards/querytype.do', {},
+            function(data) {
+                var data=data.topic;
+                for (var i = 0; i < data.length; i++) {
+                    var value = data[i].topid;
+                    var text = data[i].title;
+                    felObj.append("<option value='"+value+"'>" + text
+                        + "</option>");
+
+                }
+            });
+
+        $(".pagebtn").on('click', function () {
+            $(".active").removeClass("active");
+            $(this).parent().addClass("active");
+            alert($(this).text() + "," + $('#pageSizeInp').val());
+            getlist($(this).text(), $('#pageSizeInp').val());
+        });
+
+    })
+    function getlist(pageNum,pageSize){
+      /*  // <![CDATA
+        var menus = [[${menuList}]];
+        alert(menus);
+        // ]]>*/
+
+        var isdeletes="/cards/deletecards.do";
+        var isupdate="/cards/updatecards.do";
+        var ispass="/cards/passcards.do";
+        var purvdelete = isPurview(isdeletes);
+        console.log("==========================")
+        console.log(purvdelete)
+        var purvupdate = isPurview(isupdate);
+        var purvpass = isPurview(ispass);
+        var purvdelete = isPurview(isdeletes);
+        var creattime=$("#creattime").val();
+        var topid=$("#topid").val();
+            $.ajax({
+            url :'/cards/cardsDataList.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                creattime:creattime,
+                topid:topid,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=[];
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=[];
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            if(row.toptitle!=null&row.toptitle!=undefined){
+                                rowlist1[0]=row.toptitle;
+                            }else{
+                                rowlist1[0]="没有话题";
+                            }
+                            rowlist1[1]=row.name;
+                            /*rowlist1[2]=row.n_sort;*/
+                            if(row.ispass==1){
+                                rowlist1[2]="已审核";
+                            }else if(row.ispass==0){
+                                rowlist1[2]="未审核";
+                            }
+                            rowlist1[3]=row.creattime;
+                            rowlist1[4]=row.zannums;
+                            rowlist1[5]=row.sharenums;
+                            rowlist1[6]=row.commnums;
+                            if(row.isdelete==1){
+                                rowlist1[7]="正常";
+                            }else if(row.isdelete==0){
+                                rowlist1[7]="已回收";
+                            }
+                            rowlist1[8] = "";
+                            if(purvupdate){
+                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">查看内容</a>";
+                            }if(purvdelete){
+                                if(row.isdelete==1){
+                                    rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">回收</a>";
+                                }else if(row.isdelete==0){
+                                    rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">还原</a>";
+                                }
+                            }if(purvpass&&row.ispass==0){
+                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">审核</a>";
+
+                            }else if(purvpass&&row.ispass==1){
+                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                            }
+
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                            rowlist1[5]='';
+                            rowlist1[6]='';
+                            rowlist1[7]='';
+                            rowlist1[8]='';
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"picDataList");
+            }
+        });
+    }
+    function opentabs(e) {
+        var id = $(e).attr("a1");
+        shadboxFun1('add');
+        $.ajax({
+            url :'/cards/selectcon.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                cardid:id
+            },
+            async: false,
+            success : function(result) {
+              console.log(result);
+              $('#c_content').val(result.card.c_content);
+                var picitems="";
+              if(result.card.type==1){
+                  for(var i=0;i<result.cardcon.length;i++){
+                      picitems+='<i >\n' +
+                          '<div class="uploadImg1">\n' +
+                          '<input  class="webfile" name="file1" id="logo" onchange="imgChange(1,1,this)" size="1" />\n' +
+                          '<em id="qianimg'+i+'"></em>\n' +
+                          '<input id="qianinp1" name="qianinp" type="hidden"/>\n' +
+                          '</div>\n' +
+                          '</i>';
+                      console.log("#qianimg"+i)
+
+                  }
+                  $('#myfile').html(picitems);
+                  for(var i=0;i<result.cardcon.length;i++){
+                      $("#qianimg"+i).css('background',"url(/uploads/"+result.cardcon[i].filepath+") center center no-repeat");
+                      $("#qianimg"+i).css('background-size',"100% 100%");
+                  }
+              }else if(result.card.type==2){
+                  picitems+='<video width="320" height="240" controls>\n' +
+                      '  <source src=\'/FTP/'+result.cardcon[0].filepath+'\' type="video/mp4">\n' +
+                      '  <object data=\'/FTP/'+result.cardcon[0].filepath+'\' width="320" height="240">\n' +
+                      '  </object> \n' +
+                      '</video>';
+                  $('#myfile').html(picitems);
+              }
+
+            }
+    });
+
+    }
+
+</script>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">我的一公里</div>
+        <div class="search">
+        	<div class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+
+                        <label class="col-md-1 control-label">话题</label>
+                        <div class="col-md-2">
+                            <select class="form-control" id="topid" name="topid">
+                                <option value="">-请选择-</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 search_list">
+                            <input  type="text" class="form-control laydate-icon" placeholder="上传时间" id="creattime" name="creattime"/>
+                            <span  class="fa fa-search"></span>
+                        </div>
+
+                        <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                    </div>
+
+                </form>
+            </div>
+
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+                <thead>
+                <tr>
+
+                    <th style="width: 170px;">话题</th>
+                    <th style="width: 170px;">发布人</th>
+                    <th style="width: 170px;">是否审核</th>
+                    <th style="width: 170px;">发布时间</th>
+                    <th style="width: 170px;">点赞数</th>
+                    <th style="width: 170px;">分享数</th>
+                    <th style="width: 170px;">评论数</th>
+                    <th style="width: 170px;">回收状态</th>
+                    <th style="width: 170px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="picDataList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+    <!--弹出框-->
+
+    <div class="popbox-container">
+        <div class="popbox-overlay"></div>
+        <div class="popbox-wrapper safebox" id="add">
+            <div style="width:500px;min-width:580px;min-height:460px;">
+                <div class="safe_nav">
+                    <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                    <span class="fontS16">一公里内容</span>
+                </div>
+                <div class="detail_box">
+                    <ul class="addbox pb60">
+                        <!--<div id="androiddiv">-->
+                        <form id="massageform"  enctype='multipart/form-data'  class='ui-form' method='post'>
+                            <input name="cardid" id="cardid" type="hidden"/>
+
+                            <li style="float:left;">
+                                <textarea rows="3" style="width:450px;height: 50px" name="c_content" id="c_content" class="txt txt1" type="text"></textarea>
+                            </li>
+                            <li id="myfile" style="text-align:center;overflow-x:auto;width: 450px">
+
+
+
+                            </li>
+
+
+
+                        </form>
+                        <!--</div>-->
+                        <!--<li style="margin-left:140px;float:left;">
+                            <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="updateMassage()" id="updatemassage"value="确定"/>
+                            &lt;!&ndash;<input style="width:160px;" class="btn btn-warning btn-lg btn-radius mr10" type="submit" onclick="qxApp()" value="取消"/>&ndash;&gt;
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function isPurview(btnUrl){
+        var btn = $("#ifWd",parent.document).attr("src");
+        var btnsUrl = [[${session.session_menubtn_map}]];
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+
+    /*]]>*/
+
+
+</script>
+</html>

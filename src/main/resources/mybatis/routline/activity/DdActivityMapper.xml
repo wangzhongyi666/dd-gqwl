@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.routline.activity.DdActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.routline.activity.DdActivity" >
+    <id column="actid" property="actid" jdbcType="BIGINT" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="begintime" property="begintime" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="VARCHAR" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="award" property="award" jdbcType="VARCHAR" />
+    <result column="adescript" property="adescript" jdbcType="VARCHAR" />
+    <result column="maxinter" property="maxinter" jdbcType="INTEGER" />
+    <result column="allinter" property="allinter" jdbcType="INTEGER" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="a_audit" property="a_audit" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    actid, picpath, begintime, endtime, rule, award, adescript, maxinter, allinter, ispass, 
+    isdelete, a_audit, creattime, updatetime, filed1, filed2
+  </sql>
+
+  <!-- 后台查找总数 -->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity">
+    select
+    count(*)
+    from dd_activity
+    where
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+
+    isdelete = 1
+  </select>
+
+  <!-- 后台分页queryByList -->
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity">
+    select
+    * from dd_activity
+    where
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+
+    isdelete=1 order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_activity
+    where actid = #{actid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_activity
+    where actid = #{actid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity" >
+    insert into dd_activity (actid, picpath, begintime, 
+      endtime, rule, award, 
+      adescript, maxinter, allinter, 
+      ispass, isdelete, a_audit, 
+      creattime, updatetime, filed1, 
+      filed2)
+    values (#{actid,jdbcType=BIGINT}, #{picpath,jdbcType=VARCHAR}, #{begintime,jdbcType=VARCHAR}, 
+      #{endtime,jdbcType=VARCHAR}, #{rule,jdbcType=VARCHAR}, #{award,jdbcType=VARCHAR}, 
+      #{adescript,jdbcType=VARCHAR}, #{maxinter,jdbcType=INTEGER}, #{allinter,jdbcType=INTEGER}, 
+      #{ispass,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, #{a_audit,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{filed1,jdbcType=VARCHAR}, 
+      #{filed2,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity" >
+    insert into dd_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actid != null" >
+        actid,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="begintime != null" >
+        begintime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="rule != null" >
+        rule,
+      </if>
+      <if test="award != null" >
+        award,
+      </if>
+      <if test="adescript != null" >
+        adescript,
+      </if>
+      <if test="maxinter != null" >
+        maxinter,
+      </if>
+      <if test="allinter != null" >
+        allinter,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="a_audit != null" >
+        a_audit,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actid != null" >
+        #{actid,jdbcType=BIGINT},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="begintime != null" >
+        #{begintime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null" >
+        #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="award != null" >
+        #{award,jdbcType=VARCHAR},
+      </if>
+      <if test="adescript != null" >
+        #{adescript,jdbcType=VARCHAR},
+      </if>
+      <if test="maxinter != null" >
+        #{maxinter,jdbcType=INTEGER},
+      </if>
+      <if test="allinter != null" >
+        #{allinter,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="a_audit != null" >
+        #{a_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity" >
+    update dd_activity
+    <set >
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="begintime != null" >
+        begintime = #{begintime,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null" >
+        rule = #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="award != null" >
+        award = #{award,jdbcType=VARCHAR},
+      </if>
+      <if test="adescript != null" >
+        adescript = #{adescript,jdbcType=VARCHAR},
+      </if>
+      <if test="maxinter != null" >
+        maxinter = #{maxinter,jdbcType=INTEGER},
+      </if>
+      <if test="allinter != null" >
+        allinter = #{allinter,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="a_audit != null" >
+        a_audit = #{a_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=INTEGER},
+      </if>
+    </set>
+    where actid = #{actid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.routline.activity.DdActivity" >
+    update dd_activity
+    set picpath = #{picpath,jdbcType=VARCHAR},
+      begintime = #{begintime,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=VARCHAR},
+      rule = #{rule,jdbcType=VARCHAR},
+      award = #{award,jdbcType=VARCHAR},
+      adescript = #{adescript,jdbcType=VARCHAR},
+      maxinter = #{maxinter,jdbcType=INTEGER},
+      allinter = #{allinter,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      a_audit = #{a_audit,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=INTEGER}
+    where actid = #{actid,jdbcType=BIGINT}
+  </update>
+</mapper>

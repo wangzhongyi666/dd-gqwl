@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.routline.topic.DdCardsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    <id column="cardid" property="cardid" jdbcType="BIGINT" />
+    <result column="topid" property="topid" jdbcType="BIGINT" />
+    <result column="r_uid" property="r_uid" jdbcType="BIGINT" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="commnums" property="commnums" jdbcType="INTEGER" />
+    <result column="zannums" property="zannums" jdbcType="INTEGER" />
+    <result column="sharenums" property="sharenums" jdbcType="INTEGER" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="filed2" property="filed2" jdbcType="VARCHAR" />
+    <result column="filed3" property="filed3" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.dongdao.gqwl.model.routline.topic.DdCards" extends="BaseResultMap" >
+    <result column="c_content" property="c_content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cardid, topid, r_uid, openid, creattime, commnums, zannums, sharenums, ispass, isdelete, 
+    type, filed1, filed2, filed3,c_content
+  </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards"  resultMap="BaseResultMap">
+    select dd_cards.*,dd_topic.title as toptitle,raste_user.name from dd_cards
+    left join dd_topic on dd_cards.topid=dd_topic.topid
+    left join raste_user on dd_cards.r_uid=raste_user.id
+    where
+    <!--<if test="title!=null and title!=''">
+      dd_cards.title like  CONCAT('%', #{title}, '%') and
+    </if>-->
+    <if test="topid!= null and topid!=''">
+      dd_cards.topid = #{topid,jdbcType=BIGINT} and
+    </if>
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      dd_cards.creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    dd_cards.isdelete=1 or dd_cards.isdelete=0
+    order by dd_cards.creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    select count(0) from dd_cards
+    where
+   <!-- <if test="title!=null and title!=''">
+      title  like  CONCAT('%', #{title}, '%') and
+    </if>-->
+    <if test="topid!= null and topid!=''">
+      topid = #{topid,jdbcType=BIGINT} and
+    </if>
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    isdelete=1 or isdelete=0
+  </select>
+
+
+  <!--查询话题-->
+  <select id="queryType" resultType="com.dongdao.gqwl.model.routline.topic.DdTopic"   >
+    select topid,title from dd_topic order by t_sort desc
+  </select>
+
+
+  <!--查询话题-->
+  <select id="selectCfile"  parameterType="java.lang.Long"  resultType="com.dongdao.gqwl.model.routline.topic.DdCardcon"   >
+    select filepath  from dd_cardcon where cardid=#{cardid}
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_cards
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_cards
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    insert into dd_cards (cardid, topid, r_uid, 
+      openid, creattime, commnums, 
+      zannums, sharenums, ispass, 
+      isdelete, type, filed1, 
+      filed2, filed3, c_content
+      )
+    values (#{cardid,jdbcType=BIGINT}, #{topid,jdbcType=BIGINT}, #{r_uid,jdbcType=BIGINT}, 
+      #{openid,jdbcType=VARCHAR}, #{creattime,jdbcType=VARCHAR}, #{commnums,jdbcType=INTEGER}, 
+      #{zannums,jdbcType=INTEGER}, #{sharenums,jdbcType=INTEGER}, #{ispass,jdbcType=INTEGER}, 
+      #{isdelete,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{filed1,jdbcType=VARCHAR}, 
+      #{filed2,jdbcType=VARCHAR}, #{filed3,jdbcType=INTEGER}, #{c_content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    insert into dd_cards
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cardid != null" >
+        cardid,
+      </if>
+      <if test="topid != null" >
+        topid,
+      </if>
+      <if test="r_uid != null" >
+        r_uid,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="commnums != null" >
+        commnums,
+      </if>
+      <if test="zannums != null" >
+        zannums,
+      </if>
+      <if test="sharenums != null" >
+        sharenums,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+      <if test="filed3 != null" >
+        filed3,
+      </if>
+      <if test="c_content != null" >
+        c_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cardid != null" >
+        #{cardid,jdbcType=BIGINT},
+      </if>
+      <if test="topid != null" >
+        #{topid,jdbcType=BIGINT},
+      </if>
+      <if test="r_uid != null" >
+        #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="commnums != null" >
+        #{commnums,jdbcType=INTEGER},
+      </if>
+      <if test="zannums != null" >
+        #{zannums,jdbcType=INTEGER},
+      </if>
+      <if test="sharenums != null" >
+        #{sharenums,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=VARCHAR},
+      </if>
+      <if test="filed3 != null" >
+        #{filed3,jdbcType=INTEGER},
+      </if>
+      <if test="c_content != null" >
+        #{c_content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    update dd_cards
+    <set >
+      <if test="topid != null" >
+        topid = #{topid,jdbcType=BIGINT},
+      </if>
+      <if test="r_uid != null" >
+        r_uid = #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="commnums != null" >
+        commnums = #{commnums,jdbcType=INTEGER},
+      </if>
+      <if test="zannums != null" >
+        zannums = #{zannums,jdbcType=INTEGER},
+      </if>
+      <if test="sharenums != null" >
+        sharenums = #{sharenums,jdbcType=INTEGER},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=VARCHAR},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=VARCHAR},
+      </if>
+      <if test="filed3 != null" >
+        filed3 = #{filed3,jdbcType=INTEGER},
+      </if>
+      <if test="c_content != null" >
+        c_content = #{c_content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    update dd_cards
+    set topid = #{topid,jdbcType=BIGINT},
+      r_uid = #{r_uid,jdbcType=BIGINT},
+      openid = #{openid,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      commnums = #{commnums,jdbcType=INTEGER},
+      zannums = #{zannums,jdbcType=INTEGER},
+      sharenums = #{sharenums,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=VARCHAR},
+      filed3 = #{filed3,jdbcType=INTEGER},
+      c_content = #{c_content,jdbcType=LONGVARCHAR}
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    update dd_cards
+    set topid = #{topid,jdbcType=BIGINT},
+      r_uid = #{r_uid,jdbcType=BIGINT},
+      openid = #{openid,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      commnums = #{commnums,jdbcType=INTEGER},
+      zannums = #{zannums,jdbcType=INTEGER},
+      sharenums = #{sharenums,jdbcType=INTEGER},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      filed1 = #{filed1,jdbcType=VARCHAR},
+      filed2 = #{filed2,jdbcType=VARCHAR},
+      filed3 = #{filed3,jdbcType=INTEGER}
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </update>
+</mapper>
