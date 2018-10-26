@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.routline.topic.DdTopicMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    <id column="topid" property="topid" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="picpath" property="picpath" jdbcType="VARCHAR" />
+    <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
+    <result column="topupdatetime" property="topupdatetime" jdbcType="VARCHAR" />
+    <result column="t_content" property="t_content" jdbcType="VARCHAR" />
+    <result column="onlooks" property="onlooks" jdbcType="INTEGER" />
+    <result column="joinnums" property="joinnums" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="t_audit" property="t_audit" jdbcType="VARCHAR" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="t_sort" property="t_sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    topid, title, picpath, subtitle, topupdatetime, t_content, onlooks, joinnums, creattime, 
+    updatetime, t_audit, ispass, isdelete, t_sort
+  </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic"  resultMap="BaseResultMap">
+    select * from dd_topic
+    where
+    <if test="title!=null and title!=''">
+      title like  CONCAT('%', #{title}, '%') and
+    </if>
+
+    isdelete=1
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    select count(0) from dd_topic
+    where
+    <if test="title!=null and title!=''">
+      title  like  CONCAT('%', #{title}, '%') and
+    </if>
+
+   isdelete=1
+  </select>
+
+
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_topic
+    where topid = #{topid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_topic
+    where topid = #{topid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    insert into dd_topic (topid, title, picpath, 
+      subtitle, topupdatetime, t_content, 
+      onlooks, joinnums, creattime, 
+      updatetime, t_audit, ispass, 
+      isdelete, t_sort)
+    values (#{topid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, 
+      #{subtitle,jdbcType=VARCHAR}, #{topupdatetime,jdbcType=VARCHAR}, #{t_content,jdbcType=VARCHAR}, 
+      #{onlooks,jdbcType=INTEGER}, #{joinnums,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=VARCHAR}, #{t_audit,jdbcType=VARCHAR}, #{ispass,jdbcType=INTEGER}, 
+      #{isdelete,jdbcType=INTEGER}, #{t_sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    insert into dd_topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topid != null" >
+        topid,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="picpath != null" >
+        picpath,
+      </if>
+      <if test="subtitle != null" >
+        subtitle,
+      </if>
+      <if test="topupdatetime != null" >
+        topupdatetime,
+      </if>
+      <if test="t_content != null" >
+        t_content,
+      </if>
+      <if test="onlooks != null" >
+        onlooks,
+      </if>
+      <if test="joinnums != null" >
+        joinnums,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="t_audit != null" >
+        t_audit,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="t_sort != null" >
+        t_sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topid != null" >
+        #{topid,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topupdatetime != null" >
+        #{topupdatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="t_content != null" >
+        #{t_content,jdbcType=VARCHAR},
+      </if>
+      <if test="onlooks != null" >
+        #{onlooks,jdbcType=INTEGER},
+      </if>
+      <if test="joinnums != null" >
+        #{joinnums,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="t_audit != null" >
+        #{t_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="t_sort != null" >
+        #{t_sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    update dd_topic
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="picpath != null" >
+        picpath = #{picpath,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        subtitle = #{subtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topupdatetime != null" >
+        topupdatetime = #{topupdatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="t_content != null" >
+        t_content = #{t_content,jdbcType=VARCHAR},
+      </if>
+      <if test="onlooks != null" >
+        onlooks = #{onlooks,jdbcType=INTEGER},
+      </if>
+      <if test="joinnums != null" >
+        joinnums = #{joinnums,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="t_audit != null" >
+        t_audit = #{t_audit,jdbcType=VARCHAR},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="t_sort != null" >
+        t_sort = #{t_sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where topid = #{topid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    update dd_topic
+    set title = #{title,jdbcType=VARCHAR},
+      picpath = #{picpath,jdbcType=VARCHAR},
+      subtitle = #{subtitle,jdbcType=VARCHAR},
+      topupdatetime = #{topupdatetime,jdbcType=VARCHAR},
+      t_content = #{t_content,jdbcType=VARCHAR},
+      onlooks = #{onlooks,jdbcType=INTEGER},
+      joinnums = #{joinnums,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      t_audit = #{t_audit,jdbcType=VARCHAR},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      t_sort = #{t_sort,jdbcType=INTEGER}
+    where topid = #{topid,jdbcType=BIGINT}
+  </update>
+</mapper>

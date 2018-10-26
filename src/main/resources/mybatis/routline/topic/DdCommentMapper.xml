@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.routline.topic.DdCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    <id column="commentid" property="commentid" jdbcType="BIGINT" />
+    <result column="r_uid" property="r_uid" jdbcType="BIGINT" />
+    <result column="to_userid" property="to_userid" jdbcType="BIGINT" />
+    <result column="parentid" property="parentid" jdbcType="BIGINT" />
+    <result column="cardid" property="cardid" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="ispass" property="ispass" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+
+    <result column="c_content" property="c_content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    commentid, r_uid, to_userid, parentid, cardid, type, creattime, ispass, isdelete, c_content
+  </sql>
+
+
+  <select id="queryByList" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment"  resultMap="BaseResultMap">
+    select dd_comment.* , raste_user.name from dd_comment
+    left join raste_user on dd_comment.r_uid=raste_user.id
+    where
+    <if test="c_content!=null and c_content!=''">
+      dd_comment.c_content  like  CONCAT('%', #{c_content}, '%') and
+    </if>
+
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      dd_comment.creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    dd_comment.isdelete=1
+    order by dd_comment.creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+
+  </select>
+
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    select count(0) from dd_comment
+    where
+     <if test="c_content!=null and c_content!=''">
+       c_content  like  CONCAT('%', #{c_content}, '%') and
+     </if>
+
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    isdelete=1
+  </select>
+
+
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_comment
+    where commentid = #{commentid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_comment
+    where commentid = #{commentid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    insert into dd_comment (commentid, r_uid, to_userid, 
+      parentid, cardid, type, 
+      creattime, ispass, isdelete, 
+      c_content)
+    values (#{commentid,jdbcType=BIGINT}, #{r_uid,jdbcType=BIGINT}, #{to_userid,jdbcType=BIGINT}, 
+      #{parentid,jdbcType=BIGINT}, #{cardid,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{creattime,jdbcType=VARCHAR}, #{ispass,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, 
+      #{c_content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    insert into dd_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentid != null" >
+        commentid,
+      </if>
+      <if test="r_uid != null" >
+        r_uid,
+      </if>
+      <if test="to_userid != null" >
+        to_userid,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="cardid != null" >
+        cardid,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="ispass != null" >
+        ispass,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="c_content != null" >
+        c_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentid != null" >
+        #{commentid,jdbcType=BIGINT},
+      </if>
+      <if test="r_uid != null" >
+        #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="to_userid != null" >
+        #{to_userid,jdbcType=BIGINT},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=BIGINT},
+      </if>
+      <if test="cardid != null" >
+        #{cardid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="ispass != null" >
+        #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="c_content != null" >
+        #{c_content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    update dd_comment
+    <set >
+      <if test="r_uid != null" >
+        r_uid = #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="to_userid != null" >
+        to_userid = #{to_userid,jdbcType=BIGINT},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=BIGINT},
+      </if>
+      <if test="cardid != null" >
+        cardid = #{cardid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="ispass != null" >
+        ispass = #{ispass,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="c_content != null" >
+        c_content = #{c_content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where commentid = #{commentid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    update dd_comment
+    set r_uid = #{r_uid,jdbcType=BIGINT},
+      to_userid = #{to_userid,jdbcType=BIGINT},
+      parentid = #{parentid,jdbcType=BIGINT},
+      cardid = #{cardid,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      c_content = #{c_content,jdbcType=LONGVARCHAR}
+    where commentid = #{commentid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment" >
+    update dd_comment
+    set r_uid = #{r_uid,jdbcType=BIGINT},
+      to_userid = #{to_userid,jdbcType=BIGINT},
+      parentid = #{parentid,jdbcType=BIGINT},
+      cardid = #{cardid,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      ispass = #{ispass,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where commentid = #{commentid,jdbcType=BIGINT}
+  </update>
+</mapper>

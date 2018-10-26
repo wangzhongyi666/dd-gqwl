@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>评论管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/routline/topic/comment.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script type="text/javascript" src="../../static/js/commons/laydate/laydate.js"></script>
+
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+
+    $(function () {
+        laydate.render({
+            elem: '#creattime'
+        })
+
+        $(".pagebtn").on('click', function () {
+            $(".active").removeClass("active");
+            $(this).parent().addClass("active");
+            alert($(this).text() + "," + $('#pageSizeInp').val());
+            getlist($(this).text(), $('#pageSizeInp').val());
+        });
+
+    })
+    function getlist(pageNum,pageSize){
+      /*  // <![CDATA
+        var menus = [[${menuList}]];
+        alert(menus);
+        // ]]>*/
+
+        var isdeletes="/comment/deletecomment.do";
+        var ispass="/comment/passcomment.do";
+        var purvdelete = isPurview(isdeletes);
+        console.log("==========================")
+        console.log(purvdelete)
+        var purvpass = isPurview(ispass);
+        var purvdelete = isPurview(isdeletes);
+        var creattime=$("#creattime").val();
+        var c_content=$('#c_content').val();
+            $.ajax({
+            url :'/comment/commentDataList.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                creattime:creattime,
+                c_content:c_content,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=[];
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=[];
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            rowlist1[0]=row.name;
+                            rowlist1[1]=row.c_content;
+                            /*rowlist1[2]=row.n_sort;*/
+                            if(row.ispass==1){
+                                rowlist1[2]="已审核";
+                            }else if(row.ispass==0){
+                                rowlist1[2]="未审核";
+                            }
+
+                            rowlist1[3]=row.creattime;
+                            if(row.type==1){
+                                rowlist1[4]="一级评论";
+                            }else if(row.type==0){
+                                rowlist1[4]="二级分类";
+                            }
+
+
+                            rowlist1[5] = "";
+                           if(purvdelete){
+                                if(row.isdelete==1){
+                                    rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.commentid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+                                }else if(row.isdelete==0){
+                                    rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.commentid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">还原</a>";
+                                }
+                            }if(purvpass&&row.ispass==0){
+                                rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.commentid+" a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcomment(this)\" class=\"text-primary ml10\">审核</a>";
+
+                            }else if(purvpass&&row.ispass==1){
+                                rowlist1[5]+="<a href=\"javascript:void(0)\" a1="+row.commentid+"  a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcomment(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                            }
+
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                            rowlist1[5]='';
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"picDataList");
+            }
+        });
+    }
+
+
+</script>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">评论管理</div>
+        <div class="search">
+        	<div class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+
+
+                        <div class="col-md-3 search_list">
+                            <input  type="text" class="form-control laydate-icon" placeholder="评论时间" id="creattime" name="creattime"/>
+                            <span  class="fa fa-search"></span>
+                        </div>
+                        <div class="col-md-3 search_list">
+                            <input  type="text" class="form-control laydate-icon" placeholder="评论内容关键字" id="c_content" />
+                            <span  class="fa fa-search"></span>
+                        </div>
+                        <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                    </div>
+
+                </form>
+            </div>
+
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+                <thead>
+                <tr>
+
+                    <th style="width: 170px;">发布人</th>
+                    <th style="width: 170px;">评论内容</th>
+                    <th style="width: 170px;">是否审核</th>
+                    <th style="width: 170px;">评论时间</th>
+                    <th style="width: 170px;">评论等级</th>
+                    <th style="width: 170px;">操作</th>
+                </tr>
+                </thead>
+                <tbody id="picDataList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function isPurview(btnUrl){
+        var btn = $("#ifWd",parent.document).attr("src");
+        var btnsUrl = [[${session.session_menubtn_map}]];
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+
+    /*]]>*/
+
+
+</script>
+</html>
