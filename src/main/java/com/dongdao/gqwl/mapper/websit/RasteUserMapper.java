@@ -17,4 +17,7 @@ public interface RasteUserMapper<T> extends BaseMapper {
     int updateByPrimaryKey(RasteUser record);
 
     RasteUser queryByToLogin(RasteUser user);
+
+    Integer updateByWxIdent(RasteUser user);
+
 }

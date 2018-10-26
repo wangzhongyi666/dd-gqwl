@@ -1924,6 +1924,15 @@ public class DateUtil
 	}
 
 	/**
+	 * 对输入的日期字符串按照默认的格式yyyy-MM-dd转换.
+	 * @param strDate String 需要进行格式化的日期字符串
+	 * @return String 经过格式化后的字符串
+	 */
+	public static String getFormattedMD(String strDate)
+	{
+		return getFormattedDate(strDate, "MM月dd日");
+	}
+	/**
 	 * 对输入的日期字符串进行格式化,如果输入的是0000/00/00 00:00:00则返回空串.
 	 * @param strDate String 需要进行格式化的日期字符串
 	 * @param strFormatTo String 要转换的日期格式

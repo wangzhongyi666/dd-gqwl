@@ -1,8 +1,6 @@
 package com.dongdao.gqwl.service.gcolumn;
 
-import com.dongdao.gqwl.mapper.websit.GSeoMapper;
 import com.dongdao.gqwl.mapper.websit.RasteUserMapper;
-import com.dongdao.gqwl.model.websit.GSeo;
 import com.dongdao.gqwl.model.websit.RasteUser;
 import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +17,9 @@ public class RasteUserService<T> extends BaseService<T> {
 
     public RasteUser queryByToLogin(RasteUser user){
         return getMapper().queryByToLogin(user);
+    }
+
+    public Integer updateByWxIdent(RasteUser user){
+        return getMapper().updateByWxIdent(user);
     }
 }

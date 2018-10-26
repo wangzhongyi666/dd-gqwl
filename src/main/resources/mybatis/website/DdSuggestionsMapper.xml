@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.DdSuggestionsMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.DdSuggestions" >
+    <id column="suggestion_id" property="suggestion_id" jdbcType="INTEGER" />
+    <result column="user_id" property="user_id" jdbcType="INTEGER" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="wx_ident" property="wx_ident" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    suggestion_id, user_id, suggestion, t.createtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_suggestions t
+    where suggestion_id = #{suggestion_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_suggestions
+    where suggestion_id = #{suggestion_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    insert into dd_suggestions (suggestion_id, user_id, suggestion, 
+      createtime)
+    values (#{suggestion_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{suggestion,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    insert into dd_suggestions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="suggestion_id != null" >
+        suggestion_id,
+      </if>
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="suggestion_id != null" >
+        #{suggestion_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    update dd_suggestions
+    <set >
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="suggestion != null" >
+        suggestion = #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where suggestion_id = #{suggestion_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    update dd_suggestions
+    set user_id = #{user_id,jdbcType=INTEGER},
+      suggestion = #{suggestion,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR}
+    where suggestion_id = #{suggestion_id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    select
+    <include refid="Base_Column_List" />,u.wx_ident
+    from dd_suggestions t left join raste_user u on u.id = t.user_id
+    where 1=1
+    <if test="createtime != null and createtime != ''" >
+       and t.createtime = #{createtime}
+    </if>
+    order by t.createtime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
+    select count(0) from dd_suggestions t
+    where 1=1
+    <if test="createtime != null and createtime != ''" >
+      and t.createtime = #{createtime}
+    </if>
+  </select>
+
+</mapper>

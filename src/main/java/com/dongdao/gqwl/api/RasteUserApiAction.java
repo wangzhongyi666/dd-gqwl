@@ -215,4 +215,213 @@ public class RasteUserApiAction extends BaseAction {
             return setFailureMap(jsonMap, "注册失败！", null);
         }
     }
+
+
+
+    //验证微信号是否存在
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/is_exist.json")
+    public Map<String, Object> isExist(String wx_ident,
+                                         HttpServletRequest request, HttpServletResponse response) throws Exception{
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            if(StringUtils.isBlank(wx_ident)){
+                return setFailureMap(jsonMap, "账号不能为空", null);
+            }
+            RasteUser user = new RasteUser();
+            user.setWx_ident(wx_ident);
+            RasteUser user1 = rasteUserService.queryByToLogin(user);
+            if(user1==null){
+
+                jsonMap.put("is_exist",0);
+                return setSuccessMap(jsonMap, "操作成功", null);
+            }else{
+                jsonMap.put("is_exist",1);
+                return setSuccessMap(jsonMap, "操作成功！", null);
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+    }
+
+    //小程序授权
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/registerWx.json")
+    public Map<String, Object> registerWx(String wx_ident,String tel,
+                                        HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            RasteUser user = new RasteUser();
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                RasteUser user0 = rasteUserService.queryByToLogin(user);
+                if(user0!=null){
+                    return setFailureMap(jsonMap, "微信号已存在！", null);
+                }
+            }else {
+                return setFailureMap(jsonMap, "微信号不能为空！", null);
+            }
+            if(tel!=null&&!tel.equals("")){
+                user.setTel(tel);
+            }
+            user.setState(1);
+            user.setCreatetime(DateUtil.getNowPlusTime());
+            rasteUserService.insertSelective(user);
+            SessionUtils.removeValidateCode(request);
+            return setSuccessMap(jsonMap, "注册成功！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "注册失败！", null);
+        }
+    }
+    //小程序登录
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/tologinWx.json")
+    public Map<String, Object> tologinWx(String wx_ident,
+                                          HttpServletRequest request, HttpServletResponse response) throws Exception{
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            if(StringUtils.isBlank(wx_ident)){
+                //sendFailureMessage(response, "账号不能为空.");
+                return setFailureMap(jsonMap, "账号不能为空", null);
+            }
+            RasteUser user = new RasteUser();
+            user.setWx_ident(wx_ident);
+            RasteUser user1 = rasteUserService.queryByToLogin(user);
+            String msg = "用户登录日志:";
+            if(user1==null){
+                //记录错误登录日志
+                log.debug(msg+"["+wx_ident+"]"+"微信用户不存在.");
+                return setFailureMap(jsonMap, "微信用户不存在", null);
+            }else{
+                int loginCount = 0;
+                if(user1.getLogin_num() != null){
+                    loginCount = user1.getLogin_num();
+                }
+
+                loginCount++;
+                RasteUser user2 = new RasteUser();
+                user2.setId(user1.getId());
+                user2.setLogin_num(loginCount);
+                user2.setLasttime(DateUtil.getNowPlusTime());
+                rasteUserService.updateByPrimaryKeySelective(user2);
+                //用户信息放入session
+                SessionUtils.setRasteUser(request,user1);
+
+            }
+            return setSuccessMap(jsonMap, "登录成功！", null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+    }
+
+
+
+    //修改手机号
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/updatetel.json")
+    public Map<String, Object> updatetel(String wx_ident,String tel,String code,
+                                          HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            String code1 = SessionUtils.getValidateCode(request);
+            if(code==null||!code.equals(code1)){
+                return setFailureMap(jsonMap, "微信号不存在！", null);
+            }
+            RasteUser user = new RasteUser();
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                RasteUser user0 = rasteUserService.queryByToLogin(user);
+                if(user0==null){
+                    return setFailureMap(jsonMap, "微信号不存在！", null);
+                }
+            }else {
+                return setFailureMap(jsonMap, "微信号不能为空！", null);
+            }
+            if(tel!=null){
+                user.setTel(tel);
+            }else{
+                return setFailureMap(jsonMap, "手机号不能为空！", null);
+            }
+            rasteUserService.updateByWxIdent(user);
+            SessionUtils.removeValidateCode(request);
+            return setSuccessMap(jsonMap, "注册成功！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "注册失败！", null);
+        }
+    }
+
+
+    //修改性别
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/updatesex.json")
+    public Map<String, Object> updatesex(String wx_ident,Integer sex,
+                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            RasteUser user = new RasteUser();
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                RasteUser user0 = rasteUserService.queryByToLogin(user);
+                if(user0==null){
+                    return setFailureMap(jsonMap, "微信号不存在！", null);
+                }
+            }else {
+                return setFailureMap(jsonMap, "微信号不能为空！", null);
+            }
+            if(sex!=null){
+                user.setSex(sex);
+            }else{
+                return setFailureMap(jsonMap, "性别不能为空！", null);
+            }
+            rasteUserService.updateByWxIdent(user);
+            SessionUtils.removeValidateCode(request);
+            return setSuccessMap(jsonMap, "注册成功！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "注册失败！", null);
+        }
+    }
+
+
+    //修改生日
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/updatebirthday.json")
+    public Map<String, Object> updatebirthday(String wx_ident,String birthday,
+                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            RasteUser user = new RasteUser();
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                RasteUser user0 = rasteUserService.queryByToLogin(user);
+                if(user0==null){
+                    return setFailureMap(jsonMap, "微信号不存在！", null);
+                }
+            }else {
+                return setFailureMap(jsonMap, "微信号不能为空！", null);
+            }
+            if(birthday!=null){
+                user.setBirthday(birthday);
+            }else{
+                return setFailureMap(jsonMap, "性别不能为空！", null);
+            }
+            rasteUserService.updateByWxIdent(user);
+            SessionUtils.removeValidateCode(request);
+            return setSuccessMap(jsonMap, "注册成功！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "注册失败！", null);
+        }
+    }
 }

@@ -13,9 +13,13 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="login_type" property="login_type" jdbcType="INTEGER" />
     <result column="picurl" property="picurl" jdbcType="VARCHAR" />
+    <result column="wx_ident" property="wx_ident" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, tel, pwd, email, createtime, lasttime, login_num, state, login_type, picurl
+    id, name, tel, pwd, email, createtime, lasttime, login_num, state, login_type, picurl,sex,birthday,integral,wx_ident
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,11 +35,11 @@
     insert into raste_user (id, name, tel, 
       pwd, email, createtime, 
       lasttime, login_num, state, 
-      login_type, picurl)
+      login_type, picurl,sex,birthday,integral,wx_ident)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
       #{pwd,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
       #{lasttime,jdbcType=VARCHAR}, #{login_num,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
-      #{login_type,jdbcType=INTEGER}, #{picurl,jdbcType=VARCHAR})
+      #{login_type,jdbcType=INTEGER}, #{picurl,jdbcType=VARCHAR},#{sex},#{birthday},#{integral},#{wx_ident})
   </insert>
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
     insert into raste_user
@@ -73,6 +77,19 @@
       <if test="picurl != null" >
         picurl,
       </if>
+
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="integral != null" >
+        integral,
+      </if>
+      <if test="wx_ident != null" >
+        wx_ident,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -107,6 +124,18 @@
       </if>
       <if test="picurl != null" >
         #{picurl,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="integral != null" >
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="wx_ident != null" >
+        #{wx_ident,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -143,6 +172,19 @@
       <if test="picurl != null" >
         picurl = #{picurl,jdbcType=VARCHAR},
       </if>
+
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="integral != null" >
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="wx_ident != null" >
+        wx_ident = #{wx_ident,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -157,7 +199,11 @@
       login_num = #{login_num,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       login_type = #{login_type,jdbcType=INTEGER},
-      picurl = #{picurl,jdbcType=VARCHAR}
+      picurl = #{picurl,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      integral = #{integral,jdbcType=INTEGER},
+      wx_ident = #{wx_ident,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -182,7 +228,6 @@
     </if>
   </select>
 
-
   <select id="queryByToLogin" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
     select
     <include refid="Base_Column_List" />
@@ -194,5 +239,56 @@
     <if test="tel!=null and tel!=''">
       and tel = #{tel}
     </if>
+    <if test="wx_ident!=null and wx_ident!=''">
+      and wx_ident = #{wx_ident}
+    </if>
   </select>
+
+
+  <update id="updateByWxIdent" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+    update raste_user
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        lasttime = #{lasttime,jdbcType=VARCHAR},
+      </if>
+      <if test="login_num != null" >
+        login_num = #{login_num,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="login_type != null" >
+        login_type = #{login_type,jdbcType=INTEGER},
+      </if>
+      <if test="picurl != null" >
+        picurl = #{picurl,jdbcType=VARCHAR},
+      </if>
+
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="integral != null" >
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+    </set>
+    where wx_ident = #{wx_ident,jdbcType=INTEGER}
+  </update>
 </mapper>

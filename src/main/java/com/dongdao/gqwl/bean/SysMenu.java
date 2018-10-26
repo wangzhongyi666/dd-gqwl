@@ -1,5 +1,7 @@
 package com.dongdao.gqwl.bean;
 
+import com.dongdao.gqwl.utils.DateUtil;
+
 import java.util.List;
 
 
@@ -96,5 +98,9 @@ public class SysMenu extends BaseBean {
 	public void setSubCount(int subCount) {
 		this.subCount = subCount;
 	}
-	
+
+
+	public static void main(String[] args){
+		System.out.println(DateUtil.getFormattedMD("2018-10-23"));
+	}
 }
