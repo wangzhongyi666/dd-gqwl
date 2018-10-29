@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.news.DdInformationMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.job.DdInformation" >
+    <id column="information_id" property="information_id" jdbcType="INTEGER" />
+    <result column="info_type" property="info_type" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="sendee" property="sendee" jdbcType="INTEGER" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="rank" property="rank" jdbcType="INTEGER" />
+    <result column="is_see" property="is_see" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    information_id, info_type, title, content, sendee, updatetime, rank, is_see
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_information
+    where information_id = #{information_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_information
+    where information_id = #{information_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    insert into dd_information (information_id, info_type, title, 
+      content, sendee, updatetime, 
+      rank, is_see)
+    values (#{information_id,jdbcType=INTEGER}, #{info_type,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{sendee,jdbcType=INTEGER}, #{updatetime,jdbcType=VARCHAR}, 
+      #{rank,jdbcType=INTEGER}, #{is_see,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    insert into dd_information
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="information_id != null" >
+        information_id,
+      </if>
+      <if test="info_type != null" >
+        info_type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="sendee != null" >
+        sendee,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="rank != null" >
+        rank,
+      </if>
+      <if test="is_see != null" >
+        is_see,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="information_id != null" >
+        #{information_id,jdbcType=INTEGER},
+      </if>
+      <if test="info_type != null" >
+        #{info_type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendee != null" >
+        #{sendee,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="is_see != null" >
+        #{is_see,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    update dd_information
+    <set >
+      <if test="info_type != null" >
+        info_type = #{info_type,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendee != null" >
+        sendee = #{sendee,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="is_see != null" >
+        is_see = #{is_see,jdbcType=INTEGER},
+      </if>
+    </set>
+    where information_id = #{information_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    update dd_information
+    set info_type = #{info_type,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      sendee = #{sendee,jdbcType=INTEGER},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER},
+      is_see = #{is_see,jdbcType=INTEGER}
+    where information_id = #{information_id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_information t
+    where is_see != 2
+    order by t.updatetime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
+    select count(0)
+    from dd_information t
+    where is_see != 2
+  </select>
+</mapper>

@@ -27,6 +27,46 @@ public class RasteUser extends BaseModel {
 
     private String jname;
 
+    private Integer sex;
+
+    private String birthday;
+
+    private Integer integral;
+
+    private String wx_ident;
+
+    public String getWx_ident() {
+        return wx_ident;
+    }
+
+    public void setWx_ident(String wx_ident) {
+        this.wx_ident = wx_ident;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
     public String getJname() {
         return jname;
     }
