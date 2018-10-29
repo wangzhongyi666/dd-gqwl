@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>活动管理</title>
+    <title>积分记录</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -20,7 +20,7 @@
     <script src="../../static/js/commons/paging.js"></script>
 
     <script src="../../static/js/layer/layer.js"></script>
-    <script src="../../static/js/routline/activity/activity.js"></script>
+    <script src="../../static/js/routline/activity/inget.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
     <script type="text/javascript" src="../../static/js/commons/laydate/laydate.js"></script>
     <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
@@ -43,31 +43,35 @@
             alert($(this).text() + "," + $('#pageSizeInp').val());
             getlist($(this).text(), $('#pageSizeInp').val());
         });
-      
+        var felObj=$('#actid');
+        $.get('/inget/querytype.do', {},
+            function(data) {
+                var data=data.actid;
+                console.log(data)
+                for (var i = 0; i < data.length; i++) {
+                    var value = data[i].actid;
+                    var text = data[i].actid;
+                    felObj.append("<option value='"+value+"'>" + text
+                        + "</option>");
+
+                }
+            });
     })
     function getlist(pageNum,pageSize){
       /*  // <![CDATA
         var menus = [[${menuList}]];
         alert(menus);
         // ]]>*/
-
-        var isdeletes="/activity/deleteactivity.do";
-        var isupdate="/activity/updateactivity.do";
-        var ispass="/activity/passactivity.do";
-        var purvdelete = isPurview(isdeletes);
         console.log("==========================")
-        console.log(purvdelete)
-        var purvupdate = isPurview(isupdate);
-        var purvpass = isPurview(ispass);
-        var purvdelete = isPurview(isdeletes);
         var creattime=$("#creattime").val();
-        var type=$("#type").val();
+        var actid=$("#actid").val();
 
             $.ajax({
-            url :'/activity/activityDataList.do',
+            url :'/inget/ingetDataList.do',
             type : 'POST',
             timeout : 20000,
             data:{
+                actid:actid,
                 creattime:creattime,
                 pageNum:pageNum,
                 pageSize:pageSize
@@ -81,42 +85,15 @@
                         const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
-                            rowlist1[0]=row.actid;
-                            rowlist1[1]=row.begintime;
-                            rowlist1[2]=row.endtime;
-                            rowlist1[3]=row.maxinter;
-                            rowlist1[4]=row.allinter;
-                            if(row.ispass==1){
-                                rowlist1[5]="已审核";
-                            }else if(row.ispass==0){
-                                rowlist1[5]="未审核";
-                            }
-                            rowlist1[6]=row.creattime;
-                            rowlist1[7]=row.updatetime;
-                            rowlist1[8]=row.a_audit;
-                            rowlist1[9] = "";
-                            if(purvupdate){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+"  a2="+row.ispass+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
-                            }if(purvdelete){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
-                            }if(purvpass&&row.ispass==0){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+"  onclick=\"passactivity(this)\" class=\"text-primary ml10\">审核</a>";
-
-                            }else if(purvpass&&row.ispass==1){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+"  a2="+row.ispass+" onclick=\"passactivity(this)\" class=\"text-primary ml10\">撤销审核</a>";
-                            }
-
+                            rowlist1[0]=row.name;
+                            rowlist1[1]=row.actid;
+                            rowlist1[2]=row.integer;
+                            rowlist1[3]=row.creattime;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
                             rowlist1[2]='';
                             rowlist1[3]='';
-                            rowlist1[4]='';
-                            rowlist1[5]='';
-                            rowlist1[6]='';
-                            rowlist1[7]='';
-                            rowlist1[8]='';
-                            rowlist1[9]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -125,25 +102,28 @@
             }
         });
     }
-    function opentabs(e) {
-        var id = $(e).attr("a1");
-        window.parent.opentab('http://localhost/activity/activity_update.shtml?actid='+id,'编辑活动管理')
-    }
+
 
 </script>
 <body>
     <div class="rightIframe pull-right">
     	<div class="sopen"></div>
-        <div class="menu fontS20">活动管理</div>
+        <div class="menu fontS20">积分记录</div>
         <div class="search">
         	<div class="form-horizontal" role="form">
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <div class="col-md-3 search_list">
-                            <input type="text" class="form-control laydate-icon" placeholder="创建时间" id="creattime" name="creattime"/>
+                            <input type="text" class="form-control laydate-icon" placeholder="获取时间" id="creattime" name="creattime"/>
                             <span  class="fa fa-search"></span>
                         </div>
-                     
+                        <label class="col-md-1 control-label">活动编号</label>
+                        <div class="col-md-2">
+                            <select class="form-control" id="actid" name="actid">
+                                <option value="">-请选择-</option>
+
+                            </select>
+                        </div>
 
                         <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
                     </div>
@@ -151,23 +131,14 @@
                 </form>
             </div>
 
-        <div class="clearfix" id="addcontent">
-            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/activity/activity_add.shtml','添加活动')">添加活动</a>
-            </div>
         <div id="tabdiv" style="overflow:auto">
             <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
                 <thead>
                 <tr>
+                    <th style="width: 170px;">参与人</th>
                     <th style="width: 170px;">活动编号</th>
-                    <th style="width: 170px;">开始时间</th>
-                    <th style="width: 170px;">结束时间</th>
-                    <th style="width: 170px;">每日最大积分</th>
-                    <th style="width: 170px;">总消耗积分</th>
-                    <th style="width: 170px;">是否审核</th>
-                    <th style="width: 170px;">发布时间</th>
-                    <th style="width: 170px;">修改时间</th>
-                    <th style="width: 170px;">操作人</th>
-                    <th style="width: 170px;">操作</th>
+                    <th style="width: 170px;">获取积分</th>
+                    <th style="width: 170px;">获取时间</th>
                 </tr>
                 </thead>
                 <tbody id="picDataList">
@@ -186,25 +157,5 @@
 
 
 </body>
-<script th:inline="javascript">
-    /*<![CDATA[*/
 
-    function isPurview(btnUrl){
-        var btn = $("#ifWd",parent.document).attr("src");
-        var btnsUrl = [[${session.session_menubtn_map}]];
-        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
-    }
-
-    $(function(){
-        var addcontent = '/activity/addactivity.do';
-        var addpurview = isPurview(addcontent);
-        if(!addpurview){
-            $("#addcontent").css("display","none");
-        }
-    })
-
-    /*]]>*/
-
-
-</script>
 </html>
