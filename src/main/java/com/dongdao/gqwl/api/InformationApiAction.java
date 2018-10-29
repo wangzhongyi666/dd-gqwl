@@ -1,8 +1,10 @@
 package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
+import com.dongdao.gqwl.model.websit.RasteMassage;
 import com.dongdao.gqwl.model.websit.RasteUser;
 import com.dongdao.gqwl.model.website.job.DdInformation;
+import com.dongdao.gqwl.service.gcolumn.RasteMassageService;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
 import com.dongdao.gqwl.service.website.news.InformationService;
 import com.dongdao.gqwl.utils.Auth;
@@ -31,6 +33,10 @@ public class InformationApiAction extends BaseAction {
 
     @Autowired
     public RasteUserService<RasteUser> rasteUserService;
+
+    @Autowired
+    public RasteMassageService<RasteMassage> rasteMassageService;
+
 
     //消息通知列表
     @Auth(verifyURL = false)
@@ -139,4 +145,21 @@ public class InformationApiAction extends BaseAction {
         }
     }
 
+
+    //关于我们
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/aboutus.json")
+    public Map<String, Object> aboutus(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            RasteMassage massage = new RasteMassage();
+            List<RasteMassage> datalist = rasteMassageService.queryByList(massage);
+
+            return setSuccessMap(jsonMap, "操作成功！", datalist.get(0).getAddress());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+    }
 }
