@@ -1,6 +1,7 @@
 package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
+import com.dongdao.gqwl.model.website.news.DdNews;
 import com.dongdao.gqwl.service.website.PictureService;
 import com.dongdao.gqwl.service.website.ProfileService;
 import com.dongdao.gqwl.service.website.news.NewService;
@@ -35,11 +36,14 @@ public class NewsApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/infor.json")
-    public Map<String, Object>  roleDataCount(int newstype,int ptype,HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public Map<String, Object>  roleDataCount(int newstype,int ptype,int top,HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        DdNews qnews=new DdNews();
+        qnews.setNewstype(newstype);
+        qnews.setTop(top);
       try {
         List<Map<String, Object>> newstypes=newstypeService.queryType();
-        List<Map<String, Object>> news=newsService.selectByType(newstype);
+        List<Map<String, Object>> news=newsService.selectByType(qnews);
         List<Map<String, Object>> pics=pictureService.selectByType(ptype);
         jsonMap.put("news",news );
         jsonMap.put("newstype",newstypes );
@@ -57,10 +61,13 @@ public class NewsApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/news.json")
-    public Map<String, Object>  newschange(int newstype,HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public Map<String, Object>  newschange(int newstype,int top,HttpServletRequest request, HttpServletResponse response) throws Exception{
+        DdNews qnews=new DdNews();
+        qnews.setNewstype(newstype);
+        qnews.setTop(top);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
-            List<Map<String, Object>> news=newsService.selectByType(newstype);
+            List<Map<String, Object>> news=newsService.selectByType(qnews);
             jsonMap.put("news",news );
             return setSuccessMap(jsonMap, "操作成功！", null);
         }
