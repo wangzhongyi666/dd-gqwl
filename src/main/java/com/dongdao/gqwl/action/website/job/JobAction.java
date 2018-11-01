@@ -3,8 +3,10 @@ package com.dongdao.gqwl.action.website.job;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.bean.SysUser;
 import com.dongdao.gqwl.model.website.job.DdJob;
+import com.dongdao.gqwl.model.website.job.DdJobfrom;
 import com.dongdao.gqwl.model.website.job.DdJobtype;
 import com.dongdao.gqwl.service.website.job.JobService;
+import com.dongdao.gqwl.service.website.job.JobfromService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import com.dongdao.gqwl.utils.HtmlUtil;
@@ -29,6 +31,8 @@ public class JobAction extends BaseAction {
 
     @Autowired
     public JobService jobService;
+    @Autowired
+    public JobfromService jobfromService;
 
     @RequestMapping(value = "/job.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
@@ -97,7 +101,7 @@ public class JobAction extends BaseAction {
     }
 
     @RequestMapping("/addjob.do")
-    public void saceType(DdJob model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void saceType(DdJob model,String[] title,String[] j_link, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         SysUser user = SessionUtils.getUser(request);
         model.setJ_audit(user.getEmail());
@@ -105,6 +109,15 @@ public class JobAction extends BaseAction {
         model.setIsdelete(1);
         int num= jobService.insertSelective(model);
         if(num==1){
+            if(title!=null&&title.length!=0){
+                for(int i=0;i<title.length;i++){
+                    DdJobfrom jobfrom=new DdJobfrom();
+                    jobfrom.setJobid(model.getJobid());
+                    jobfrom.setJ_link(j_link[i]);
+                    jobfrom.setTitle(title[i]);
+                    jobfromService.insertSelective(jobfrom);
+                }
+            }
             jsonMap.put("msg", "操作成功！");
         }else{
             jsonMap.put("msg", "操作失败！");
@@ -115,14 +128,23 @@ public class JobAction extends BaseAction {
     }
     //编辑信息
     @RequestMapping("/updatejob.do")
-    public void updatetype(DdJob model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void updatetype(DdJob model,String[] title,String[] j_link, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         model.setUpdatetime(DateUtil.getNowPlusTime());
         SysUser user = SessionUtils.getUser(request);
         model.setJ_audit(user.getEmail());
         int num= jobService.updateByPrimaryKeySelective(model);
-
+        jobfromService.deleteByPrimaryKey(model.getJobid());
         if(num==1){
+            if(title!=null&&title.length!=0){
+                for(int i=0;i<title.length;i++){
+                    DdJobfrom jobfrom=new DdJobfrom();
+                    jobfrom.setJobid(model.getJobid());
+                    jobfrom.setJ_link(j_link[i]);
+                    jobfrom.setTitle(title[i]);
+                    jobfromService.insertSelective(jobfrom);
+                }
+            }
             jsonMap.put("msg", "操作成功！");
         }else{
             jsonMap.put("msg", "操作失败！");
@@ -164,4 +186,51 @@ public class JobAction extends BaseAction {
         HtmlUtil.writerJson(response, jsonMap);
 
     }
+
+
+    //编辑超链接
+    @RequestMapping("/updatejobfrom.do")
+    public void updatejobfrom(DdJobfrom model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        int num= jobfromService.updateByPrimaryKeySelective(model);
+
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
+    //添加超链接
+    @RequestMapping("/addjobfrom.do")
+    public void addjobfrom(DdJobfrom model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        int num= jobfromService.insertSelective(model);
+        if(num==1){
+            jsonMap.put("msg", "操作成功！");
+        }else{
+            jsonMap.put("msg", "操作失败！");
+        }
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
+
+    //查询超链接
+    @RequestMapping("/myjobfrom.do")
+    public void myjobfrom(DdJobfrom model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+
+        List<DdJobfrom> jobfroms= jobfromService.selectByJob(model.getJobid());
+        jsonMap.put("jobfroms",jobfroms);
+
+        HtmlUtil.writerJson(response, jsonMap);
+
+    }
+
+
 }

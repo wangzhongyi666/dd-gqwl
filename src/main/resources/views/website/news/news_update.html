@@ -145,7 +145,20 @@
                        style="width: 200px" required="true" th:value="${NEWS.newstitle}" /><span>  不得超过20个汉字</span>
             </td>
         </tr>
-
+        <tr>
+            <td>作者</td>
+            <td>
+                <input type='text' id='newswhere' name="newswhere"
+                       style="width: 200px" required="true" th:value="${NEWS.newswhere}" /><span>  不得超过20个汉字</span>
+            </td>
+        </tr>
+        <tr>
+            <td>来源</td>
+            <td>
+                <input type='text' id='newsfrom' name="newsfrom"
+                       style="width: 200px" required="true" th:value="${NEWS.newsfrom}"/><span>  不得超过20个汉字</span>
+            </td>
+        </tr>
         <tr>
             <td>发布时间</td>
             <td>

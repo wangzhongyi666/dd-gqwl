@@ -36,11 +36,8 @@ public class NewsApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/infor.json")
-    public Map<String, Object>  roleDataCount(int newstype,int ptype,int top,HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public Map<String, Object>  roleDataCount( DdNews qnews,int ptype,HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        DdNews qnews=new DdNews();
-        qnews.setNewstype(newstype);
-        qnews.setTop(top);
       try {
         List<Map<String, Object>> newstypes=newstypeService.queryType();
         List<Map<String, Object>> news=newsService.selectByType(qnews);
@@ -61,10 +58,7 @@ public class NewsApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/news.json")
-    public Map<String, Object>  newschange(int newstype,int top,HttpServletRequest request, HttpServletResponse response) throws Exception{
-        DdNews qnews=new DdNews();
-        qnews.setNewstype(newstype);
-        qnews.setTop(top);
+    public Map<String, Object>  newschange(DdNews qnews,HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             List<Map<String, Object>> news=newsService.selectByType(qnews);

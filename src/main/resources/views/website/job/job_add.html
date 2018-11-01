@@ -42,8 +42,11 @@
 
     <![endif]-->
 </head>
-
+<style>
+    .pc_info { margin-right: 20px; margin-bottom: 10px; }
+</style>
 <script th:inline="javascript">
+    var i=0;
    $(function(){
 
        $('#domainInfoForm').form({
@@ -75,9 +78,29 @@
                }
            });
 
-   });
 
-   
+
+
+   });
+   function removeLi(assid){
+       var thiscl=$('.myabc'+ assid);
+       thiscl.parent().remove();
+
+   }
+ function addjobfrom() {
+
+                 var dataitems="";
+                 if($('#jftitle').val()!=null&&$('#jftitle').val()!=''&&$('#jftitle').val()!=' '&&$("#j_link").val()!=null&&$("#j_link").val()!=''&&$("#j_link").val()!=' '){
+                     var dataitems="";
+                     dataitems+='<li class="pc_info"><input name="title"  value='+$('#jftitle').val()+'></input><input name="j_link" value='+$('#j_link').val()+'></input><button class="myabc'+i+'" onclick="removeLi('+i+')">X</button></li>';
+                     $("#isjoin").append(dataitems);
+                     i++;
+                 }else {
+                     layer.alert('内容不能为空');
+                 }
+
+
+ }
 
 
 </script>
@@ -142,7 +165,12 @@
                 <option value=1>审核</option>
                 </select><span>  选择是否审核通过</span></td>
         </tr>
+        <tr>
+            <td>超链接</td>
+            <td><ul id="isjoin">
 
+            </ul></td>
+        </tr>
 
     </table>
 
@@ -157,6 +185,37 @@
 
 </form>
 
+<table border=0
+       style="margin-top: 50px; overflow:scroll;  border-collapse: separate; border-spacing: 15px; margin-left: 20px;height: 100%;">
+
+    <tr>
+        <td>链接标题</td>
+        <td>
+            <input type='text' id='jftitle' name="jftitle"
+                   style="width: 200px"  /><span>  不得超过20个汉字</span>
+        </td>
+    </tr>
+    <tr>
+        <td>链接url</td>
+        <td>
+            <input type='text' id='j_link' name="j_link"
+                   style="width: 400px"  /><span>  添加超链接</span>
+        </td>
+    </tr>
+
+</table>
+
+<div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
+    <input  onclick="addjobfrom()"  class="btn btn-sm btn-info  "
+                                                   value="添加链接">
+</div>
+<div class="clr"></div>
+<!--<div class="pc_info">
+
+    <ul id="isjoin">
+
+    </ul>
+</div>-->
 </body>
 
 </html>

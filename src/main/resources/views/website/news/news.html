@@ -108,17 +108,18 @@
                             }else{
                                 rowlist1[7]="置顶";
                             }
-
-                            rowlist1[8] = "";
+                            rowlist1[8]=row.newswhere;
+                            rowlist1[9]=row.newsfrom;
+                            rowlist1[10] = "";
                             if(purvupdate){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.newsid+"  a2="+row.isdelete+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
+                                rowlist1[10]+="<a href=\"javascript:void(0)\" a1="+row.newsid+"  a2="+row.isdelete+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
                             }if(purvdelete){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.newsid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+                                rowlist1[10]+="<a href=\"javascript:void(0)\" a1="+row.newsid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                             }if(purvpass&&row.isdelete==2){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.newsid+" a2="+row.isdelete+"  onclick=\"passnews(this)\" class=\"text-primary ml10\">审核</a>";
+                                rowlist1[10]+="<a href=\"javascript:void(0)\" a1="+row.newsid+" a2="+row.isdelete+"  onclick=\"passnews(this)\" class=\"text-primary ml10\">审核</a>";
 
                             }else if(purvpass&&row.isdelete==1){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.newsid+"  a2="+row.isdelete+" onclick=\"passnews(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                                rowlist1[10]+="<a href=\"javascript:void(0)\" a1="+row.newsid+"  a2="+row.isdelete+" onclick=\"passnews(this)\" class=\"text-primary ml10\">撤销审核</a>";
                             }
 
                         }else{
@@ -131,6 +132,8 @@
                             rowlist1[6]='';
                             rowlist1[7]='';
                             rowlist1[8]='';
+                            rowlist1[9]='';
+                            rowlist1[10]='';
 
                         }
                         rowlist[i]=rowlist1;
@@ -187,6 +190,8 @@
                     <th style="width: 170px;">修改时间</th>
                     <th style="width: 170px;">操作人</th>
                     <th style="width: 170px;">是否置顶</th>
+                    <th style="width: 170px;">作者</th>
+                    <th style="width: 170px;">来源</th>
                     <th style="width: 170px;">操作</th>
                 </tr>
                 </thead>
