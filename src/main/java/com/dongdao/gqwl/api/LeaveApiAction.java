@@ -39,9 +39,19 @@ public class LeaveApiAction extends BaseAction {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             DdLeave ddLeave = new DdLeave();
+            String today = DateUtil.getToday();
+            String yesterday = DateUtil.getYesterday();
+            ddLeave.setStarttime(today);
+            ddLeave.setEndtime(yesterday);
+            Integer todaycount = ddLeaveService.queryByCount(ddLeave);
+            if(todaycount>=1000){
+                return setFailureMap(jsonMap,"当前留言数量超出限制!",null);
+
+            }
             ddLeave.setPhone(phone);
             ddLeave.setEmail(email);
             ddLeave.setLeave(leave);
+            ddLeave.setCreatetime(DateUtil.getNowPlusTime());
             ddLeaveService.insertSelective(ddLeave);
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
