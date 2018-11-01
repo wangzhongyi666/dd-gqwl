@@ -104,11 +104,11 @@
     select newstype,newstypename from dd_newstype
   </select>
   <!--查询前端新闻-->
-  <select id="selectByType" resultType="HashMap" parameterType="java.lang.Integer" >
+  <select id="selectByType" resultType="HashMap" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
     select
-    newstype,newstitle,newsdigest, newsbody,newscreattime,top
+    newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top
     from dd_news
-    where newstype = #{newstype,jdbcType=INTEGER} and isdelete=1 order by newscreattime desc
+    where newstype = #{newstype,jdbcType=INTEGER} and isdelete=1 and top=#{top,jdbcType=INTEGER} order by newscreattime desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
