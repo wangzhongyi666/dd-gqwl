@@ -107,14 +107,26 @@
     <include refid="Base_Column_List" />
     from dd_leave
     where
-    state!=2 order by createtime desc
+    state!=2
+    <if test="starttime!=null and starttime!=''">
+      and createtime >= #{starttime}
+    </if>
+    <if test="endtime!=null and endtime!=''">
+      and #{endtime} > createtime
+    </if>
+    order by createtime desc
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
     </if>
   </select>
   <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.GColumn" >
     select count(0) from dd_leave where
-
     state!=2
+    <if test="starttime!=null and starttime!=''">
+      and createtime >= #{starttime}
+    </if>
+    <if test="endtime!=null and endtime!=''">
+      and #{endtime} > createtime
+    </if>
   </select>
 </mapper>
