@@ -5,6 +5,7 @@ import com.dongdao.gqwl.model.website.job.DdJob;
 import com.dongdao.gqwl.model.website.job.DdResume;
 import com.dongdao.gqwl.service.website.PictureService;
 import com.dongdao.gqwl.service.website.job.JobService;
+import com.dongdao.gqwl.service.website.job.JobfromService;
 import com.dongdao.gqwl.service.website.job.JobtypeService;
 import com.dongdao.gqwl.service.website.job.ResumeService;
 import com.dongdao.gqwl.utils.Auth;
@@ -39,6 +40,8 @@ public class JobApiAction extends BaseAction {
     public JobtypeService jobtypeService;
     @Autowired
     public ResumeService resumeService;
+    @Autowired
+    public JobfromService jobfromService;
 
     //获取总数
     @Auth(verifyURL = false)
@@ -75,6 +78,12 @@ public class JobApiAction extends BaseAction {
         }
         try {
             List<Map<String, Object>> jobs=jobService.selectByType(model);
+            for(int i=0;i<jobs.size();i++){
+                log.error((Long)jobs.get(i).get("jobid"));
+
+                List<HashMap<String,Object>> hashMaps=jobfromService.selectByJobapi((Long)jobs.get(i).get("jobid"));
+                jobs.get(i).put("links",hashMaps);
+            }
             jsonMap.put("jobs",jobs );
             jsonMap.put("count",count);
             jsonMap.put("pageSize",model.getNum2());

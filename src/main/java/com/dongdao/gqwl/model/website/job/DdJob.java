@@ -2,6 +2,9 @@ package com.dongdao.gqwl.model.website.job;
 
 import com.dongdao.gqwl.model.BaseModel;
 
+import java.util.List;
+import java.util.Map;
+
 public class DdJob extends BaseModel {
     private Long jobid;
 
@@ -36,6 +39,8 @@ public class DdJob extends BaseModel {
     private Integer filed2;
 
     private String jobtypename;
+
+    private List<Map<String,Object>> jobfromList;
 
     public Long getJobid() {
         return jobid;
@@ -171,5 +176,13 @@ public class DdJob extends BaseModel {
 
     public void setJobtypename(String jobtypename) {
         this.jobtypename = jobtypename;
+    }
+
+    public List<Map<String, Object>> getJobfromList() {
+        return jobfromList;
+    }
+
+    public void setJobfromList(List<Map<String, Object>> jobfromList) {
+        this.jobfromList = jobfromList;
     }
 }

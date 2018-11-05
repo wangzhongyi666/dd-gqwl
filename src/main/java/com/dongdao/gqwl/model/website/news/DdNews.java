@@ -25,7 +25,7 @@ public class DdNews extends BaseModel {
 
     private String updatetime;
 
-    private Integer newswhere;
+    private String newswhere;
 
     private String creattime;
 
@@ -125,11 +125,11 @@ public class DdNews extends BaseModel {
         this.updatetime = updatetime;
     }
 
-    public Integer getNewswhere() {
+    public String getNewswhere() {
         return newswhere;
     }
 
-    public void setNewswhere(Integer newswhere) {
+    public void setNewswhere(String newswhere) {
         this.newswhere = newswhere;
     }
 

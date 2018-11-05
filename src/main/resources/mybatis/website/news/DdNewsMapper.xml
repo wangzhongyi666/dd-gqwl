@@ -12,7 +12,7 @@
     <result column="newscreattime" property="newscreattime" jdbcType="VARCHAR" />
     <result column="newshtml" property="newshtml" jdbcType="VARCHAR" />
     <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
-    <result column="newswhere" property="newswhere" jdbcType="INTEGER" />
+    <result column="newswhere" property="newswhere" jdbcType="VARCHAR" />
     <result column="creattime" property="creattime" jdbcType="VARCHAR" />
     <result column="hits" property="hits" jdbcType="BIGINT" />
     <result column="top" property="top" jdbcType="INTEGER" />
@@ -108,7 +108,12 @@
     select
     newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top
     from dd_news
-    where newstype = #{newstype,jdbcType=INTEGER} and isdelete=1 and top=#{top,jdbcType=INTEGER} order by newscreattime desc
+    where
+    <if test="top!= null">
+      top = #{top,jdbcType=INTEGER} and
+    </if>
+
+     newstype = #{newstype,jdbcType=INTEGER} and isdelete=1  order by newscreattime desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -126,7 +131,7 @@
     values (#{newsid,jdbcType=BIGINT}, #{n_audit,jdbcType=VARCHAR}, #{newstitle,jdbcType=VARCHAR}, 
       #{newssubhead,jdbcType=VARCHAR}, #{newskeyword,jdbcType=VARCHAR}, #{newstype,jdbcType=INTEGER}, 
       #{newspic,jdbcType=VARCHAR}, #{newscreattime,jdbcType=VARCHAR}, #{newshtml,jdbcType=VARCHAR},
-      #{updatetime,jdbcType=VARCHAR}, #{newswhere,jdbcType=INTEGER}, #{creattime,jdbcType=INTEGER},
+      #{updatetime,jdbcType=VARCHAR}, #{newswhere,jdbcType=VARCHAR}, #{creattime,jdbcType=INTEGER},
       #{hits,jdbcType=BIGINT}, #{top,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, 
       #{newsfrom,jdbcType=VARCHAR}, #{n_sort,jdbcType=INTEGER}, #{newsdigest,jdbcType=LONGVARCHAR}, 
       #{newsbody,jdbcType=LONGVARCHAR})
@@ -224,7 +229,7 @@
         #{updatetime,jdbcType=VARCHAR},
       </if>
       <if test="newswhere != null" >
-        #{newswhere,jdbcType=INTEGER},
+        #{newswhere,jdbcType=VARCHAR},
       </if>
       <if test="creattime != null" >
         #{creattime,jdbcType=VARCHAR},
@@ -283,7 +288,7 @@
         updatetime = #{updatetime,jdbcType=VARCHAR},
       </if>
       <if test="newswhere != null" >
-        newswhere = #{newswhere,jdbcType=INTEGER},
+        newswhere = #{newswhere,jdbcType=VARCHAR},
       </if>
       <if test="creattime != null" >
         creattime = #{creattime,jdbcType=VARCHAR},
@@ -323,7 +328,7 @@
       newscreattime = #{newscreattime,jdbcType=VARCHAR},
       newshtml = #{newshtml,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=VARCHAR},
-      newswhere = #{newswhere,jdbcType=INTEGER},
+      newswhere = #{newswhere,jdbcType=VARCHAR},
       creattime = #{creattime,jdbcType=VARCHAR},
       hits = #{hits,jdbcType=BIGINT},
       top = #{top,jdbcType=INTEGER},
@@ -345,7 +350,7 @@
       newscreattime = #{newscreattime,jdbcType=VARCHAR},
       newshtml = #{newshtml,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=VARCHAR},
-      newswhere = #{newswhere,jdbcType=INTEGER},
+      newswhere = #{newswhere,jdbcType=VARCHAR},
       creattime = #{creattime,jdbcType=VARCHAR},
       hits = #{hits,jdbcType=BIGINT},
       top = #{top,jdbcType=INTEGER},
