@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.DdbrowseMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.Ddbrowse" >
+    <id column="browse_id" property="browse_id" jdbcType="INTEGER" />
+    <result column="user_id" property="user_id" jdbcType="INTEGER" />
+    <result column="cardid" property="cardid" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="rank" property="rank" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    browse_id, user_id, cardid, createtime, updatetime, rank, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_browse
+    where browse_id = #{browse_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_browse
+    where browse_id = #{browse_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+    insert into dd_browse (browse_id, user_id, cardid, 
+      createtime, updatetime, rank, 
+      state)
+    values (#{browse_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{cardid,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+    insert into dd_browse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="browse_id != null" >
+        browse_id,
+      </if>
+      <if test="user_id != null" >
+        user_id,
+      </if>
+      <if test="cardid != null" >
+        cardid,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="rank != null" >
+        rank,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="browse_id != null" >
+        #{browse_id,jdbcType=INTEGER},
+      </if>
+      <if test="user_id != null" >
+        #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="cardid != null" >
+        #{cardid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+    update dd_browse
+    <set >
+      <if test="user_id != null" >
+        user_id = #{user_id,jdbcType=INTEGER},
+      </if>
+      <if test="cardid != null" >
+        cardid = #{cardid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where browse_id = #{browse_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+    update dd_browse
+    set user_id = #{user_id,jdbcType=INTEGER},
+      cardid = #{cardid,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
+    where browse_id = #{browse_id,jdbcType=INTEGER}
+  </update>
+
+  <select id="queryByBrowse" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_browse t left join
+    where browse_id = #{browse_id,jdbcType=INTEGER}
+  </select>
+</mapper>
