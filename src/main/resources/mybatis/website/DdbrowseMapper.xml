@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.Ddbrowse" >
     <id column="browse_id" property="browse_id" jdbcType="INTEGER" />
     <result column="user_id" property="user_id" jdbcType="INTEGER" />
-    <result column="cardid" property="cardid" jdbcType="INTEGER" />
+    <result column="topid" property="topid" jdbcType="INTEGER" />
     <result column="createtime" property="createtime" jdbcType="VARCHAR" />
     <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
     <result column="rank" property="rank" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    browse_id, user_id, cardid, createtime, updatetime, rank, state
+    browse_id, user_id, topid, createtime, updatetime, rank, state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,10 +24,10 @@
     where browse_id = #{browse_id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
-    insert into dd_browse (browse_id, user_id, cardid, 
+    insert into dd_browse (browse_id, user_id, topid,
       createtime, updatetime, rank, 
       state)
-    values (#{browse_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{cardid,jdbcType=INTEGER}, 
+    values (#{browse_id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{topid,jdbcType=INTEGER},
       #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{rank,jdbcType=INTEGER}, 
       #{state,jdbcType=INTEGER})
   </insert>
@@ -40,8 +40,8 @@
       <if test="user_id != null" >
         user_id,
       </if>
-      <if test="cardid != null" >
-        cardid,
+      <if test="topid != null" >
+        topid,
       </if>
       <if test="createtime != null" >
         createtime,
@@ -63,8 +63,8 @@
       <if test="user_id != null" >
         #{user_id,jdbcType=INTEGER},
       </if>
-      <if test="cardid != null" >
-        #{cardid,jdbcType=INTEGER},
+      <if test="topid != null" >
+        #{topid,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
         #{createtime,jdbcType=VARCHAR},
@@ -86,8 +86,8 @@
       <if test="user_id != null" >
         user_id = #{user_id,jdbcType=INTEGER},
       </if>
-      <if test="cardid != null" >
-        cardid = #{cardid,jdbcType=INTEGER},
+      <if test="topid != null" >
+        topid = #{topid,jdbcType=INTEGER},
       </if>
       <if test="createtime != null" >
         createtime = #{createtime,jdbcType=VARCHAR},
@@ -107,7 +107,7 @@
   <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
     update dd_browse
     set user_id = #{user_id,jdbcType=INTEGER},
-      cardid = #{cardid,jdbcType=INTEGER},
+      topid = #{topid,jdbcType=INTEGER},
       createtime = #{createtime,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=VARCHAR},
       rank = #{rank,jdbcType=INTEGER},
@@ -115,10 +115,50 @@
     where browse_id = #{browse_id,jdbcType=INTEGER}
   </update>
 
-  <select id="queryByBrowse" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+  <select id="queryByBrowse" resultType="map" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
-    from dd_browse t left join
-    where browse_id = #{browse_id,jdbcType=INTEGER}
+    p.picpath,p.t_content,t.createtime
+    from dd_browse t left join dd_topic p on t.topid = p.topid
+    where t.user_id = #{user_id,jdbcType=INTEGER} and p.isdelete = 0 order by createtime desc
   </select>
+
+  <select id="queryByBrowseInfo" resultType="map" parameterType="java.lang.Integer" >
+    select
+    u.picurl,u.name,p.createtime,p.t_content,d.filepath
+    from dd_browse t
+    left join dd_topic p on t.topid = p.topid
+    left join raste_user u on u.id = p.t_audit
+    left join dd_cards c on p.topid = c.topid
+    left join dd_cardcon d on d.cardid = c.cardid
+
+    where t.browse_id = #{browse_id,jdbcType=INTEGER} and p.isdelete = 0 group by browse_id
+  </select>
+
+  <select id="queryByCards" resultType="map" parameterType="java.lang.Integer" >
+    select
+      t.picpath,c.c_content,c.createtime
+    from dd_cards c
+    left join dd_cardcon con on c.cardid = con.cardid
+    left join dd_topic t on t.topid = c.topid
+    where t.topid=#{topid} and c.r_uid = #{r_uid}
+    group by c.cardid order by c.createtime desc
+  </select>
+
+  <select id="queryByCardsInfo" resultType="map" parameterType="java.lang.Integer" >
+    select
+      u.name,u.picurl,c.createtime,t.picpath,c.c_content
+    from dd_cards c
+    left join dd_cardcon con on c.cardid = con.cardid
+    left join dd_topic t on t.topid = c.topid
+    left join raste_user u on u.id = c.r_uid
+    where t.topid=#{topid} and c.cardid=#{cardid}
+    group by c.cardid order by c.createtime desc
+  </select>
+
+  <update id="updateByCardsId" parameterType="java.lang.Integer" >
+    update dd_cards
+    set isdelete = #{isdelete,jdbcType=INTEGER},
+
+    where cardid = #{cardid,jdbcType=INTEGER}
+  </update>
 </mapper>

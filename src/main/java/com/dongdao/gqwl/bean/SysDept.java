@@ -136,11 +136,6 @@ public class SysDept extends BaseBean {
         this.is_date = is_date;
     }
 
-    public static void main(String[] args){
-
-
-    }
-
     /*public static String sendSms(String content,String mobiles,String sendTime,String extno){
         String appname = "gqwl_gw_01";
         String APP_Key = "qvXJPZ6JXTrdQ247IEyygy57qTu8";
@@ -189,5 +184,9 @@ public class SysDept extends BaseBean {
 
         return resultStr;
 
+    }
+
+    public static void main(String[] args){
+        System.out.println("2018-11-06 01:04:20".toString().substring(0,10));
     }
 }

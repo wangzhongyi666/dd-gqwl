@@ -3462,4 +3462,21 @@ public class DateUtil
 
         return startM.matches() != false;
     }
+
+
+	/**
+	 * 后一天
+	 * @param date
+	 * @return
+	 */
+	public static Date getNextDay(Date date,Integer day) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, +day);//+1今天的时间加一天
+		date = calendar.getTime();
+		return date;
+	}
 }
+
+
+

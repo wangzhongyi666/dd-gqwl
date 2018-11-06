@@ -2,6 +2,10 @@ package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.website.Ddbrowse;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface DdbrowseMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer browse_id);
@@ -15,4 +19,14 @@ public interface DdbrowseMapper<T> extends BaseMapper {
     int updateByPrimaryKeySelective(Ddbrowse record);
 
     int updateByPrimaryKey(Ddbrowse record);
+
+    List<Map> queryByBrowse(Integer user_id);
+
+    Map queryByBrowseInfo(Integer browse_id);
+
+    List<Map> queryByCards(@Param("topid")Integer topid,@Param("u_rid") Integer u_rid);
+
+    Map queryByCardsInfo(@Param("topid")Integer topid,@Param("cardid") Integer cardid);
+
+    void updateByCardsId(@Param("isdelete")Integer isdelete,@Param("cardid") Integer cardid);
 }

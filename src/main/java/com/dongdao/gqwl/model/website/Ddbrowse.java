@@ -7,7 +7,7 @@ public class Ddbrowse extends BaseModel {
 
     private Integer user_id;
 
-    private Integer cardid;
+    private Integer topid;
 
     private String createtime;
 
@@ -33,12 +33,12 @@ public class Ddbrowse extends BaseModel {
         this.user_id = user_id;
     }
 
-    public Integer getCardid() {
-        return cardid;
+    public Integer getTopid() {
+        return topid;
     }
 
-    public void setCardid(Integer cardid) {
-        this.cardid = cardid;
+    public void setTopid(Integer topid) {
+        this.topid = topid;
     }
 
     public String getCreatetime() {
