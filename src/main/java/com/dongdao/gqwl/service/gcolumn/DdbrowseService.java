@@ -27,7 +27,7 @@ public class DdbrowseService<T> extends BaseService<T> {
         return getMapper().queryByBrowseInfo(browse_id);
     }
 
-    public List<Map> queryByCards(@Param("topid")Integer topid, @Param("u_rid") Integer u_rid){
+    public List<Map> queryByCards(@Param("topid")Integer topid, @Param("r_uid") Integer u_rid){
         return getMapper().queryByCards(topid, u_rid);
     }
 
