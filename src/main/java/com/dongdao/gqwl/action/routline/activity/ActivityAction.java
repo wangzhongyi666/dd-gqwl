@@ -56,9 +56,10 @@ public class ActivityAction extends BaseAction {
     @RequestMapping("/activityDataList.do")
     public void roleDataList(DdActivity model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdActivity> dataList = activityService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdActivity> dataList = activityService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

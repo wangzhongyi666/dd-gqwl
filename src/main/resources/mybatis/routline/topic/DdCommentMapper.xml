@@ -45,7 +45,12 @@
      <if test="c_content!=null and c_content!=''">
        c_content  like  CONCAT('%', #{c_content}, '%') and
      </if>
-
+    <if test="cardid!=null and cardid!=''">
+      cardid  = #{cardid,jdbcType=BIGINT} and
+    </if>
+    <if test="type!=null and type!=''">
+      type  = #{type,jdbcType=INTEGER} and
+    </if>
     <if test="creattime!= null and creattime!=''">
       <bind name="creattime" value="'%'+creattime+'%'" />
       creattime like #{creattime,jdbcType=VARCHAR} and
@@ -54,7 +59,37 @@
   </select>
 
 
+  <select id="selectAll" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment"  resultType="HashMap">
+    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content, raste_user.name from dd_comment
+    left join raste_user on dd_comment.r_uid=raste_user.id
+    where
+    <if test="cardid!=null and cardid!=''">
+      dd_comment.cardid  = #{cardid,jdbcType=BIGINT} and
+    </if>
+    <if test="type!=null and type!=''">
+      dd_comment.type  = #{type,jdbcType=INTEGER} and
+    </if>
+    dd_comment.isdelete=1 and dd_comment.ispass=1
+    order by dd_comment.creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
 
+  </select>
+
+
+
+  <select id="selectByType" parameterType="java.lang.Long"  resultType="HashMap">
+    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content, raste_user.name from dd_comment
+    left join raste_user on dd_comment.r_uid=raste_user.id
+    where
+
+      dd_comment.parentid  = #{commentid,jdbcType=BIGINT} and
+    dd_comment.isdelete=1 and dd_comment.ispass=1
+    order by dd_comment.creattime desc
+
+
+  </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

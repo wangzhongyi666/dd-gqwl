@@ -42,15 +42,20 @@
 
     <![endif]-->
 </head>
-
+<style>
+    .clrs{border-style: outset;margin-top: 20px}
+</style>
 <script th:inline="javascript">
     var i=0;
    $(function(){
-
+       var reg=new RegExp("<br>","g");
+       $("#jcontent").val([[${JOB.jcontent}]].replace(reg,"\n"));
+       $("#jrequire").val([[${JOB.jrequire}]].replace(reg,"\n"))
        $('#domainInfoForm').form({
            url : '/job/updatejob.do',
            onSubmit : function() {
-
+               $('#jcontent').val($('#jcontent').val().replace(/\n|\r\n/g,"<br>"));
+               $('#jrequire').val($('#jrequire').val().replace(/\n|\r\n/g,"<br>"));
            },
            success : function(data) {
                var obj = JSON.parse(data);
@@ -89,14 +94,22 @@
            'jobid':[[${JOB.jobid}]],
            },
            function(data) {
+               var myjob=data.myjobfroms;
                var data=data.jobfroms;
-               for (var j = 0; j < data.length; j++) {
-                   var title = data[j].title;
-                   var j_link = data[j].j_link;
+               for (var i = 0; i < data.length; i++) {
+                   var value = data[i].logo;
+                   var text = data[i].j_link;
+                   var jobid=data[i].jobfromid;
+                   var j_link='';
+                   for(var j=0;j<myjob.length;j++){
+                       if(myjob[j].jobfromid==jobid){
+                           j_link=myjob[j].j_link;
+                       }
+                   }
                    var dataitems="";
-                   dataitems+='<li class="pc_info"><input name="title"  value='+title+'></input><input name="j_link" value='+j_link+'></input><button class="myabc'+i+'" onclick="removeLi('+i+')">X</button></li>';
+                   dataitems+='<tr><input  type="hidden" name="jobfromid" value='+jobid+'></input><td>渠道logo</td><td><image style="width: 150px" src="/uploads/'+value+'" ></image></td></tr>  <tr><td>渠道链接</td><td><input style="width: 400px;" readonly="readonly" value='+text+'></input></td>' +
+                       '</tr><tr><td>私有链接</td><td><input style="width: 400px" name="j_link" value='+j_link+'  > </td><div class="clrs"></div></tr>';
                    $("#isjoin").append(dataitems);
-                   i++;
                }
            });
 
@@ -169,19 +182,19 @@
         </tr>
         <tr>
             <td>职位描述</td>
-            <td><textarea type='text' id='jcontent' name="jcontent"
-                          style="width: 200px" required="true" th:text="${JOB.jcontent}"></textarea><span> 职位描述内容</span></td>
+            <td><textarea type='text' rows="5" id='jcontent' name="jcontent"
+                          style="width: 500px" required="true" th:text="${JOB.jcontent}"></textarea><span> 职位描述内容</span></td>
         </tr>
         <tr>
             <td>职位要求</td>
-            <td><textarea type='text' id='jrequire' name="jrequire"
-                          style="width: 200px" required="true" th:text="${JOB.jrequire}"></textarea><span> 职位要求内容</span></td>
+            <td><textarea type='text' rows="5" id='jrequire' name="jrequire"
+                          style="width: 500px" required="true" th:text="${JOB.jrequire}"></textarea><span> 职位要求内容</span></td>
         </tr>
-        <tr>
+        <!--<tr>
             <td>薪酬待遇</td>
-            <td><textarea type='text' id='jsalary' name="jsalary"
-                          style="width: 200px" required="true" th:text="${JOB.jsalary}"></textarea><span> 薪酬待遇内容</span></td>
-        </tr>
+            <td><textarea type='text'  id='jsalary' name="jsalary"
+                          style="width: 500px" required="true" th:text="${JOB.jsalary}"></textarea><span> 薪酬待遇内容</span></td>
+        </tr>-->
         <tr>
             <td>排序</td>
             <td><input type='text' id='j_sort' name="j_sort"
@@ -195,10 +208,10 @@
                 </select><span>  选择是否审核通过</span></td>
         </tr>
         <tr>
-            <td>超链接</td>
-            <td><ul id="isjoin">
+            <td>渠道信息</td>
+            <td><table style="margin-top: 20px; overflow:scroll;  border-collapse: separate; border-spacing: 15px;" id="isjoin">
 
-            </ul></td>
+            </table></td>
         </tr>
 
     </table>
@@ -213,31 +226,7 @@
     <div class="clr"></div>
 
 </form>
-<table border=0
-       style="margin-top: 50px; overflow:scroll;  border-collapse: separate; border-spacing: 15px; margin-left: 20px;height: 100%;">
 
-    <tr>
-        <td>链接标题</td>
-        <td>
-            <input type='text' id='jftitle' name="jftitle"
-                   style="width: 200px"  /><span>  不得超过20个汉字</span>
-        </td>
-    </tr>
-    <tr>
-        <td>链接url</td>
-        <td>
-            <input type='text' id='j_link' name="j_link"
-                   style="width: 400px"  /><span>  添加超链接</span>
-        </td>
-    </tr>
-
-</table>
-
-<div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
-    <input  onclick="addjobfrom()"  class="btn btn-sm btn-info  "
-            value="添加链接">
-</div>
-<div class="clr"></div>
 </body>
 
 </html>

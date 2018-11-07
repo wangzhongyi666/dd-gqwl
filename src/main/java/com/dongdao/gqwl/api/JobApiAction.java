@@ -2,14 +2,14 @@ package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.website.job.DdJob;
+import com.dongdao.gqwl.model.website.job.DdJob_from;
+import com.dongdao.gqwl.model.website.job.DdJobfrom;
 import com.dongdao.gqwl.model.website.job.DdResume;
 import com.dongdao.gqwl.service.website.PictureService;
-import com.dongdao.gqwl.service.website.job.JobService;
-import com.dongdao.gqwl.service.website.job.JobfromService;
-import com.dongdao.gqwl.service.website.job.JobtypeService;
-import com.dongdao.gqwl.service.website.job.ResumeService;
+import com.dongdao.gqwl.service.website.job.*;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
+import com.dongdao.gqwl.utils.StringUtil;
 import com.dongdao.gqwl.utils.VerifyFormat;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,8 @@ public class JobApiAction extends BaseAction {
     public ResumeService resumeService;
     @Autowired
     public JobfromService jobfromService;
-
+    @Autowired
+    public Job_fromService job_fromService;
     //获取总数
     @Auth(verifyURL = false)
     @ResponseBody
@@ -71,6 +72,16 @@ public class JobApiAction extends BaseAction {
     @RequestMapping("/pageposition.json")
     public Map<String, Object>  pageData(DdJob model,  HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+      /*  if(model.getJarea()!=null&&!"".equals(model.getJarea())){
+            log.error(request.getCharacterEncoding());
+            log.error("________"+model.getJarea());
+            if(!"UTF-8".equals(request.getCharacterEncoding())&&!"utf-8".equals(request.getCharacterEncoding())){
+                String jarea= StringUtil.toUTF8(model.getJarea());
+                log.error(jarea);
+                model.setJarea(jarea);
+            }
+
+        }*/
         Integer count=jobService.queryByCount(model);
         if(model!=null && model.getPageNum()!=null && model.getPageSize()!=null){
             model.setNum1(model.getPageSize()*(model.getPageNum()-1));
@@ -79,9 +90,16 @@ public class JobApiAction extends BaseAction {
         try {
             List<Map<String, Object>> jobs=jobService.selectByType(model);
             for(int i=0;i<jobs.size();i++){
-                log.error((Long)jobs.get(i).get("jobid"));
-
                 List<HashMap<String,Object>> hashMaps=jobfromService.selectByJobapi((Long)jobs.get(i).get("jobid"));
+                for(int j=0;j<hashMaps.size();j++){
+                    DdJob_from job_from=new DdJob_from();
+                    job_from.setJobfromid((Long)hashMaps.get(j).get("jobfromid"));
+                    job_from.setJobid((Long)jobs.get(i).get("jobid"));
+                    job_from=job_fromService.selectByJobs(job_from);
+                    if(job_from!=null){
+                        hashMaps.get(j).put("j_link",job_from.getJ_link());
+                    }
+                }
                 jobs.get(i).put("links",hashMaps);
             }
             jsonMap.put("jobs",jobs );

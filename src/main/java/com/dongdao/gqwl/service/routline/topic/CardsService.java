@@ -9,6 +9,7 @@ import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -23,5 +24,9 @@ public class CardsService<T> extends BaseService<T> {
 
     public List<DdCardcon> selectCfile(Long cardid){
         return getMapper().selectCfile(cardid);
+    }
+
+    public HashMap<String,Object> selectById(DdCards record){
+        return getMapper().selectById(record);
     }
 }

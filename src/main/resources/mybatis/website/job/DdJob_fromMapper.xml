@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.job.DdJob_fromMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    <id column="job_fromid" property="job_fromid" jdbcType="BIGINT" />
+    <result column="jobid" property="jobid" jdbcType="BIGINT" />
+    <result column="jobfromid" property="jobfromid" jdbcType="BIGINT" />
+    <result column="j_link" property="j_link" jdbcType="VARCHAR" />
+    <result column="filed1" property="filed1" jdbcType="INTEGER" />
+    <result column="filed2" property="filed2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    job_fromid, jobid, jobfromid, j_link, filed1, filed2
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_job_from
+    where job_fromid = #{job_fromid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_job_from
+    where jobid = #{jobid,jdbcType=BIGINT}
+  </delete>
+
+  <select id="selectByJob" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_job_from
+    where jobid = #{jobid,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByJobs" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_job_from
+    where jobid = #{jobid,jdbcType=BIGINT} and jobfromid=#{jobfromid,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    insert into dd_job_from (job_fromid, jobid, jobfromid, 
+      j_link, filed1, filed2
+      )
+    values (#{job_fromid,jdbcType=BIGINT}, #{jobid,jdbcType=BIGINT}, #{jobfromid,jdbcType=BIGINT}, 
+      #{j_link,jdbcType=VARCHAR}, #{filed1,jdbcType=INTEGER}, #{filed2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    insert into dd_job_from
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="job_fromid != null" >
+        job_fromid,
+      </if>
+      <if test="jobid != null" >
+        jobid,
+      </if>
+      <if test="jobfromid != null" >
+        jobfromid,
+      </if>
+      <if test="j_link != null" >
+        j_link,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="job_fromid != null" >
+        #{job_fromid,jdbcType=BIGINT},
+      </if>
+      <if test="jobid != null" >
+        #{jobid,jdbcType=BIGINT},
+      </if>
+      <if test="jobfromid != null" >
+        #{jobfromid,jdbcType=BIGINT},
+      </if>
+      <if test="j_link != null" >
+        #{j_link,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=INTEGER},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    update dd_job_from
+    <set >
+      <if test="jobid != null" >
+        jobid = #{jobid,jdbcType=BIGINT},
+      </if>
+      <if test="jobfromid != null" >
+        jobfromid = #{jobfromid,jdbcType=BIGINT},
+      </if>
+      <if test="j_link != null" >
+        j_link = #{j_link,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=INTEGER},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where job_fromid = #{job_fromid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.job.DdJob_from" >
+    update dd_job_from
+    set jobid = #{jobid,jdbcType=BIGINT},
+      jobfromid = #{jobfromid,jdbcType=BIGINT},
+      j_link = #{j_link,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=INTEGER},
+      filed2 = #{filed2,jdbcType=VARCHAR}
+    where job_fromid = #{job_fromid,jdbcType=BIGINT}
+  </update>
+</mapper>

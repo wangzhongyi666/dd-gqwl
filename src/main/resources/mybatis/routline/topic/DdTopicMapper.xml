@@ -49,6 +49,27 @@
   </select>
 
 
+  <select id="selectAll"   resultType="HashMap">
+    select topid, title, picpath,onlooks, joinnums from dd_topic
+    where
+    isdelete=1 and ispass=1
+    order by t_sort desc
+  </select>
+
+  <update id="updateNums" parameterType="com.dongdao.gqwl.model.routline.topic.DdTopic" >
+    update dd_topic
+    <set >
+
+      <if test="onlooks != null" >
+        onlooks = onlooks+1,
+      </if>
+      <if test="joinnums != null" >
+        joinnums = joinnums+1,
+      </if>
+
+    </set>
+    where topid = #{topid,jdbcType=BIGINT}
+  </update>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

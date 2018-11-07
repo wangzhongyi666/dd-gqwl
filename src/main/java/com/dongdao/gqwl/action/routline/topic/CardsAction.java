@@ -64,9 +64,10 @@ public class CardsAction extends BaseAction {
     @RequestMapping("/cardsDataList.do")
     public void roleDataList(DdCards model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdCards> dataList = cardsService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdCards> dataList = cardsService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

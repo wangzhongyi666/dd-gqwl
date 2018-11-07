@@ -58,9 +58,10 @@ public class TopicAction extends BaseAction {
     @RequestMapping("/topicDataList.do")
     public void roleDataList(DdTopic model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdTopic> dataList = topicService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdTopic> dataList = topicService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

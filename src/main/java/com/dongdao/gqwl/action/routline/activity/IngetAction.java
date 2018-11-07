@@ -41,9 +41,10 @@ public class IngetAction extends BaseAction {
     @RequestMapping("/ingetDataList.do")
     public void roleDataList(DdInget model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdInget> dataList = ingetService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdInget> dataList = ingetService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

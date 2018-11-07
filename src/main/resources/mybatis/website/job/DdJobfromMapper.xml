@@ -7,25 +7,44 @@
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="j_link" property="j_link" jdbcType="VARCHAR" />
     <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="g_logo" property="g_logo" jdbcType="VARCHAR" />
     <result column="j_sort" property="j_sort" jdbcType="INTEGER" />
-    <result column="filed1" property="filed1" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="j_audit" property="j_audit" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    jobfromid, jobid, title, j_link, logo, j_sort, filed1
+    jobfromid, jobid, title, j_link, logo,g_logo, j_sort, creattime,j_audit
   </sql>
+
+  <!-- 后台查找总数 -->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.dongdao.gqwl.model.website.job.DdJobfrom">
+    select
+    count(*)
+    from dd_jobfrom
+
+  </select>
+
+  <!-- 后台分页queryByList -->
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.job.DdJobfrom">
+    select
+    * from dd_jobfrom
+    order by  creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
 
   <select id="selectByJob" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select
     <include refid="Base_Column_List" />
     from dd_jobfrom
-    where jobid = #{jobid,jdbcType=BIGINT}
   </select>
 
   <select id="selectByJobapi" resultType="HashMap" parameterType="java.lang.Long" >
     select
-    title,j_link
+    jobfromid,title,j_link,logo,g_logo
     from dd_jobfrom
-    where jobid = #{jobid,jdbcType=BIGINT}
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -36,15 +55,15 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_jobfrom
-    where jobid = #{jobid,jdbcType=BIGINT}
+    where jobfromid = #{jobfromid,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.dongdao.gqwl.model.website.job.DdJobfrom" >
     insert into dd_jobfrom (jobfromid, jobid, title, 
-      j_link, logo, j_sort, 
-      filed1)
+      j_link, logo,g_logo, j_sort,
+      creattime)
     values (#{jobfromid,jdbcType=BIGINT}, #{jobid,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
       #{j_link,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{j_sort,jdbcType=INTEGER}, 
-      #{filed1,jdbcType=VARCHAR})
+      #{creattime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective"  parameterType="com.dongdao.gqwl.model.website.job.DdJobfrom" >
     insert into dd_jobfrom
@@ -64,11 +83,17 @@
       <if test="logo != null" >
         logo,
       </if>
+      <if test="g_logo != null" >
+        g_logo,
+      </if>
       <if test="j_sort != null" >
         j_sort,
       </if>
-      <if test="filed1 != null" >
-        filed1,
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="j_audit != null" >
+        j_audit,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -87,11 +112,17 @@
       <if test="logo != null" >
         #{logo,jdbcType=VARCHAR},
       </if>
+      <if test="g_logo != null" >
+        #{g_logo,jdbcType=VARCHAR},
+      </if>
       <if test="j_sort != null" >
         #{j_sort,jdbcType=INTEGER},
       </if>
-      <if test="filed1 != null" >
-        #{filed1,jdbcType=VARCHAR},
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="j_audit != null" >
+        #{j_audit,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -110,11 +141,17 @@
       <if test="logo != null" >
         logo = #{logo,jdbcType=VARCHAR},
       </if>
+      <if test="g_logo != null" >
+        g_logo = #{g_logo,jdbcType=VARCHAR},
+      </if>
       <if test="j_sort != null" >
         j_sort = #{j_sort,jdbcType=INTEGER},
       </if>
-      <if test="filed1 != null" >
-        filed1 = #{filed1,jdbcType=VARCHAR},
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="j_audit != null" >
+        j_audit = #{j_audit,jdbcType=VARCHAR},
       </if>
     </set>
     where jobfromid = #{jobfromid,jdbcType=BIGINT}
@@ -126,7 +163,7 @@
       j_link = #{j_link,jdbcType=VARCHAR},
       logo = #{logo,jdbcType=VARCHAR},
       j_sort = #{j_sort,jdbcType=INTEGER},
-      filed1 = #{filed1,jdbcType=VARCHAR}
+      creattime = #{creattime,jdbcType=VARCHAR}
     where jobfromid = #{jobfromid,jdbcType=BIGINT}
   </update>
 </mapper>

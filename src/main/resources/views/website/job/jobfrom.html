@@ -4,7 +4,7 @@
 <!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>招聘职位</title>
+    <title>招聘渠道</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
@@ -20,7 +20,7 @@
     <script src="../../static/js/commons/paging.js"></script>
 
     <script src="../../static/js/layer/layer.js"></script>
-    <script src="../../static/js/website/job/job.js"></script>
+    <script src="../../static/js/website/job/jobfrom.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
     <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
     <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
@@ -40,18 +40,7 @@
             alert($(this).text() + "," + $('#pageSizeInp').val());
             getlist($(this).text(), $('#pageSizeInp').val());
         });
-        var felObj=$('#type');
-        $.get('/job/querytype.do', {},
-            function(data) {
-                var data=data.jobtype;
-                for (var i = 0; i < data.length; i++) {
-                    var value = data[i].jobtypeid;
-                    var text = data[i].jobtypename;
-                    felObj.append("<option value='"+value+"'>" + text
-                        + "</option>");
-
-                }
-            });
+      
     })
     function getlist(pageNum,pageSize){
       /*  // <![CDATA
@@ -59,25 +48,19 @@
         alert(menus);
         // ]]>*/
 
-        var isdeletes="/job/deletejob.do";
-        var isupdate="/job/updatejob.do";
-        var ispass="/job/passjob.do";
+        var isdeletes="/jobfrom/deletejobfrom.do";
+        var isupdate="/jobfrom/updatejobfrom.do";
         var purvdelete = isPurview(isdeletes);
         console.log("==========================")
         console.log(purvdelete)
         var purvupdate = isPurview(isupdate);
-        var purvpass = isPurview(ispass);
         var purvdelete = isPurview(isdeletes);
-        var title=$("#title").val();
-        var type=$("#type").val();
 
             $.ajax({
-            url :'/job/jobDataList.do',
+            url :'/jobfrom/jobfromDataList.do',
             type : 'POST',
             timeout : 20000,
             data:{
-                jobtypeid:type,
-                jobname:title,
                 pageNum:pageNum,
                 pageSize:pageSize
             },
@@ -90,27 +73,15 @@
                         const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
-                            rowlist1[0]=row.jobtypename;
-                            rowlist1[1]=row.jobname;
-                            rowlist1[2]=row.j_sort;
-                            if(row.ispass==1){
-                                rowlist1[3]="已审核";
-                            }else if(row.ispass==0){
-                                rowlist1[3]="未审核";
-                            }
-                            rowlist1[4]=row.creattime;
-                            rowlist1[5]=row.updatetime;
-                            rowlist1[6]=row.j_audit;
-                            rowlist1[7] = "";
+                            rowlist1[0]=row.title;
+                            rowlist1[1]=row.j_link;
+                            rowlist1[2]=row.creattime;
+                            rowlist1[3]=row.j_audit;
+                            rowlist1[4] = "";
                             if(purvupdate){
-                                rowlist1[7]+="<a href=\"javascript:void(0)\" a1="+row.jobid+"  a2="+row.ispass+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
+                                rowlist1[4]+="<a href=\"javascript:void(0)\" a1="+row.jobfromid+"   onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
                             }if(purvdelete){
-                                rowlist1[7]+="<a href=\"javascript:void(0)\" a1="+row.jobid+" a2="+row.ispass+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
-                            }if(purvpass&&row.ispass==0){
-                                rowlist1[7]+="<a href=\"javascript:void(0)\" a1="+row.jobid+" a2="+row.ispass+"  onclick=\"passjob(this)\" class=\"text-primary ml10\">审核</a>";
-
-                            }else if(purvpass&&row.ispass==1){
-                                rowlist1[7]+="<a href=\"javascript:void(0)\" a1="+row.jobid+"  a2="+row.ispass+" onclick=\"passjob(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                                rowlist1[4]+="<a href=\"javascript:void(0)\" a1="+row.jobfromid+"  onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                             }
 
                         }else{
@@ -119,9 +90,6 @@
                             rowlist1[2]='';
                             rowlist1[3]='';
                             rowlist1[4]='';
-                            rowlist1[5]='';
-                            rowlist1[6]='';
-                            rowlist1[7]='';
 
                         }
                         rowlist[i]=rowlist1;
@@ -133,49 +101,27 @@
     }
     function opentabs(e) {
         var id = $(e).attr("a1");
-        window.parent.opentab('/job/job_update.shtml?jobid='+id,'编辑招聘职位')
+        window.parent.opentab('/jobfrom/jobfrom_update.shtml?jobfromid='+id,'编辑招聘渠道')
     }
 
 </script>
 <body>
     <div class="rightIframe pull-right">
     	<div class="sopen"></div>
-        <div class="menu fontS20">招聘职位</div>
+        <div class="menu fontS20">招聘渠道</div>
         <div class="search">
-        	<div class="form-horizontal" role="form">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <div class="col-md-3 search_list">
-                            <input type="text" class="form-control" placeholder="职位名称" id="title" name="title"/>
-                            <span  class="fa fa-search"></span>
-                        </div>
-                        <label class="col-md-1 control-label">职位类型</label>
-                        <div class="col-md-2">
-                            <select class="form-control" id="type" name="type">
-                                <option value="">-请选择-</option>
 
-                            </select>
-                        </div>
-
-                        <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
-                    </div>
-
-                </form>
-            </div>
 
         <div class="clearfix" id="addcontent">
-            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/job/job_add.shtml','添加职位')">添加职位</a>
+            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/jobfrom/jobfrom_add.shtml','添加渠道')">添加渠道</a>
             </div>
         <div id="tabdiv" style="overflow:auto">
             <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
                 <thead>
                 <tr>
-                    <th style="width: 170px;">类型</th>
-                    <th style="width: 170px;">职位名称</th>
-                    <th style="width: 170px;">排序</th>
-                    <th style="width: 170px;">是否审核</th>
+                    <th style="width: 170px;">标题</th>
+                    <th style="width: 170px;">渠道链接</th>
                     <th style="width: 170px;">发布时间</th>
-                    <th style="width: 170px;">修改时间</th>
                     <th style="width: 170px;">操作人</th>
                     <th style="width: 170px;">操作</th>
                 </tr>
@@ -195,6 +141,7 @@
     </div>
 
 
+        </div>
 </body>
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -206,7 +153,7 @@
     }
 
     $(function(){
-        var addcontent = '/job/addjob.do';
+        var addcontent = '/jobfrom/addjobfrom.do';
         var addpurview = isPurview(addcontent);
         if(!addpurview){
             $("#addcontent").css("display","none");

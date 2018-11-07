@@ -40,9 +40,10 @@ public class JobtypeAction extends BaseAction {
     @RequestMapping("/jobtypeDataList.do")
     public void jobtypeDataList(DdJobtype model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdJobtype> dataList = jobtypeService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdJobtype> dataList = jobtypeService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);
