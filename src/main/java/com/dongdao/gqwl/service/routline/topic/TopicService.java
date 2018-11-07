@@ -6,6 +6,9 @@ import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class TopicService<T> extends BaseService<T> {
 
@@ -14,5 +17,9 @@ public class TopicService<T> extends BaseService<T> {
 
     public DdTopicMapper<DdTopic> getMapper(){
         return ddAuditMapper;
+    }
+
+    public List<Map> selectByNewsTopics(){
+        return getMapper().selectByNewsTopics();
     }
 }

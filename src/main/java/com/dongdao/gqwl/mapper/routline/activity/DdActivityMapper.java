@@ -3,6 +3,9 @@ package com.dongdao.gqwl.mapper.routline.activity;
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.routline.activity.DdActivity;
 
+import java.util.List;
+import java.util.Map;
+
 public interface DdActivityMapper<T>  extends BaseMapper {
     int deleteByPrimaryKey(Long actid);
 
@@ -15,4 +18,8 @@ public interface DdActivityMapper<T>  extends BaseMapper {
     int updateByPrimaryKeySelective(DdActivity record);
 
     int updateByPrimaryKey(DdActivity record);
+
+    List<Map> selectBybanners();
+
+
 }

@@ -299,6 +299,7 @@ public class RasteUserApiAction extends BaseAction {
                 log.debug(msg+"["+wx_ident+"]"+"微信用户不存在.");
                 return setFailureMap(jsonMap, "微信用户不存在", null);
             }else{
+
                 int loginCount = 0;
                 if(user1.getLogin_num() != null){
                     loginCount = user1.getLogin_num();
