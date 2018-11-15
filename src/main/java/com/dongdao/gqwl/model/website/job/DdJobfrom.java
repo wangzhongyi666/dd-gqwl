@@ -16,9 +16,13 @@ public class DdJobfrom extends BaseModel {
 
     private String logo;
 
+    private String g_logo;
+
     private Integer j_sort;
 
-    private String filed1;
+    private String creattime;
+
+    private String j_audit;
 
     public Long getJobfromid() {
         return jobfromid;
@@ -60,6 +64,14 @@ public class DdJobfrom extends BaseModel {
         this.logo = logo == null ? null : logo.trim();
     }
 
+    public String getG_logo() {
+        return g_logo;
+    }
+
+    public void setG_logo(String g_logo) {
+        this.g_logo = g_logo;
+    }
+
     public Integer getJ_sort() {
         return j_sort;
     }
@@ -68,11 +80,19 @@ public class DdJobfrom extends BaseModel {
         this.j_sort = j_sort;
     }
 
-    public String getFiled1() {
-        return filed1;
+    public String getCreattime() {
+        return creattime;
     }
 
-    public void setFiled1(String filed1) {
-        this.filed1 = filed1 == null ? null : filed1.trim();
+    public void setCreattime(String creattime) {
+        this.creattime = creattime;
+    }
+
+    public String getJ_audit() {
+        return j_audit;
+    }
+
+    public void setJ_audit(String j_audit) {
+        this.j_audit = j_audit;
     }
 }

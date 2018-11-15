@@ -3,9 +3,11 @@ package com.dongdao.gqwl.action.routline.topic;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.bean.SysUser;
 import com.dongdao.gqwl.model.routline.topic.DdCardcon;
+import com.dongdao.gqwl.model.routline.topic.DdCards;
 import com.dongdao.gqwl.model.routline.topic.DdComment;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
+import com.dongdao.gqwl.service.routline.topic.CardsService;
 import com.dongdao.gqwl.service.routline.topic.CommentService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
@@ -31,7 +33,8 @@ public class CommentAction extends BaseAction {
 
     @Autowired
     public CommentService commentService;
-
+    @Autowired
+    public CardsService cardsService;
 
     @RequestMapping(value = "/comment.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
@@ -45,9 +48,10 @@ public class CommentAction extends BaseAction {
     @RequestMapping("/commentDataList.do")
     public void roleDataList(DdComment model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdComment> dataList = commentService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdComment> dataList = commentService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);
@@ -94,9 +98,18 @@ public class CommentAction extends BaseAction {
     @RequestMapping("/passcomment.do")
     public void passcomment(DdComment model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        model=(DdComment)commentService.selectByPrimaryKey(model);
         if(model.getIspass()==1){
+            DdCards card=new DdCards();
             model.setIspass(0);
+            card.setCardid(model.getCardid());
+            card.setCommnums(1);
+            cardsService.updateNums(card);
         }else{
+            DdCards card=new DdCards();
+            card.setCardid(model.getCardid());
+            card.setCommnums(0);
+            cardsService.updateNums(card);
             model.setIspass(1);
         }
         int num= commentService.updateByPrimaryKeySelective(model);

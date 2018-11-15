@@ -3,6 +3,7 @@ package com.dongdao.gqwl.service;
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.BaseModel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,5 +72,16 @@ public abstract class BaseService<T> {
 
     public List<Map> selectByType(Object type){
         return getMapper().selectByType(type);
+    }
+
+    public  List<HashMap<String,Object>> selectAll(){
+        return getMapper().selectAll();
+    }
+   public List<HashMap<String,Object>> selectAll(Object model){
+        return getMapper().selectAll(model);
+    }
+
+    public  int updateNums(T record){
+        return getMapper().updateNums(record);
     }
 }

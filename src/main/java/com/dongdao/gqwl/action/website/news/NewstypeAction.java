@@ -40,9 +40,10 @@ public class NewstypeAction extends BaseAction {
     @RequestMapping("/newstypeDataList.do")
     public void roleDataList(DdNewstype model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdNewstype> dataList = newstypeService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdNewstype> dataList = newstypeService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

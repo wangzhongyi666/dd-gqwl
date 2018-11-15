@@ -4,6 +4,7 @@ import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.routline.topic.DdCardcon;
 import com.dongdao.gqwl.model.routline.topic.DdCards;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface DdCardsMapper<T> extends BaseMapper {
@@ -22,4 +23,6 @@ public interface DdCardsMapper<T> extends BaseMapper {
     int updateByPrimaryKey(DdCards record);
 
     List<DdCardcon> selectCfile(Long cardid);
+
+    HashMap<String,Object> selectById(DdCards record);
 }

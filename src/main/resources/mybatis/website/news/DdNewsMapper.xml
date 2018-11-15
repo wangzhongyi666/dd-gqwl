@@ -106,7 +106,7 @@
   <!--查询前端新闻-->
   <select id="selectByType" resultType="HashMap" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
     select
-    newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top
+    newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top,newswhere,newsfrom
     from dd_news
     where
     <if test="top!= null">

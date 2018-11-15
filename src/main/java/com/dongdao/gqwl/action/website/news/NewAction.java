@@ -58,9 +58,10 @@ public class NewAction extends BaseAction {
     @RequestMapping("/newsDataList.do")
     public void roleDataList(DdNews model, HttpServletRequest request, HttpServletResponse response) {
 
-        List<DdNews> dataList = newsService.queryByList(model);
+
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<DdNews> dataList = newsService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);

@@ -5,13 +5,13 @@
     <id column="ingetid" property="ingetid" jdbcType="BIGINT" />
     <result column="r_uid" property="r_uid" jdbcType="BIGINT" />
     <result column="actid" property="actid" jdbcType="BIGINT" />
-    <result column="integer" property="integer" jdbcType="INTEGER" />
+    <result column="integar" property="integar" jdbcType="INTEGER" />
     <result column="creattime" property="creattime" jdbcType="VARCHAR" />
     <result column="filed1" property="filed1" jdbcType="VARCHAR" />
     <result column="filed2" property="filed2" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ingetid, r_uid, actid, integer, creattime, filed1, filed2
+    ingetid, r_uid, actid, integar, creattime, filed1, filed2
   </sql>
 
   <!-- 后台查找总数 -->
@@ -28,6 +28,20 @@
       actid = #{actid,jdbcType=BIGINT} and
     </if>
     1 = 1
+  </select>
+
+  <select id="selectByUser"  resultMap="BaseResultMap"  parameterType="java.lang.Long" >
+    select
+    *
+    from dd_inget
+    where r_uid=#{r_uid,jdbcType=BIGINT} and to_days(creattime) = to_days(now());
+  </select>
+
+  <select id="selectByToday"  resultMap="BaseResultMap"   >
+    select
+    *
+    from dd_inget
+    where to_days(creattime) = to_days(now());
   </select>
 
   <!-- 后台分页queryByList -->
@@ -66,10 +80,10 @@
   </delete>
   <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.activity.DdInget" >
     insert into dd_inget (ingetid, r_uid, actid, 
-      integer, creattime, filed1, 
+      integar, creattime, filed1,
       filed2)
     values (#{ingetid,jdbcType=BIGINT}, #{r_uid,jdbcType=BIGINT}, #{actid,jdbcType=BIGINT}, 
-      #{integer,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, #{filed1,jdbcType=VARCHAR}, 
+      #{integar,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, #{filed1,jdbcType=VARCHAR},
       #{filed2,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.activity.DdInget" >
@@ -84,8 +98,8 @@
       <if test="actid != null" >
         actid,
       </if>
-      <if test="integer != null" >
-        integer,
+      <if test="integar != null" >
+        integar,
       </if>
       <if test="creattime != null" >
         creattime,
@@ -107,8 +121,8 @@
       <if test="actid != null" >
         #{actid,jdbcType=BIGINT},
       </if>
-      <if test="integer != null" >
-        #{integer,jdbcType=INTEGER},
+      <if test="integar != null" >
+        #{integar,jdbcType=INTEGER},
       </if>
       <if test="creattime != null" >
         #{creattime,jdbcType=VARCHAR},
@@ -130,8 +144,8 @@
       <if test="actid != null" >
         actid = #{actid,jdbcType=BIGINT},
       </if>
-      <if test="integer != null" >
-        integer = #{integer,jdbcType=INTEGER},
+      <if test="integar != null" >
+        integar = #{integar,jdbcType=INTEGER},
       </if>
       <if test="creattime != null" >
         creattime = #{creattime,jdbcType=VARCHAR},
@@ -149,7 +163,7 @@
     update dd_inget
     set r_uid = #{r_uid,jdbcType=BIGINT},
       actid = #{actid,jdbcType=BIGINT},
-      integer = #{integer,jdbcType=INTEGER},
+      integar = #{integar,jdbcType=INTEGER},
       creattime = #{creattime,jdbcType=VARCHAR},
       filed1 = #{filed1,jdbcType=VARCHAR},
       filed2 = #{filed2,jdbcType=INTEGER}

@@ -4,6 +4,7 @@ import com.dongdao.gqwl.model.BaseModel;
 import com.dongdao.gqwl.model.source.DdLabel;
 import com.dongdao.gqwl.model.source.DdStype;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +35,9 @@ public interface BaseMapper<T> {
     List<T> queryLabel();
     T selectByPrimaryKey(Object id);
     public List<Map> selectByType(Object type);
+    List<HashMap<String,Object>> selectAll();
+    List<HashMap<String,Object>> selectAll(Object model);
+
+    int updateNums(T record);
+
 }

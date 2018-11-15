@@ -24,4 +24,8 @@ public class ActivityService<T> extends BaseService<T> {
     public List<Map> selectBybanners(){
         return getMapper().selectBybanners();
     }
+
+    public List<DdActivity> selectById(Long type){
+        return getMapper().selectById(type);
+    }
 }

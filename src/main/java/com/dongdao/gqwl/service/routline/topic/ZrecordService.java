@@ -17,4 +17,8 @@ public class ZrecordService<T> extends BaseService<T> {
     public DdZrecordMapper<DdZrecord> getMapper(){
         return ddAuditMapper;
     }
+
+    public DdZrecord selectById(DdZrecord record){
+        return getMapper().selectById(record);
+    }
 }

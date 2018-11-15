@@ -2,6 +2,7 @@ package com.dongdao.gqwl.mapper.routline.activity;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.routline.activity.DdActivity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,5 @@ public interface DdActivityMapper<T>  extends BaseMapper {
 
     List<Map> selectBybanners();
 
-
+    List<DdActivity> selectById(@Param(value="type") Long type);
 }

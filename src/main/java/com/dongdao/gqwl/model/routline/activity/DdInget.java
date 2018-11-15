@@ -9,7 +9,7 @@ public class DdInget extends BaseModel {
 
     private Long actid;
 
-    private Integer integer;
+    private Integer integar;
 
     private String creattime;
 
@@ -43,12 +43,12 @@ public class DdInget extends BaseModel {
         this.actid = actid;
     }
 
-    public Integer getInteger() {
-        return integer;
+    public Integer getIntegar() {
+        return integar;
     }
 
-    public void setInteger(Integer integer) {
-        this.integer = integer;
+    public void setIntegar(Integer integar) {
+        this.integar = integar;
     }
 
     public String getCreattime() {

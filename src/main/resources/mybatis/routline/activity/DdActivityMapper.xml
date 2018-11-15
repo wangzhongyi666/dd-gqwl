@@ -55,6 +55,24 @@
   </select>
 
 
+  <select id="selectAll" resultType="HashMap"  >
+    select
+    actid, picpath, begintime, endtime, rule, award, adescript, maxinter, allinter
+    from dd_activity
+    where isdelete=1 and ispass=1 order by creattime limit 0,1
+  </select>
+
+  <select id="selectById" resultType="HashMap"  parameterType="java.lang.Long">
+    select
+    actid, picpath, begintime, endtime, rule, award, adescript, maxinter, allinter
+    from dd_activity
+    where isdelete=1 and ispass=1 order by creattime
+    <if test="type != null and type==1" >
+      limit 0,1
+    </if>
+
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

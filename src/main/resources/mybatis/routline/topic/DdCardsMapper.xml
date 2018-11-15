@@ -77,6 +77,72 @@
     select filepath  from dd_cardcon where cardid=#{cardid}
   </select>
 
+  <select id="selectById" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards"  resultType="HashMap">
+    select
+    dd_cards.cardid, dd_cards.topid, dd_cards.r_uid, dd_cards.creattime, dd_cards.commnums, dd_cards.zannums, dd_cards.sharenums,dd_cards.c_content,raste_user.name,raste_user.picurl from dd_cards
+
+    left join raste_user on dd_cards.r_uid=raste_user.id
+    where
+
+      dd_cards.cardid = #{cardid,jdbcType=BIGINT}
+
+
+
+  </select>
+
+
+
+  <select id="selectAll" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards"  resultType="HashMap">
+    select
+    dd_cards.cardid, dd_cards.topid, dd_cards.r_uid, dd_cards.creattime, dd_cards.commnums, dd_cards.zannums, dd_cards.sharenums,dd_cards.c_content,raste_user.name,raste_user.picurl from dd_cards
+
+    left join raste_user on dd_cards.r_uid=raste_user.id
+    where
+    <!--<if test="title!=null and title!=''">
+      dd_cards.title like  CONCAT('%', #{title}, '%') and
+    </if>-->
+    <if test="topid!= null and topid!=''">
+      dd_cards.topid = #{topid,jdbcType=BIGINT} and
+    </if>
+
+    dd_cards.isdelete=1 and dd_cards.ispass=1
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+
+  </select>
+
+
+  <update id="updateNums" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+    update dd_cards
+    <set >
+
+      <if test="commnums != null" >
+      <if test="commnums ==0" >
+        commnums = commnums+1,
+      </if>
+        <if test="commnums ==1" >
+          commnums = commnums-1,
+        </if>
+      </if>
+      <if test="zannums != null" >
+      <if test="zannums ==0" >
+          zannums =zannums+1,
+      </if>
+        <if test="zannums ==1" >
+          zannums =zannums-1,
+        </if>
+      </if>
+      <if test="sharenums != null" >
+        sharenums = sharenums+1,
+      </if>
+
+
+    </set>
+    where cardid = #{cardid,jdbcType=BIGINT}
+  </update>
+
 
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
@@ -102,7 +168,7 @@
       #{filed2,jdbcType=VARCHAR}, #{filed3,jdbcType=INTEGER}, #{c_content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="cardid" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards" >
     insert into dd_cards
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="cardid != null" >
