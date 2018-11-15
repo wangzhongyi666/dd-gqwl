@@ -1,7 +1,7 @@
-package com.dongdao.gqwl.mapper.websit;
+package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
-import com.dongdao.gqwl.model.websit.RasteMassage;
+import com.dongdao.gqwl.model.website.RasteMassage;
 
 public interface RasteMassageMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer massage_id);

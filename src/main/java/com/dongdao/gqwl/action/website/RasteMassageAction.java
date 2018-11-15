@@ -1,11 +1,8 @@
-package com.dongdao.gqwl.action.websit;
+package com.dongdao.gqwl.action.website;
 
-import com.dongdao.gqwl.UserConstants;
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.model.websit.RasteMassage;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteMassage;
 import com.dongdao.gqwl.service.gcolumn.RasteMassageService;
-import com.dongdao.gqwl.service.gcolumn.RasteUserService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import com.dongdao.gqwl.utils.HtmlUtil;
@@ -37,7 +34,7 @@ public class RasteMassageAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/rastemassage", context);
+        return forword("website/rastemassage", context);
     }
 
 

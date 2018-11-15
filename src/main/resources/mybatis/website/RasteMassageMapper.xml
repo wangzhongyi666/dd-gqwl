@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dongdao.gqwl.mapper.websit.RasteMassageMapper" >
-  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.websit.RasteMassage" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.RasteMassageMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.RasteMassage" >
     <id column="massage_id" property="massage_id" jdbcType="INTEGER" />
     <result column="logo" property="logo" jdbcType="VARCHAR" />
     <result column="two_bar_codes" property="two_bar_codes" jdbcType="VARCHAR" />
@@ -33,7 +33,7 @@
     delete from raste_massage
     where massage_id = #{massage_id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     insert into raste_massage (massage_id, logo, two_bar_codes, 
       address, tel, phone, 
       email, e_mail, record,
@@ -45,7 +45,7 @@
       #{itude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
       #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR},#{inquire_tel},#{community_codes})
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     insert into raste_massage
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="massage_id != null" >
@@ -148,7 +148,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     update raste_massage
     <set >
       <if test="logo != null" >
@@ -199,7 +199,7 @@
     </set>
     where massage_id = #{massage_id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     update raste_massage
     set logo = #{logo,jdbcType=VARCHAR},
       two_bar_codes = #{two_bar_codes,jdbcType=VARCHAR},
@@ -219,7 +219,7 @@
     where massage_id = #{massage_id,jdbcType=INTEGER}
   </update>
 
-  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     select
     <include refid="Base_Column_List" />
     from raste_massage t
@@ -232,7 +232,7 @@
       limit #{num1},#{num2}
     </if>
   </select>
-  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.RasteMassage" >
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.RasteMassage" >
     select count(0) from raste_massage t
     where 1=1
     <if test="state != null" >

@@ -13,6 +13,7 @@ public interface BaseMapper<T> {
 
     void update(T t);
 
+
     void updateBySelective(T t);
 
     void delete(Object id);

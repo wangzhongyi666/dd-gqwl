@@ -1,7 +1,7 @@
-package com.dongdao.gqwl.mapper.websit;
+package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
-import com.dongdao.gqwl.model.websit.GColumn;
+import com.dongdao.gqwl.model.website.GColumn;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

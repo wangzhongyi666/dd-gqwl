@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dongdao.gqwl.mapper.websit.GSeoMapper" >
-  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.websit.GSeo" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.GSeoMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.GSeo" >
     <id column="s_id" property="s_id" jdbcType="INTEGER" />
     <result column="G_tid" property="g_tid" jdbcType="INTEGER" />
     <result column="G_icon" property="g_icon" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
     delete from G_seo
     where s_id = #{s_id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.GSeo" >
     insert into G_seo (s_id, G_tid, G_icon,
       G_title, G_keywords, G_description, 
       G_url, G_tkey, G_R_time, 
@@ -43,7 +43,7 @@
       #{g_M_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=INTEGER}, #{g_state,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.GSeo" >
     insert into G_seo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -122,7 +122,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.GSeo" >
     update G_seo
     <set >
       <if test="g_tid != null" >
@@ -159,7 +159,7 @@
     </set>
     where s_id = #{s_id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.GSeo" >
     update G_seo
     set G_tid = #{g_tid,jdbcType=INTEGER},
       G_title = #{g_title,jdbcType=VARCHAR},
@@ -173,7 +173,7 @@
       G_state = #{g_state,jdbcType=INTEGER}
     where s_id = #{s_id,jdbcType=INTEGER}
   </update>
-  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.GSeo" >
     select
     <include refid="Base_Column_List" />,u.nickName,c.g_name
     from G_seo t
@@ -185,7 +185,7 @@
       limit #{num1},#{num2}
     </if>
   </select>
-  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.GSeo" >
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.GSeo" >
     select count(0) from G_seo t
     left join sys_user u on t.W_uid = u.id
     left join G_column c on t.G_tid = c.c_id

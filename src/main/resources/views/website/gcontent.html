@@ -18,11 +18,11 @@
     <script src="../../static/js/commons/paging.js"></script>
 
     <script src="../../static/js/layer/layer.js"></script>
-    <script src="../../static/js/webist/gcolumn.js"></script>
+    <script src="../../static/js/website/gcontent.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
 
     <!-- Uploadify文件上传 -->
-    <link href="../../static/js/uploadify/uploadify.css"   rel="stylesheet" type="text/css" />
+    <link href="../../static/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
     <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
@@ -39,18 +39,18 @@
 <script>
     function getlist(pageNum,pageSize){
 
-        var deleteurl='/gcolumn/deletegcolumn.do';
-        var updateurl='/gcolumn/updategcolumn.do';
+        var deleteurl='/gcolumn/deletegcontent.do';
+        var updateurl='/gcolumn/updategcontent.do';
 
         var deleteview = isPurview(deleteurl);
         var updateview = isPurview(updateurl);
 
         $.ajax({
-            url :'/gcolumn/gcolumnDataList.do',
+            url :'/gcolumn/gcontentDataList.do',
             type : 'POST',
             timeout : 20000,
             data:{
-
+                g_title:$("#jname").val,
                 pageNum:pageNum,
                 pageSize:pageSize
             },
@@ -63,17 +63,23 @@
                         const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
-                            rowlist1[0]=row.c_id;
+                            rowlist1[0]=row.con_id;
                             rowlist1[1]=row.g_name;
-                            rowlist1[2]=row.g_R_time;
-                            rowlist1[3]=row.g_M_time;
-                            rowlist1[4]=row.w_uid;
-                            rowlist1[5]=row.g_icon;
-                            rowlist1[6]="";
+                            rowlist1[2]=row.g_pv;
+                            rowlist1[3]=row.g_rank;
+
+                            if(row.g_recommend==1){
+                                rowlist1[4]="推荐";
+                            }else{
+                                rowlist1[4]="常规显示";
+                            }
+                            rowlist1[5]=row.g_R_time;
+                            rowlist1[6]=row.g_M_time;
+                            rowlist1[7]=row.nickName;
                             if(updateview){
-                                rowlist1[6]+="<a href=\"javascript:void(0)\" a1="+row.c_id+"  a2="+row.g_name+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>";
+                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.c_id+"  a2="+row.g_name+" onclick=\"edit(this);\" class=\"text-primary ml10\">编辑</a>";
                             }if(deleteview){
-                                rowlist1[6]+="<a href=\"javascript:void(0)\" a1="+row.c_id+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.c_id+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                             }
                         }else{
                             rowlist1[0]='';
@@ -82,8 +88,9 @@
                             rowlist1[3]='';
                             rowlist1[4]='';
                             rowlist1[5]='';
-                            rowlist1[5]='';
                             rowlist1[6]='';
+                            rowlist1[7]='';
+                            rowlist1[8]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -97,7 +104,7 @@
 <body>
 <div class="rightIframe pull-right">
     <div class="sopen"></div>
-    <div class="menu fontS20">栏目管理</div>
+    <div class="menu fontS20">栏目内容管理</div>
     <div class="clearfix" id="addgcolumn">
         <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
     </div>
@@ -107,6 +114,9 @@
             <tr>
                 <th style="width: 170px;">序号</th>
                 <th style="width: 170px;">栏目名称</th>
+                <th style="width: 170px;">访问量</th>
+                <th style="width: 170px;">排序</th>
+                <th style="width: 170px;">展示类型</th>
                 <th style="width: 170px;">发布时间</th>
                 <th style="width: 170px;">修改时间</th>
                 <th style="width: 170px;">操作人</th>
@@ -196,38 +206,6 @@
         </div>
     </div>
 
-    <div class="popbox-wrapper safebox" id="addgseo">
-        <input type="hidden" id="G_tid" />
-        <div class="popbox-body">
-            <div class="safe_nav">
-                <span class="pull-right fa fa-close popbox-close fontS20"></span>
-                <span class="fontS16">添加栏目内容</span>
-            </div>
-            <div class="detail_box">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label class="col-md-3 col-xs-3 control-label">栏目名称</label>
-                        <div class="col-md-8 col-xs-6">
-                            <input type="text" id="g_name2" class="form-control" placeholder="请输入栏目名称"/>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label class="col-md-3 col-xs-3 control-label">栏目示意图</label>
-                        <div class="col-md-8 col-xs-6">
-                            <input type="file"  id='filename1' name="logos"  onChange="setImagePreviews()"  />
-                            <!--<div style="height: 0px" id="ImgPr"><img style="height: 180px;" th:src="|/uploads/${SCONTENT.G_icon}|">-->
-                        </div>
-                    </div>
-
-                    <div class="form-group text-center" style="margin-top: 10px;">
-                        <div class="col-md-offset-3 col-xs-offset-3 col-xs-6">
-                            <a class="btn btn-primary btn-lg btn-radius"  style="margin:0 auto;" onclick="formValidate(this)" style="width:50%;">保存</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>

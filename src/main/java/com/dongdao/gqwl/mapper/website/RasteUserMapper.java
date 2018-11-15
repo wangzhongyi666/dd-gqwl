@@ -1,7 +1,7 @@
-package com.dongdao.gqwl.mapper.websit;
+package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 
 public interface RasteUserMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer id);

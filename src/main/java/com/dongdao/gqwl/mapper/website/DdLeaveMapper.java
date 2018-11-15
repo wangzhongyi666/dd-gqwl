@@ -1,7 +1,7 @@
-package com.dongdao.gqwl.mapper.websit;
+package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
-import com.dongdao.gqwl.model.websit.DdLeave;
+import com.dongdao.gqwl.model.website.DdLeave;
 
 public interface DdLeaveMapper<T> extends BaseMapper {
     int deleteByPrimaryKey(Integer leave_id);

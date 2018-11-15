@@ -1,7 +1,7 @@
 package com.dongdao.gqwl.service.gcolumn;
 
-import com.dongdao.gqwl.mapper.websit.RasteUserMapper;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.mapper.website.RasteUserMapper;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

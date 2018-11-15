@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dongdao.gqwl.mapper.websit.GContentMapper" >
-  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.websit.GContent" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.GContentMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.GContent" >
     <id column="con_id" property="con_id" jdbcType="INTEGER" />
     <result column="G_tid" property="g_tid" jdbcType="INTEGER" />
     <result column="S_sid" property="s_sid" jdbcType="INTEGER" />
@@ -29,7 +29,7 @@
     delete from G_content
     where con_id = #{con_id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.GContent" >
     insert into G_content (con_id, G_tid, S_sid,
       G_pv, G_rank, G_recommend, 
       G_top, G_R_time, G_M_time, 
@@ -39,7 +39,7 @@
       #{g_top,jdbcType=INTEGER}, #{g_R_time,jdbcType=VARCHAR}, #{g_M_time,jdbcType=VARCHAR}, 
       #{w_uid,jdbcType=INTEGER}, #{g_state,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.GContent" >
     insert into G_content
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="con_id != null" >
@@ -112,7 +112,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.GContent" >
     update G_content
     <set >
       <if test="g_tid != null" >
@@ -148,7 +148,7 @@
     </set>
     where con_id = #{con_id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.GContent" >
     update G_content
     set G_tid = #{g_tid,jdbcType=INTEGER},
       S_sid = #{s_sid,jdbcType=INTEGER},
@@ -162,7 +162,7 @@
       G_state = #{g_state,jdbcType=INTEGER}
     where con_id = #{con_id,jdbcType=INTEGER}
   </update>
-  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.GContent" >
     select
     <include refid="Base_Column_List" />,u.nickName,c.g_name
     from G_content t
@@ -174,7 +174,7 @@
       limit #{num1},#{num2}
     </if>
   </select>
-  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.GContent" >
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.GContent" >
     select count(0) from G_content t
     left join sys_user u on t.W_uid = u.id
     left join G_column c on t.G_tid = c.c_id

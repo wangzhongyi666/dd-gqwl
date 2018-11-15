@@ -1,4 +1,4 @@
-package com.dongdao.gqwl.model.websit;
+package com.dongdao.gqwl.model.website;
 
 import com.dongdao.gqwl.model.BaseModel;
 

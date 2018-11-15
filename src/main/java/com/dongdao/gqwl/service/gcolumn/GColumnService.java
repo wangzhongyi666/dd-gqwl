@@ -1,7 +1,7 @@
 package com.dongdao.gqwl.service.gcolumn;
 
-import com.dongdao.gqwl.mapper.websit.GColumnMapper;
-import com.dongdao.gqwl.model.websit.GColumn;
+import com.dongdao.gqwl.mapper.website.GColumnMapper;
+import com.dongdao.gqwl.model.website.GColumn;
 import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

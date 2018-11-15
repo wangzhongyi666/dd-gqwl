@@ -1,9 +1,7 @@
 package com.dongdao.gqwl.service.gcolumn;
 
-import com.dongdao.gqwl.mapper.websit.DdLeaveMapper;
-import com.dongdao.gqwl.mapper.websit.RasteMassageMapper;
-import com.dongdao.gqwl.model.websit.DdLeave;
-import com.dongdao.gqwl.model.websit.RasteMassage;
+import com.dongdao.gqwl.mapper.website.DdLeaveMapper;
+import com.dongdao.gqwl.model.website.DdLeave;
 import com.dongdao.gqwl.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

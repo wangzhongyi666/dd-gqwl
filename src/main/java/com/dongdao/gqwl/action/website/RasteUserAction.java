@@ -1,15 +1,11 @@
-package com.dongdao.gqwl.action.websit;
+package com.dongdao.gqwl.action.website;
 
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.bean.SysUser;
-import com.dongdao.gqwl.model.webinfo.DdWebinfo;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
-import com.dongdao.gqwl.service.webinfo.WebinfoService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import com.dongdao.gqwl.utils.HtmlUtil;
-import com.dongdao.gqwl.utils.SessionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +31,7 @@ public class RasteUserAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/rasteuser", context);
+        return forword("website/rasteuser", context);
     }
 
 
@@ -107,7 +103,7 @@ public class RasteUserAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView auditRasteuser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/auditrasteuser", context);
+        return forword("website/auditrasteuser", context);
     }
 
     //审核

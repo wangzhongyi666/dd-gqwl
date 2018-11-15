@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dongdao.gqwl.mapper.websit.RasteUserMapper" >
-  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.websit.RasteUser" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.RasteUserMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.RasteUser" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="tel" property="tel" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
     delete from raste_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     insert into raste_user (id, name, tel, 
       pwd, email, createtime, 
       lasttime, login_num, state, 
@@ -41,7 +41,7 @@
       #{lasttime,jdbcType=VARCHAR}, #{login_num,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
       #{login_type,jdbcType=INTEGER}, #{picurl,jdbcType=VARCHAR},#{sex},#{birthday},#{integral},#{wx_ident})
   </insert>
-  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     insert into raste_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -139,7 +139,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     update raste_user
     <set >
       <if test="name != null" >
@@ -188,7 +188,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     update raste_user
     set name = #{name,jdbcType=VARCHAR},
       tel = #{tel,jdbcType=VARCHAR},
@@ -207,7 +207,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     select
     <include refid="Base_Column_List" />
     from raste_user t
@@ -220,7 +220,7 @@
       limit #{num1},#{num2}
     </if>
   </select>
-  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     select count(0) from raste_user t
     where t.state != 2
     <if test="jname!=null">
@@ -228,7 +228,7 @@
     </if>
   </select>
 
-  <select id="queryByToLogin" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <select id="queryByToLogin" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     select
     <include refid="Base_Column_List" />
     from raste_user t
@@ -245,7 +245,7 @@
   </select>
 
 
-  <update id="updateByWxIdent" parameterType="com.dongdao.gqwl.model.websit.RasteUser" >
+  <update id="updateByWxIdent" parameterType="com.dongdao.gqwl.model.website.RasteUser" >
     update raste_user
     <set >
       <if test="name != null" >

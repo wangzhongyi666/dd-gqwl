@@ -1,14 +1,9 @@
 package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.model.websit.RasteUser;
-import com.dongdao.gqwl.model.website.job.DdJob;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
-import com.dongdao.gqwl.service.website.PictureService;
-import com.dongdao.gqwl.service.website.job.JobService;
-import com.dongdao.gqwl.service.website.job.JobtypeService;
 import com.dongdao.gqwl.utils.*;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
