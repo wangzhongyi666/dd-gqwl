@@ -2,9 +2,9 @@ package com.dongdao.gqwl.action.gcolumn;
 
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.bean.SysUser;
-import com.dongdao.gqwl.model.websit.GColumn;
-import com.dongdao.gqwl.model.websit.GContent;
-import com.dongdao.gqwl.model.websit.GSeo;
+import com.dongdao.gqwl.model.website.GColumn;
+import com.dongdao.gqwl.model.website.GContent;
+import com.dongdao.gqwl.model.website.GSeo;
 import com.dongdao.gqwl.service.gcolumn.GColumnService;
 import com.dongdao.gqwl.service.gcolumn.GContentService;
 import com.dongdao.gqwl.service.gcolumn.GSeoService;
@@ -43,7 +43,7 @@ public class GColumnAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView gcolumn(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/gcolumn", context);
+        return forword("website/gcolumn", context);
     }
 
 
@@ -133,7 +133,7 @@ public class GColumnAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/gseo", context);
+        return forword("website/gseo", context);
     }
 
 
@@ -223,7 +223,7 @@ public class GColumnAction extends BaseAction {
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView gContent(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> context = getRootMap();
-        return forword("websit/gcontent", context);
+        return forword("website/gcontent", context);
     }
 
 

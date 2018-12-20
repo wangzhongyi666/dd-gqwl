@@ -270,4 +270,11 @@
       filed2 = #{filed2,jdbcType=INTEGER}
     where actid = #{actid,jdbcType=BIGINT}
   </update>
+
+  <select id="selectBybanners" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    actid,picpath
+    from dd_activity
+    where ispass = 1 and isdelete != 1
+  </select>
 </mapper>

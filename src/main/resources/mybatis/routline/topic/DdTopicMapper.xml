@@ -247,4 +247,16 @@
       t_sort = #{t_sort,jdbcType=INTEGER}
     where topid = #{topid,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByNewsTopics" resultMap="BaseResultMap" >
+    select
+    topid,title
+    from dd_topic limit 4
+  </select>
+
+  <select id="selectByTopics" resultMap="BaseResultMap" >
+    select
+    topid,title
+    from dd_topic limit 4
+  </select>
 </mapper>

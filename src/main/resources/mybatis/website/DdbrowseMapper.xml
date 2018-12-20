@@ -117,14 +117,14 @@
 
   <select id="queryByBrowse" resultType="map" parameterType="java.lang.Integer" >
     select
-    p.picpath,p.t_content,t.createtime
+    t.browse_id,p.picpath,p.t_content,t.createtime
     from dd_browse t left join dd_topic p on t.topid = p.topid
     where t.user_id = #{user_id,jdbcType=INTEGER} and p.isdelete = 0 order by createtime desc
   </select>
 
   <select id="queryByBrowseInfo" resultType="map" parameterType="java.lang.Integer" >
     select
-    u.picurl,u.name,p.createtime,p.t_content,d.filepath
+    u.picurl,u.name,c.creattime as createtime,p.t_content,d.filepath
     from dd_browse t
     left join dd_topic p on t.topid = p.topid
     left join raste_user u on u.id = p.t_audit
@@ -134,25 +134,25 @@
     where t.browse_id = #{browse_id,jdbcType=INTEGER} and p.isdelete = 0 group by browse_id
   </select>
 
-  <select id="queryByCards" resultType="map" parameterType="java.lang.Integer" >
+  <select id="queryByCards" resultType="map" >
     select
-      t.picpath,c.c_content,c.createtime
+      c.cardid,t.picpath,c.c_content,c.creattime
     from dd_cards c
     left join dd_cardcon con on c.cardid = con.cardid
     left join dd_topic t on t.topid = c.topid
-    where t.topid=#{topid} and c.r_uid = #{r_uid}
-    group by c.cardid order by c.createtime desc
+    where t.topid=#{topid,jdbcType=INTEGER} and c.r_uid = #{r_uid,jdbcType=INTEGER}
+    group by c.cardid order by c.creattime desc
   </select>
 
   <select id="queryByCardsInfo" resultType="map" parameterType="java.lang.Integer" >
     select
-      u.name,u.picurl,c.createtime,t.picpath,c.c_content
+      u.name,u.picurl,c.creattime,t.picpath,c.c_content
     from dd_cards c
     left join dd_cardcon con on c.cardid = con.cardid
     left join dd_topic t on t.topid = c.topid
     left join raste_user u on u.id = c.r_uid
     where t.topid=#{topid} and c.cardid=#{cardid}
-    group by c.cardid order by c.createtime desc
+    group by c.cardid order by c.creattime desc
   </select>
 
   <update id="updateByCardsId" parameterType="java.lang.Integer" >

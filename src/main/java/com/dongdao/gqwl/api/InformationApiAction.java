@@ -1,8 +1,8 @@
 package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.model.websit.RasteMassage;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteMassage;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.model.website.job.DdInformation;
 import com.dongdao.gqwl.service.gcolumn.RasteMassageService;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;

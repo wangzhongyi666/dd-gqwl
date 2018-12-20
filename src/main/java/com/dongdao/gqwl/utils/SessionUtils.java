@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.dongdao.gqwl.bean.SysUser;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 import org.apache.log4j.Logger;
 
 

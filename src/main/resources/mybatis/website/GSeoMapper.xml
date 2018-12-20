@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.GSeoMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.GSeo" >
+    <id column="s_id" property="s_id" jdbcType="INTEGER" />
+    <result column="G_tid" property="g_tid" jdbcType="INTEGER" />
+    <result column="G_icon" property="g_icon" jdbcType="VARCHAR" />
+    <result column="G_title" property="g_title" jdbcType="VARCHAR" />
+    <result column="G_keywords" property="g_keywords" jdbcType="VARCHAR" />
+    <result column="G_description" property="g_description" jdbcType="VARCHAR" />
+    <result column="G_url" property="g_url" jdbcType="VARCHAR" />
+    <result column="G_tkey" property="g_tkey" jdbcType="VARCHAR" />
+    <result column="G_R_time" property="g_R_time" jdbcType="VARCHAR" />
+    <result column="G_M_time" property="g_M_time" jdbcType="VARCHAR" />
+    <result column="W_uid" property="w_uid" jdbcType="INTEGER" />
+    <result column="G_state" property="g_state" jdbcType="INTEGER" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="g_name" property="g_name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.s_id, t.G_tid, t.G_icon, t.G_title, t.G_keywords, t.G_description, t.G_url, t.G_tkey, t.G_R_time, t.G_M_time,
+    t.W_uid, t.G_state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from G_seo t
+    where t.s_id = #{s_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from G_seo
+    where s_id = #{s_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    insert into G_seo (s_id, G_tid, G_icon,
+      G_title, G_keywords, G_description, 
+      G_url, G_tkey, G_R_time, 
+      G_M_time, W_uid, G_state
+      )
+    values (#{s_id,jdbcType=INTEGER}, #{g_tid,jdbcType=INTEGER}, #{g_icon,jdbcType=VARCHAR},
+      #{g_title,jdbcType=VARCHAR}, #{g_keywords,jdbcType=VARCHAR}, #{g_description,jdbcType=VARCHAR}, 
+      #{g_url,jdbcType=VARCHAR}, #{g_tkey,jdbcType=VARCHAR}, #{g_R_time,jdbcType=VARCHAR}, 
+      #{g_M_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=INTEGER}, #{g_state,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    insert into G_seo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        s_id,
+      </if>
+      <if test="g_tid != null" >
+        G_tid,
+      </if>
+      <if test="g_icon != null" >
+        G_icon,
+      </if>
+      <if test="g_title != null" >
+        G_title,
+      </if>
+      <if test="g_keywords != null" >
+        G_keywords,
+      </if>
+      <if test="g_description != null" >
+        G_description,
+      </if>
+      <if test="g_url != null" >
+        G_url,
+      </if>
+      <if test="g_tkey != null" >
+        G_tkey,
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time,
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time,
+      </if>
+      <if test="w_uid != null" >
+        W_uid,
+      </if>
+      <if test="g_state != null" >
+        G_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="s_id != null" >
+        #{s_id,jdbcType=INTEGER},
+      </if>
+      <if test="g_tid != null" >
+        #{g_tid,jdbcType=INTEGER},
+      </if>
+      <if test="g_icon != null" >
+        #{g_icon,jdbcType=VARCHAR},
+      </if>
+      <if test="g_title != null" >
+        #{g_title,jdbcType=VARCHAR},
+      </if>
+      <if test="g_keywords != null" >
+        #{g_keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="g_description != null" >
+        #{g_description,jdbcType=VARCHAR},
+      </if>
+      <if test="g_url != null" >
+        #{g_url,jdbcType=VARCHAR},
+      </if>
+      <if test="g_tkey != null" >
+        #{g_tkey,jdbcType=VARCHAR},
+      </if>
+      <if test="g_R_time != null" >
+        #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_state != null" >
+        #{g_state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    update G_seo
+    <set >
+      <if test="g_tid != null" >
+        G_tid = #{g_tid,jdbcType=INTEGER},
+      </if>
+
+      <if test="g_title != null" >
+        G_title = #{g_title,jdbcType=VARCHAR},
+      </if>
+      <if test="g_keywords != null" >
+        G_keywords = #{g_keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="g_description != null" >
+        G_description = #{g_description,jdbcType=VARCHAR},
+      </if>
+      <if test="g_url != null" >
+        G_url = #{g_url,jdbcType=VARCHAR},
+      </if>
+      <if test="g_tkey != null" >
+        G_tkey = #{g_tkey,jdbcType=VARCHAR},
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        W_uid = #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_state != null" >
+        G_state = #{g_state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where s_id = #{s_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    update G_seo
+    set G_tid = #{g_tid,jdbcType=INTEGER},
+      G_title = #{g_title,jdbcType=VARCHAR},
+      G_keywords = #{g_keywords,jdbcType=VARCHAR},
+      G_description = #{g_description,jdbcType=VARCHAR},
+      G_url = #{g_url,jdbcType=VARCHAR},
+      G_tkey = #{g_tkey,jdbcType=VARCHAR},
+      G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      W_uid = #{w_uid,jdbcType=INTEGER},
+      G_state = #{g_state,jdbcType=INTEGER}
+    where s_id = #{s_id,jdbcType=INTEGER}
+  </update>
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    select
+    <include refid="Base_Column_List" />,u.nickName,c.g_name
+    from G_seo t
+    left join sys_user u on t.W_uid = u.id
+    left join G_column c on t.G_tid = c.c_id
+    where
+    t.G_state=1 order by t.G_R_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.GSeo" >
+    select count(0) from G_seo t
+    left join sys_user u on t.W_uid = u.id
+    left join G_column c on t.G_tid = c.c_id
+    where
+    t.G_state=1
+  </select>
+</mapper>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>基础信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/website/rastemassage.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+
+    <!-- Uploadify文件上传 -->
+    <link href="../../static/js/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript"  src="../../static/js/source/uploadfile.js"></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<script>
+    $(function(){
+        /*laydate.render({
+            elem: '#createtime1',
+            // type: 'month',
+            format: 'yyyy-MM-dd',
+            show: false
+        });*/
+    })
+    function getlist(pageNum,pageSize){
+        var deleteurl='/rasteuser/updaterastemassage.do';
+        var deleteview = isPurview(deleteurl);
+
+        $.ajax({
+            url :'/rastemassage/rastemassageDataList.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                state:0,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=[];
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=[];
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            rowlist1[0]=row.massage_id;
+                            rowlist1[1]=row.logo;
+                            rowlist1[2]=row.two_bar_codes;
+                            rowlist1[3]=row.community_codes;
+                            rowlist1[4]=row.address;
+                            rowlist1[5]=row.tel;
+                            rowlist1[6]=row.phone;
+                            rowlist1[7]=row.inquire_tel;
+                            rowlist1[8]=row.email;
+                            rowlist1[9]=row.e_mail;
+                            rowlist1[10]=row.record;
+                            rowlist1[11]=row.itude;
+
+                            var rowlist11= "<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='updateshow(this)' class='text-primary ml10'>编辑</a>";
+                            /*if(row.state==0){
+                                rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='1' onclick='repassType(this)' class='text-primary ml10'>审核</a>";
+                            }else{
+                                rowlist11+="<a href='javascript:void(0)' a1="+row.massage_id+" a2='0' onclick='repassType(this)' class=\"text-primary ml10\">撤销审核</a>";
+                            }*/
+                            rowlist1[12] = rowlist11;
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                            rowlist1[5]='';
+                            rowlist1[6]='';
+                            rowlist1[7]='';
+                            rowlist1[8]='';
+                            rowlist1[9]='';
+                            rowlist1[10]='';
+                            rowlist1[11]='';
+                            rowlist1[12]='';
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"userDataList");
+            }
+        });
+    }
+</script>
+
+<body>
+<div class="rightIframe pull-right">
+    <div class="sopen"></div>
+    <div class="menu fontS20">网站信息</div>
+    <!--<div class="search">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-md-1 control-label">注册时间</label>
+                <div class="col-md-2">
+                    <input type="text" class="laydate-icon form-control" value="" id="createtime1"/>
+                </div>
+                <div class="col-md-4 search_list">
+                    <input type="text" class="form-control" name="jname" id="jname" placeholder="手机号" />
+                    <span class="fa fa-search"></span>
+                </div>
+                <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+            </div>
+        </form>
+    </div>-->
+<!--    <div class="clearfix" id="addUser">
+        <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
+    </div>-->
+    <div id="tabdiv" style="overflow:auto">
+        <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+            <thead>
+            <tr>
+                <th style="width: 70px;">序号</th>
+                <th style="width: 200px;">logo</th>
+                <th style="width: 200px;">二维码</th>
+                <th style="width: 200px;">社区二维码</th>
+                <th style="width: 170px;">地址</th>
+                <th style="width: 120px;">电话</th>
+                <th style="width: 120px;">手机</th>
+                <th style="width: 120px;">垂询电话</th>
+                <th style="width: 170px;">邮箱</th>
+                <th style="width: 170px;">电子邮件</th>
+                <th style="width: 170px;">备案</th>
+                <th style="width: 80px;">经纬度</th>
+                <th style="width: 120px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id="userDataList">
+
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="pageSizeInp"/>
+    <div>
+        <div class="box" id="box">
+
+        </div>
+    </div>
+
+</div>
+
+<!--弹出框-->
+
+<div class="popbox-container">
+    <div class="popbox-overlay"></div>
+    <div class="popbox-wrapper safebox" id="add">
+        <div style="width:800px;min-width:580px;min-height:360px;">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">基本信息编辑</span>
+            </div>
+            <div class="detail_box">
+                <ul class="addbox pb60">
+                    <!--<div id="androiddiv">-->
+                    <form id="massageform"  enctype='multipart/form-data'  class='ui-form' method='post'>
+                        <input name="massage_id" id="massage_id" type="hidden"/>
+                        <li style="float:left;">
+                            <span>logo</span>
+                            <i >
+                                <div class="uploadImg1">
+                                    <input type="file" class="webfile" name="file1" id="logo" onchange="imgChange(1,1,this)" size="1" />
+                                    <em id="qianimg1"></em>
+                                    <input id="qianinp1" name="qianinp" type="hidden"/>
+                                </div>
+                            </i>
+                        </li>
+                        <li style="float:left;">
+                            <span>二维码</span>
+                            <i >
+                                <div class="uploadImg1">
+                                    <input type="file" class="webfile" name="file2" id="two_bar_codes" onchange="imgChange(2,1,this)" size="1" />
+                                    <em id="lieimg1"></em>
+                                    <input id="lieinp1" name="lieinp" type="hidden"/>
+                                </div>
+                            </i>
+                        </li>
+                        <li style="float:left;">
+                            <span>社区二维码</span>
+                            <i >
+                                <div class="uploadImg1">
+                                    <input type="file" class="webfile" name="file3" id="community_codes" onchange="imgChange(3,1,this)" size="1" />
+                                    <em id="sheimg1"></em>
+                                    <input id="sheinp1" name="sheinp" type="hidden"/>
+                                </div>
+                            </i>
+                        </li>
+                        <li style="float:left;">
+                            <span>地址</span><input style="width:180px;" name="address" id="address" class="txt txt1" type="text"/>
+                            <label style="margin-left: 40px;">电话</label><input style="width:180px;" name="tel" id="tel" class="txt txt1" type="text"/>
+                        </li>
+                        <li style="float:left;">
+                            <span>手机</span><input style="width:180px;" name="phone" id="phone" class="txt txt1" type="text"/>
+                            <label style="margin-left: 20px;margin-right: 20px;">email</label><input style="width:180px;" name="email" id="email" class="txt txt1" type="text"/>
+                        </li>
+                        <li style="float:left;">
+                            <span>e_mail</span><input style="width:180px;" name="e_mail" id="e_mail" class="txt txt1" type="text"/>
+                            <label style="margin-left: 40px;">垂询电话</label><input style="width:180px;" name="inquire_tel" id="inquire_tel" class="txt txt1" type="text"/>
+                        </li>
+                        <li style="float:left;">
+                            <span>备案</span><input style="width:450px;" name="record" id="record" class="txt txt1" type="text"/>
+                        </li>
+                        <li style="float:left;">
+                            <span>经纬度</span><input style="width:450px;" name="itude" id="itude" class="txt txt1" type="text"/>
+                        </li>
+
+                    </form>
+                    <!--</div>-->
+                    <li style="margin-left:140px;float:left;">
+                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="saveMassage()" id="savemassage" value="保存"/>
+                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="submit" onclick="updateMassage()" id="updatemassage"value="保存"/>
+                        <!--<input style="width:160px;" class="btn btn-warning btn-lg btn-radius mr10" type="submit" onclick="qxApp()" value="取消"/>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var btn = $("#ifWd",parent.document).attr("src");
+    var btnsUrl = [[${session.session_menubtn_map}]];
+    console.log(btnsUrl);
+    function isPurview(btnUrl){
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+    $(function(){
+        var addcontent = '/rastemassage/addrastemassage.do';
+        var addpurview = isPurview(addcontent);
+        if(!addpurview){
+            $("#addgcolumn").css("display","none");
+        }
+    })
+
+    /*]]>*/
+</script>
+</html>

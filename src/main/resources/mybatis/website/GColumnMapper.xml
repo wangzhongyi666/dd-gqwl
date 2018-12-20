@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.GColumnMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.GColumn" >
+    <id column="c_id" property="c_id" jdbcType="INTEGER" />
+    <result column="G_name" property="g_name" jdbcType="VARCHAR" />
+    <result column="G_fid" property="g_fid" jdbcType="INTEGER" />
+    <result column="G_R_time" property="g_R_time" jdbcType="VARCHAR" />
+    <result column="G_M_time" property="g_M_time" jdbcType="VARCHAR" />
+    <result column="W_uid" property="w_uid" jdbcType="INTEGER" />
+    <result column="G_icon" property="g_icon" jdbcType="VARCHAR" />
+    <result column="G_state" property="g_state" jdbcType="INTEGER" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    c_id, G_name, G_fid, G_R_time, G_M_time, W_uid, G_icon, G_state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from G_column
+    where c_id = #{c_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from G_column
+    where c_id = #{c_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    insert into G_column ( c_id,G_name, G_fid,
+      G_R_time, G_M_time, W_uid, 
+      G_icon, G_state)
+    values ( c_id,#{g_name,jdbcType=VARCHAR}, #{g_fid,jdbcType=INTEGER},
+      #{g_R_time,jdbcType=VARCHAR}, #{g_M_time,jdbcType=VARCHAR}, #{w_uid,jdbcType=INTEGER}, 
+      #{g_icon,jdbcType=VARCHAR}, #{g_state,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    insert into G_column
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="c_id != null" >
+        c_id,
+      </if>
+      <if test="g_name != null" >
+        G_name,
+      </if>
+      <if test="g_fid != null" >
+        G_fid,
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time,
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time,
+      </if>
+      <if test="w_uid != null" >
+        W_uid,
+      </if>
+      <if test="g_icon != null" >
+        G_icon,
+      </if>
+      <if test="g_state != null" >
+        G_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="c_id != null" >
+        #{c_id,jdbcType=INTEGER},
+      </if>
+      <if test="g_name != null" >
+        #{g_name,jdbcType=VARCHAR},
+      </if>
+      <if test="g_fid != null" >
+        #{g_fid,jdbcType=INTEGER},
+      </if>
+      <if test="g_R_time != null" >
+        #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_icon != null" >
+        #{g_icon,jdbcType=VARCHAR},
+      </if>
+      <if test="g_state != null" >
+        #{g_state,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    update G_column
+    <set >
+      <if test="g_name != null" >
+        G_name = #{g_name,jdbcType=VARCHAR},
+      </if>
+      <if test="g_fid != null" >
+        G_fid = #{g_fid,jdbcType=INTEGER},
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        W_uid = #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_icon != null" >
+        G_icon = #{g_icon,jdbcType=VARCHAR},
+      </if>
+      <if test="g_state != null" >
+        G_state = #{g_state,jdbcType=BIT},
+      </if>
+    </set>
+    where c_id = #{c_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    update G_column
+    set G_name = #{g_name,jdbcType=VARCHAR},
+      G_fid = #{g_fid,jdbcType=INTEGER},
+      G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      W_uid = #{w_uid,jdbcType=INTEGER},
+      G_icon = #{g_icon,jdbcType=VARCHAR},
+      G_state = #{g_state,jdbcType=BIT}
+    where c_id = #{c_id,jdbcType=INTEGER}
+  </update>
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    select
+    <include refid="Base_Column_List" />,u.nickName
+    from G_column t left join sys_user u on t.W_uid = u.id
+    where
+    G_state=1 order by t.G_R_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.GColumn" >
+    select count(0) from G_column where
+
+    G_state=1
+  </select>
+</mapper>

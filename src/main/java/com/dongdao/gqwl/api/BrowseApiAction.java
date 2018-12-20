@@ -1,9 +1,7 @@
 package com.dongdao.gqwl.api;
 
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.model.websit.DdLeave;
 import com.dongdao.gqwl.model.website.Ddbrowse;
-import com.dongdao.gqwl.service.gcolumn.DdLeaveService;
 import com.dongdao.gqwl.service.gcolumn.DdbrowseService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
@@ -84,12 +82,12 @@ public class BrowseApiAction extends BaseAction {
         try {//                                              我的一公里
             List<Map> datalist = ddbrowseService.queryByCards(1,user_id);
             for (Map b:datalist) {
-                if(b!=null&&b.get("createtime")!=null
-                        &&!b.get("createtime").toString().equals("")){
-                    if(b.get("createtime").toString().compareTo(DateUtil.getDateLong(DateUtil.getNextDay(new Date(),1)))<0){
-                        b.put("createtime","今天");
+                if(b!=null&&b.get("creattime")!=null
+                        &&!b.get("creattime").toString().equals("")){
+                    if(b.get("creattime").toString().compareTo(DateUtil.getDateLong(DateUtil.getNextDay(new Date(),1)))<0){
+                        b.put("creattime","今天");
                     }else{
-                        b.put("createtime",DateUtil.getFormattedMD(b.get("createtime").toString().substring(0,10)));
+                        b.put("creattime",DateUtil.getFormattedMD(b.get("creattime").toString().substring(0,10)));
                     }
                 }
             }
@@ -105,11 +103,11 @@ public class BrowseApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/myonekilometreinfo.json")
-    public Map<String, Object> myonekilometreinfo(Integer cardsid,
+    public Map<String, Object> myonekilometreinfo(Integer cardid,
                                               HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {//                                              我的一公里
-            Map data = ddbrowseService.queryByCardsInfo(1,cardsid);
+            Map data = ddbrowseService.queryByCardsInfo(1,cardid);
 
             return setSuccessMap(jsonMap, "操作成功！", data);
         } catch (Exception e) {
@@ -131,7 +129,7 @@ public class BrowseApiAction extends BaseAction {
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return setFailureMap(jsonMap, "操作失败！", null);
+            return setFailureMap(jsonMap, "操作失败！", null);x`
         }
     }
 }

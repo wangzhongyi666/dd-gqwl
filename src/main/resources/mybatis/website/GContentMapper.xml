@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.GContentMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.GContent" >
+    <id column="con_id" property="con_id" jdbcType="INTEGER" />
+    <result column="G_tid" property="g_tid" jdbcType="INTEGER" />
+    <result column="S_sid" property="s_sid" jdbcType="INTEGER" />
+    <result column="G_pv" property="g_pv" jdbcType="INTEGER" />
+    <result column="G_rank" property="g_rank" jdbcType="REAL" />
+    <result column="G_recommend" property="g_recommend" jdbcType="INTEGER" />
+    <result column="G_top" property="g_top" jdbcType="INTEGER" />
+    <result column="G_R_time" property="g_R_time" jdbcType="VARCHAR" />
+    <result column="G_M_time" property="g_M_time" jdbcType="VARCHAR" />
+    <result column="W_uid" property="w_uid" jdbcType="INTEGER" />
+    <result column="G_state" property="g_state" jdbcType="INTEGER" />
+    <result column="nickName" property="nickName" jdbcType="VARCHAR" />
+    <result column="g_name" property="g_name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.con_id, t.G_tid, t.S_sid, t.G_pv, t.G_rank, t.G_recommend, t.G_top, t.G_R_time, t.G_M_time, t.W_uid, t.G_state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from G_content t
+    where con_id = #{con_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from G_content
+    where con_id = #{con_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.GContent" >
+    insert into G_content (con_id, G_tid, S_sid,
+      G_pv, G_rank, G_recommend, 
+      G_top, G_R_time, G_M_time, 
+      W_uid, G_state)
+    values (#{con_id,jdbcType=INTEGER}, #{g_tid,jdbcType=INTEGER}, #{s_sid,jdbcType=INTEGER},
+      #{g_pv,jdbcType=INTEGER}, #{g_rank,jdbcType=REAL}, #{g_recommend,jdbcType=INTEGER}, 
+      #{g_top,jdbcType=INTEGER}, #{g_R_time,jdbcType=VARCHAR}, #{g_M_time,jdbcType=VARCHAR}, 
+      #{w_uid,jdbcType=INTEGER}, #{g_state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.GContent" >
+    insert into G_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="con_id != null" >
+        con_id,
+      </if>
+      <if test="g_tid != null" >
+        G_tid,
+      </if>
+      <if test="s_sid != null" >
+        S_sid,
+      </if>
+      <if test="g_pv != null" >
+        G_pv,
+      </if>
+      <if test="g_rank != null" >
+        G_rank,
+      </if>
+      <if test="g_recommend != null" >
+        G_recommend,
+      </if>
+      <if test="g_top != null" >
+        G_top,
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time,
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time,
+      </if>
+      <if test="w_uid != null" >
+        W_uid,
+      </if>
+      <if test="g_state != null" >
+        G_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="con_id != null" >
+        #{con_id,jdbcType=INTEGER},
+      </if>
+      <if test="g_tid != null" >
+        #{g_tid,jdbcType=INTEGER},
+      </if>
+      <if test="s_sid != null" >
+        #{s_sid,jdbcType=INTEGER},
+      </if>
+      <if test="g_pv != null" >
+        #{g_pv,jdbcType=INTEGER},
+      </if>
+      <if test="g_rank != null" >
+        #{g_rank,jdbcType=REAL},
+      </if>
+      <if test="g_recommend != null" >
+        #{g_recommend,jdbcType=INTEGER},
+      </if>
+      <if test="g_top != null" >
+        #{g_top,jdbcType=INTEGER},
+      </if>
+      <if test="g_R_time != null" >
+        #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_state != null" >
+        #{g_state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.GContent" >
+    update G_content
+    <set >
+      <if test="g_tid != null" >
+        G_tid = #{g_tid,jdbcType=INTEGER},
+      </if>
+      <if test="s_sid != null" >
+        S_sid = #{s_sid,jdbcType=INTEGER},
+      </if>
+      <if test="g_pv != null" >
+        G_pv = #{g_pv,jdbcType=INTEGER},
+      </if>
+      <if test="g_rank != null" >
+        G_rank = #{g_rank,jdbcType=REAL},
+      </if>
+      <if test="g_recommend != null" >
+        G_recommend = #{g_recommend,jdbcType=INTEGER},
+      </if>
+      <if test="g_top != null" >
+        G_top = #{g_top,jdbcType=INTEGER},
+      </if>
+      <if test="g_R_time != null" >
+        G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      </if>
+      <if test="g_M_time != null" >
+        G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      </if>
+      <if test="w_uid != null" >
+        W_uid = #{w_uid,jdbcType=INTEGER},
+      </if>
+      <if test="g_state != null" >
+        G_state = #{g_state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where con_id = #{con_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.GContent" >
+    update G_content
+    set G_tid = #{g_tid,jdbcType=INTEGER},
+      S_sid = #{s_sid,jdbcType=INTEGER},
+      G_pv = #{g_pv,jdbcType=INTEGER},
+      G_rank = #{g_rank,jdbcType=REAL},
+      G_recommend = #{g_recommend,jdbcType=INTEGER},
+      G_top = #{g_top,jdbcType=INTEGER},
+      G_R_time = #{g_R_time,jdbcType=VARCHAR},
+      G_M_time = #{g_M_time,jdbcType=VARCHAR},
+      W_uid = #{w_uid,jdbcType=INTEGER},
+      G_state = #{g_state,jdbcType=INTEGER}
+    where con_id = #{con_id,jdbcType=INTEGER}
+  </update>
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.GContent" >
+    select
+    <include refid="Base_Column_List" />,u.nickName,c.g_name
+    from G_content t
+    left join sys_user u on t.W_uid = u.id
+    left join G_column c on t.G_tid = c.c_id
+    where
+    t.G_state=1 order by t.G_R_time desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.GContent" >
+    select count(0) from G_content t
+    left join sys_user u on t.W_uid = u.id
+    left join G_column c on t.G_tid = c.c_id
+    where
+    t.G_state=1
+  </select>
+</mapper>

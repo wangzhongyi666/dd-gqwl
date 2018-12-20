@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ActivityService<T> extends BaseService<T> {
@@ -18,6 +19,10 @@ public class ActivityService<T> extends BaseService<T> {
 
     public DdActivityMapper<DdActivity> getMapper(){
         return ddAuditMapper;
+    }
+
+    public List<Map> selectBybanners(){
+        return getMapper().selectBybanners();
     }
 
     public List<DdActivity> selectById(Long type){

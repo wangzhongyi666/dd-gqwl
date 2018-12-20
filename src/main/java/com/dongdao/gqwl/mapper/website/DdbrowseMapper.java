@@ -24,7 +24,7 @@ public interface DdbrowseMapper<T> extends BaseMapper {
 
     Map queryByBrowseInfo(Integer browse_id);
 
-    List<Map> queryByCards(@Param("topid")Integer topid,@Param("u_rid") Integer u_rid);
+    List<Map> queryByCards(@Param("topid")Integer topid,@Param("r_uid") Integer u_rid);
 
     Map queryByCardsInfo(@Param("topid")Integer topid,@Param("cardid") Integer cardid);
 

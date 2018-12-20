@@ -13,7 +13,7 @@
             <property name="mergeable" value="false"></property>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://43.226.73.239:3306/guangqi?useUnicode=true&amp;characterEncoding=UTF-8" userId="root" password="root">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://139.159.177.192:3306/guangqi?useUnicode=true&amp;characterEncoding=UTF-8" userId="admin" password="some_pass">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -33,7 +33,7 @@
        <!-- 要生成哪些表-->
 
 
-		<table schema="general" tableName="dd_resume" domainObjectName="DdResume"
+		<table schema="general" tableName="dd_job_from" domainObjectName="DdJob_from"
 		    enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
 		    enableSelectByExample="false" selectByExampleQueryId="false" >
 		    <property name="useActualColumnNames" value="true"/>
