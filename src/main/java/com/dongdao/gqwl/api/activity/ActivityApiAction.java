@@ -4,7 +4,7 @@ import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.activity.DdActivity;
 import com.dongdao.gqwl.model.routline.activity.DdInget;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
 import com.dongdao.gqwl.service.routline.activity.ActivityService;
 import com.dongdao.gqwl.service.routline.activity.IngetService;

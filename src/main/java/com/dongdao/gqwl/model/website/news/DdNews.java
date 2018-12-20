@@ -45,6 +45,8 @@ public class DdNews extends BaseModel {
 
     private String newstypename;
 
+    private String newsbanner;
+
     public Long getNewsid() {
         return newsid;
     }
@@ -203,5 +205,13 @@ public class DdNews extends BaseModel {
 
     public void setNewstypename(String newstypename) {
         this.newstypename = newstypename;
+    }
+
+    public String getNewsbanner() {
+        return newsbanner;
+    }
+
+    public void setNewsbanner(String newsbanner) {
+        this.newsbanner = newsbanner;
     }
 }

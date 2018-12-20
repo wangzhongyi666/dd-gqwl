@@ -21,10 +21,11 @@
     <result column="n_sort" property="n_sort" jdbcType="INTEGER" />
     <result column="newsdigest" property="newsdigest" jdbcType="LONGVARCHAR" />
     <result column="newsbody" property="newsbody" jdbcType="LONGVARCHAR" />
+    <result column="newsbanner" property="newsbanner" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     newsid, n_audit, newstitle, newssubhead, newskeyword, newstype, newspic, newscreattime, 
-    newshtml, updatetime, newswhere, creattime, hits, top, isdelete, newsfrom, n_sort, newsdigest, newsbody
+    newshtml, updatetime, newswhere, creattime, hits, top, isdelete, newsfrom, n_sort, newsdigest, newsbody,newsbanner
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -106,7 +107,7 @@
   <!--查询前端新闻-->
   <select id="selectByType" resultType="HashMap" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
     select
-    newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top,newswhere,newsfrom
+    newsid,newstype,newstitle,newsdigest, newsbody,newscreattime,top,newswhere,newsfrom,newspic,newsbanner
     from dd_news
     where
     <if test="top!= null">
@@ -196,6 +197,9 @@
       <if test="newsbody != null" >
         newsbody,
       </if>
+      <if test="newsbanner != null" >
+        newsbanner,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="newsid != null" >
@@ -255,6 +259,9 @@
       <if test="newsbody != null" >
         #{newsbody,jdbcType=LONGVARCHAR},
       </if>
+      <if test="newsbanner != null" >
+        #{newsbanner,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.news.DdNews" >
@@ -313,6 +320,9 @@
       </if>
       <if test="newsbody != null" >
         newsbody = #{newsbody,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newsbanner != null" >
+        newsbanner = #{newsbanner,jdbcType=VARCHAR},
       </if>
     </set>
     where newsid = #{newsid,jdbcType=BIGINT}

@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,11 +101,19 @@ public class NewAction extends BaseAction {
     }
 
     @RequestMapping("/addnews.do")
-    public void saceType(DdNews model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void saceType(@RequestParam("file") MultipartFile file,@RequestParam("file2") MultipartFile file2, DdNews model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         SysUser user = SessionUtils.getUser(request);
         model.setN_audit(user.getEmail());
         model.setCreattime(DateUtil.getNowPlusTime());
+        String newspic=uploadFile("news",file,request);
+        if(!"".equals(newspic)&newspic!=null){
+            model.setNewspic(newspic);
+        }
+        String newsbanner=uploadFile("news",file2,request);
+        if(!"".equals(newsbanner)&newsbanner!=null){
+            model.setNewsbanner(newsbanner);
+        }
         int num= newsService.insertSelective(model);
         if(num==1){
             jsonMap.put("msg", "操作成功！");
@@ -116,11 +126,19 @@ public class NewAction extends BaseAction {
     }
     //编辑信息
     @RequestMapping("/updatenews.do")
-    public void updatetype(DdNews model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void updatetype(@RequestParam("file") MultipartFile file,@RequestParam("file2") MultipartFile file2,DdNews model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         model.setUpdatetime(DateUtil.getNowPlusTime());
         SysUser user = SessionUtils.getUser(request);
         model.setN_audit(user.getEmail());
+        String newspic=uploadFile("news",file,request);
+        if(!"".equals(newspic)&newspic!=null){
+            model.setNewspic(newspic);
+        }
+        String newsbanner=uploadFile("news",file2,request);
+        if(!"".equals(newsbanner)&newsbanner!=null){
+            model.setNewsbanner(newsbanner);
+        }
         int num= newsService.updateByPrimaryKeySelective(model);
 
         if(num==1){

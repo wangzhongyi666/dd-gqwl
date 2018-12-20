@@ -2,7 +2,7 @@ package com.dongdao.gqwl.api.topic;
 
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
-import com.dongdao.gqwl.model.websit.DdLeave;
+import com.dongdao.gqwl.model.website.DdLeave;
 import com.dongdao.gqwl.service.gcolumn.DdLeaveService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
 import com.dongdao.gqwl.utils.Auth;

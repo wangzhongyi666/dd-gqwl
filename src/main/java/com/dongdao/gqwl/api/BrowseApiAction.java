@@ -129,7 +129,7 @@ public class BrowseApiAction extends BaseAction {
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return setFailureMap(jsonMap, "操作失败！", null);x`
+            return setFailureMap(jsonMap, "操作失败！", null);
         }
     }
 }

@@ -6,7 +6,7 @@ import com.dongdao.gqwl.model.routline.topic.DdCardcon;
 import com.dongdao.gqwl.model.routline.topic.DdCards;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.model.routline.topic.DdZrecord;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.routline.activity.IngetService;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CardsService;
@@ -183,17 +183,25 @@ public class CardsApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/addcards.json")
-    public Map<String, Object> addCards(DdCards model, @RequestParam("file")MultipartFile[] files,
+    public Map<String, Object> addCards(DdCards model,int filenum, @RequestParam("file")MultipartFile files,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        RasteUser user= SessionUtils.getRasteUser(request);
-        if(user!=null){
-            model.setR_uid(Long.parseLong(user.getId()+"") );
-        }
-        model.setCreattime(DateUtil.getNowPlusTime());
-        model.setIsdelete(1);
+
         try {
-            int num=cardsService.insertSelective(model);
+            int num=0;
+            if(filenum==1){
+                RasteUser user= SessionUtils.getRasteUser(request);
+                if(user!=null){
+                    model.setR_uid(Long.parseLong(user.getId()+"") );
+                }
+                model.setCreattime(DateUtil.getNowPlusTime());
+                model.setIsdelete(1);
+                num=cardsService.insertSelective(model);
+                request.getSession().setAttribute("cardid",model.getCardid());
+            }else{
+                num=1;
+            }
+
             if(num==1){
                 if(model.getTopid()!=null&&model.getTopid()!=0){
                     DdTopic topic=new DdTopic();
@@ -201,22 +209,24 @@ public class CardsApiAction extends BaseAction {
                     topic.setOnlooks(0);
                     topicService.updateNums(topic);
                 }
-                for(int i=0;i<files.length;i++){
                     String filepath="";
-                    if(model.getType()==1){
-                        filepath=uploadFile("cards",files[i],request);
-                    }else{
-                        filepath=uploadifys(files[i],"cards",response,request);
-                    }
+
+                    filepath=uploadifys(files,"cards",response,request);
                     DdCardcon cardcon=new DdCardcon();
                     cardcon.setFilepath(filepath);
-                    cardcon.setCardid(model.getCardid());
+                    if(filenum==1){
+                        cardcon.setCardid(model.getCardid());
+                    }else{
+                        cardcon.setCardid((Long)request.getSession().getAttribute("cardid"));
+                    }
+                    if(model.getType()!=null){
+                        cardcon.setFiled2(model.getType());
+                    }
                     cardconService.insertSelective(cardcon);
+                    return setSuccessMap(jsonMap, "操作成功！", null);
+                }else{
+                    return setFailureMap(jsonMap, "操作失败！", null);
                 }
-                return setSuccessMap(jsonMap, "操作成功！", null);
-            }else{
-                return setFailureMap(jsonMap, "操作失败！", null);
-            }
 
         } catch (Exception e) {
             e.printStackTrace();

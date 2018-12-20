@@ -4,7 +4,7 @@ import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.topic.DdCardcon;
 import com.dongdao.gqwl.model.routline.topic.DdComment;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
-import com.dongdao.gqwl.model.websit.RasteUser;
+import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CommentService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
