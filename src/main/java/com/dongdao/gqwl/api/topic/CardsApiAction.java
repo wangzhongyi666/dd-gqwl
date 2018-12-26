@@ -223,6 +223,7 @@ public class CardsApiAction extends BaseAction {
                         cardcon.setFiled2(model.getType());
                     }
                     cardconService.insertSelective(cardcon);
+                    jsonMap.put("cardid",model.getCardid());
                     return setSuccessMap(jsonMap, "操作成功！", null);
                 }else{
                     return setFailureMap(jsonMap, "操作失败！", null);

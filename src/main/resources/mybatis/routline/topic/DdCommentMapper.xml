@@ -13,9 +13,10 @@
     <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
 
     <result column="c_content" property="c_content" jdbcType="LONGVARCHAR" />
+    <result column="zannums" property="zannums" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    commentid, r_uid, to_userid, parentid, cardid, type, creattime, ispass, isdelete, c_content
+    commentid, r_uid, to_userid, parentid, cardid, type, creattime, ispass, isdelete, c_content,zannums
   </sql>
 
 
@@ -60,7 +61,7 @@
 
 
   <select id="selectAll" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment"  resultType="HashMap">
-    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content, raste_user.name from dd_comment
+    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content, raste_user.name,raste_user.picurl from dd_comment
     left join raste_user on dd_comment.r_uid=raste_user.id
     where
     <if test="cardid!=null and cardid!=''">
@@ -207,6 +208,9 @@
       </if>
       <if test="c_content != null" >
         c_content = #{c_content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zannums != null" >
+        zannums = #{zannums,jdbcType=INTEGER},
       </if>
     </set>
     where commentid = #{commentid,jdbcType=BIGINT}

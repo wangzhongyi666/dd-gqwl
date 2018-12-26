@@ -101,4 +101,29 @@ public class CommentsAction extends BaseAction {
         }
     }
 
+    //点击量+1
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/addnums.json")
+    public Map<String, Object> addNums(DdComment model,
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        RasteUser user= SessionUtils.getRasteUser(request);
+        int num=0;
+        if(user!=null){
+
+        }else{
+            model=(DdComment) commentService.selectByPrimaryKey(model.getCommentid());
+            model.setZannums(model.getZannums()+1);
+            num=commentService.updateByPrimaryKeySelective(model);
+        }
+
+        if(num==1){
+
+            return setSuccessMap(jsonMap, "操作成功！", null);
+        }else{
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+    }
+
 }

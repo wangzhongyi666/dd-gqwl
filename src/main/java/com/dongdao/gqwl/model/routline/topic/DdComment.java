@@ -25,6 +25,10 @@ public class DdComment extends BaseModel {
 
     private String name;
 
+    private String picurl;
+
+    private int zannums;
+
     public Long getCommentid() {
         return commentid;
     }
@@ -111,5 +115,21 @@ public class DdComment extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPicurl() {
+        return picurl;
+    }
+
+    public void setPicurl(String picurl) {
+        this.picurl = picurl;
+    }
+
+    public int getZannums() {
+        return zannums;
+    }
+
+    public void setZannums(int zannums) {
+        this.zannums = zannums;
     }
 }

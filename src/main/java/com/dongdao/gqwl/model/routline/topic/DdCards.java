@@ -37,6 +37,8 @@ public class DdCards extends BaseModel {
 
     private String name;
 
+    private String picurl;
+
     public Long getCardid() {
         return cardid;
     }
@@ -171,5 +173,13 @@ public class DdCards extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPicurl() {
+        return picurl;
+    }
+
+    public void setPicurl(String picurl) {
+        this.picurl = picurl;
     }
 }
