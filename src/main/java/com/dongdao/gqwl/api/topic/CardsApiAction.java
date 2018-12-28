@@ -217,7 +217,7 @@ public class CardsApiAction extends BaseAction {
                     if(filenum==1){
                         cardcon.setCardid(model.getCardid());
                     }else{
-                        cardcon.setCardid(model.getCardid());
+                        cardcon.setCardid((Long)request.getSession().getAttribute("cardid"));
                     }
                     if(model.getType()!=null){
                         cardcon.setFiled2(model.getType());

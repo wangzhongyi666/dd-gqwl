@@ -219,7 +219,7 @@ public class RasteUserApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/is_exist.json")
     public Map<String, Object> isExist(String wx_ident,
-                                         HttpServletRequest request, HttpServletResponse response) throws Exception{
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             if(StringUtils.isBlank(wx_ident)){
@@ -248,18 +248,60 @@ public class RasteUserApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/registerWx.json")
     public Map<String, Object> registerWx(String wx_ident,String tel,String imgurl,
-                                        HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                          HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-
+        Map<String,Object> data = new HashMap<String,Object>();
         //访问微信接口得到openid
         try {
             RasteUser user = new RasteUser();
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                user = rasteUserService.queryByToLogin(user);
+                if(user!=null){
+                    jsonMap.put("is_logged",1);//是否登陆 0 否 ；1 是
+                    jsonMap.put("r_uid",user.getId());
+                    data.put("name",user.getName()==null?"":user.getName());//姓名
+                    data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
+                    data.put("sex",user.getSex()==null?0:user.getWx_ident());
+                    data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
+                    data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
+                    data.put("tel",user.getTel()==null?"":user.getTel());//手机号
+                    data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
+                    data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
+                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
+                    data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
+                    data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
+                    data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
+                    return setFailureMap(jsonMap, "已登陆！", data);
+                }else{
+                    jsonMap.put("is_logged",0);
+                }
+            }else{
+                jsonMap.put("is_logged",0);
+            }
+
             if(imgurl!=null&&!imgurl.equals("")){
                 //user.setWx_ident(DateUtil.getNowPlusTime());
                 user.setPicurl(imgurl);
-                RasteUser user0 = rasteUserService.queryByToLogin(user);
-                if(user0!=null){
-                    return setFailureMap(jsonMap, "微信号已存在！", null);
+                user = rasteUserService.queryByToLogin(user);
+                if(user!=null){
+                    jsonMap.put("is_logged",1);
+                    jsonMap.put("r_uid",user.getId());
+                    data.put("name",user.getName()==null?"":user.getName());//姓名
+                    data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
+                    data.put("sex",user.getSex()==null?0:user.getWx_ident());
+                    data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
+                    data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
+                    data.put("tel",user.getTel()==null?"":user.getTel());//手机号
+                    data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
+                    data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
+                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
+                    data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
+                    data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
+                    data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
+                    return setSuccessMap(jsonMap, "已登陆！", data);
                 }
             }else {
                 return setFailureMap(jsonMap, "微信号不能为空！", null);
@@ -270,12 +312,25 @@ public class RasteUserApiAction extends BaseAction {
             user.setState(1);
             String openId = System.currentTimeMillis()+"";
             user.setCreatetime(DateUtil.getNowPlusTime());
-            user.setWx_ident(DateUtil.getNowPlusTime());
+            user.setWx_ident(openId);
             rasteUserService.insertSelective(user);
             SessionUtils.removeValidateCode(request);
-            jsonMap.put("wx_ident",openId);
+
             jsonMap.put("r_uid",user.getId());
-            return setSuccessMap(jsonMap, "注册成功！", null);
+            data.put("name",user.getName()==null?"":user.getName());//姓名
+            data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
+            data.put("sex",user.getSex()==null?0:user.getWx_ident());
+            data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
+            data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
+            data.put("tel",user.getTel()==null?"":user.getTel());//手机号
+            data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
+            data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
+            data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
+            data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
+            data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
+            data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+            data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
+            return setSuccessMap(jsonMap, "注册成功！", data);
         } catch (Exception e) {
             e.printStackTrace();
             return setFailureMap(jsonMap, "注册失败！", null);
@@ -286,7 +341,7 @@ public class RasteUserApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/tologinWx.json")
     public Map<String, Object> tologinWx(String wx_ident,
-                                          HttpServletRequest request, HttpServletResponse response) throws Exception{
+                                         HttpServletRequest request, HttpServletResponse response) throws Exception{
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             if(StringUtils.isBlank(wx_ident)){
@@ -332,10 +387,10 @@ public class RasteUserApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/updatetel.json")
     public Map<String, Object> updatetel(String wx_ident,String tel,
-                                          HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
-           // String code1 = SessionUtils.getValidateCode(request);
+            // String code1 = SessionUtils.getValidateCode(request);
 //            if(code==null||!code.equals(code1)){
 //                return setFailureMap(jsonMap, "微信号不存在！", null);
 //            }
@@ -402,7 +457,7 @@ public class RasteUserApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/updatebirthday.json")
     public Map<String, Object> updatebirthday(String wx_ident,String birthday,
-                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                              HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
             RasteUser user = new RasteUser();
