@@ -54,13 +54,14 @@
         var isdeletes="/activity/deleteactivity.do";
         var isupdate="/activity/updateactivity.do";
         var ispass="/activity/passactivity.do";
+        var ranks="/rank/rank.shtml";
         var purvdelete = isPurview(isdeletes);
         console.log("==========================")
         console.log(purvdelete)
         var purvupdate = isPurview(isupdate);
         var purvpass = isPurview(ispass);
-        var purvdelete = isPurview(isdeletes);
         var creattime=$("#creattime").val();
+        var isrank=isPurview(ranks);
         var type=$("#type").val();
 
             $.ajax({
@@ -104,6 +105,8 @@
 
                             }else if(purvpass&&row.ispass==1){
                                 rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+"  a2="+row.ispass+" onclick=\"passactivity(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                            }if(isrank){
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+"  onclick=\"openranks(this)\" class=\"text-primary ml10\">排行榜</a>";
                             }
 
                         }else{
@@ -127,7 +130,11 @@
     }
     function opentabs(e) {
         var id = $(e).attr("a1");
-        window.parent.opentab('http://localhost/activity/activity_update.shtml?actid='+id,'编辑活动管理')
+        window.parent.opentab('/activity/activity_update.shtml?actid='+id,'编辑活动管理')
+    }
+    function openranks(e) {
+        var id = $(e).attr("a1");
+        window.parent.opentab('/rank/rank.shtml?actid='+id,'排行榜信息')
     }
 
 </script>

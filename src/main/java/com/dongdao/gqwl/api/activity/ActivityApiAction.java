@@ -3,11 +3,13 @@ package com.dongdao.gqwl.api.activity;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.activity.DdActivity;
 import com.dongdao.gqwl.model.routline.activity.DdInget;
+import com.dongdao.gqwl.model.routline.activity.DdRank;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
 import com.dongdao.gqwl.service.routline.activity.ActivityService;
 import com.dongdao.gqwl.service.routline.activity.IngetService;
+import com.dongdao.gqwl.service.routline.activity.RankService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
@@ -37,6 +39,8 @@ public class ActivityApiAction extends BaseAction {
     public IngetService ingetService;
     @Autowired
     public RasteUserService rasteUserService;
+    @Autowired
+    public RankService rankService;
 
 
     //查询话题
@@ -77,7 +81,7 @@ public class ActivityApiAction extends BaseAction {
            }
            DdActivity activity=(DdActivity)activityService.selectByPrimaryKey(model.getActid());
            if(maxinter>=activity.getMaxinter()){
-               return setSuccessMap(jsonMap, "来晚啦，积分已被强空！明天再来！！", null);
+               return setSuccessMap(jsonMap, "来晚啦，积分已被抢空！明天再来！！", null);
            }else{
              int myinter=  (int)(1+Math.random()*(10-1+1));
              user=(RasteUser) rasteUserService.selectByPrimaryKey(Integer.parseInt(model.getR_uid()+""));
@@ -87,6 +91,18 @@ public class ActivityApiAction extends BaseAction {
                  model.setIntegar(myinter);
                  model.setCreattime(DateUtil.getDateLong(new Date()));
                  ingetService.insertSelective(model);
+                 DdRank ranks=rankService.selectById(model.getR_uid());
+                 if(ranks!=null){
+                     ranks.setIntegar(ranks.getIntegar()+myinter);
+                     rankService.updateByPrimaryKeySelective(ranks);
+                 }else{
+                     ranks=new DdRank();
+                     ranks.setR_uid(model.getR_uid());
+                     ranks.setCreattime(DateUtil.getNowPlusTime());
+                     ranks.setIntegar(myinter);
+                     ranks.setActid(activity.getActid());
+                     rankService.insertSelective(ranks);
+                 }
                  return setSuccessMap(jsonMap, "获得"+myinter+"积分！", null);
              }else{
                  return setFailureMap(jsonMap, "操作失败！", null);
@@ -94,6 +110,23 @@ public class ActivityApiAction extends BaseAction {
            }
         }
 
+    }
+
+    //查询话题
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/ranks.json")
+    public Map<String, Object> getrank(Long actid,
+                                        HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            List<HashMap<String,Object>> topics=rankService.selectByAct(actid);
+            jsonMap.put("ranks",topics);
+            return setSuccessMap(jsonMap, "操作成功！", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
     }
 
 }

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.routline.activity.DdRankMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.routline.activity.DdRank" >
+    <id column="randid" property="randid" jdbcType="BIGINT" />
+    <result column="r_uid" property="r_uid" jdbcType="BIGINT" />
+    <result column="actid" property="actid" jdbcType="BIGINT" />
+    <result column="integar" property="integar" jdbcType="INTEGER" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="filed1" property="filed1" jdbcType="INTEGER" />
+    <result column="filed2" property="filed2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    randid, r_uid, actid, integar, creattime, filed1, filed2
+  </sql>
+
+  <!-- 后台分页queryByList -->
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank">
+    select
+    dd_rank.*,raste_user.name  from dd_rank
+    left join raste_user on  dd_rank.r_uid=raste_user.id
+    where
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      dd_rank.creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    <if test="actid!= null and actid!=''">
+      dd_rank.actid = #{actid,jdbcType=BIGINT} and
+    </if>
+    1=1 order by dd_rank.creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+
+  <!-- 后台查找总数 -->
+  <select id="queryByCount" resultType="java.lang.Integer" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank">
+    select
+    count(*)
+    from dd_rank
+    where
+    <if test="creattime!= null and creattime!=''">
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime,jdbcType=VARCHAR} and
+    </if>
+    <if test="actid!= null and actid!=''">
+      actid = #{actid,jdbcType=BIGINT} and
+    </if>
+    1 = 1
+  </select>
+
+
+  <select id="selectByAct" resultType="HashMap"  parameterType="java.lang.Long">
+    select
+    dd_rank.randid, dd_rank.r_uid, dd_rank.actid, dd_rank.integar, raste_user.name,raste_user.picurl
+    from dd_rank left join raste_user on dd_rank.r_uid=raste_user.id
+    where dd_rank.actid= #{actid,jdbcType=BIGINT} order by dd_rank.integar desc
+
+
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_rank
+    where r_uid = #{r_uid,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_rank
+    where randid = #{randid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_rank
+    where randid = #{randid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank" >
+    insert into dd_rank (randid, r_uid, actid, 
+      integar, creattime, filed1, 
+      filed2)
+    values (#{randid,jdbcType=BIGINT}, #{r_uid,jdbcType=BIGINT}, #{actid,jdbcType=BIGINT}, 
+      #{integar,jdbcType=INTEGER}, #{creattime,jdbcType=VARCHAR}, #{filed1,jdbcType=INTEGER}, 
+      #{filed2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank" >
+    insert into dd_rank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="randid != null" >
+        randid,
+      </if>
+      <if test="r_uid != null" >
+        r_uid,
+      </if>
+      <if test="actid != null" >
+        actid,
+      </if>
+      <if test="integar != null" >
+        integar,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="filed1 != null" >
+        filed1,
+      </if>
+      <if test="filed2 != null" >
+        filed2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="randid != null" >
+        #{randid,jdbcType=BIGINT},
+      </if>
+      <if test="r_uid != null" >
+        #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="actid != null" >
+        #{actid,jdbcType=BIGINT},
+      </if>
+      <if test="integar != null" >
+        #{integar,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        #{filed1,jdbcType=INTEGER},
+      </if>
+      <if test="filed2 != null" >
+        #{filed2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank" >
+    update dd_rank
+    <set >
+      <if test="r_uid != null" >
+        r_uid = #{r_uid,jdbcType=BIGINT},
+      </if>
+      <if test="actid != null" >
+        actid = #{actid,jdbcType=BIGINT},
+      </if>
+      <if test="integar != null" >
+        integar = #{integar,jdbcType=INTEGER},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="filed1 != null" >
+        filed1 = #{filed1,jdbcType=INTEGER},
+      </if>
+      <if test="filed2 != null" >
+        filed2 = #{filed2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where randid = #{randid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.routline.activity.DdRank" >
+    update dd_rank
+    set r_uid = #{r_uid,jdbcType=BIGINT},
+      actid = #{actid,jdbcType=BIGINT},
+      integar = #{integar,jdbcType=INTEGER},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      filed1 = #{filed1,jdbcType=INTEGER},
+      filed2 = #{filed2,jdbcType=VARCHAR}
+    where randid = #{randid,jdbcType=BIGINT}
+  </update>
+</mapper>
