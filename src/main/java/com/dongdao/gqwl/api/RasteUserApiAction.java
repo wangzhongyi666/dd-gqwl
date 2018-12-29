@@ -3,6 +3,7 @@ package com.dongdao.gqwl.api;
 import com.alibaba.fastjson.JSONObject;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.website.RasteUser;
+import com.dongdao.gqwl.model.website.job.DdInformation;
 import com.dongdao.gqwl.service.gcolumn.RasteUserService;
 import com.dongdao.gqwl.utils.*;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -335,7 +337,6 @@ public class RasteUserApiAction extends BaseAction {
             data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
             data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
             data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
-            data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
             return setSuccessMap(jsonMap, "注册成功！", data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -490,6 +491,48 @@ public class RasteUserApiAction extends BaseAction {
         }
     }
 
+
+    //消息通知列表
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/rasteuserinfo.json")
+    public Map<String, Object> rasteuserinfo(String wx_ident,
+                                               HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+
+            RasteUser user = new RasteUser();
+            RasteUser user0 = null;
+            if(wx_ident!=null&&!wx_ident.equals("")){
+                user.setWx_ident(wx_ident);
+                user0 = rasteUserService.queryByToLogin(user);
+                if(user0==null){
+                    return setFailureMap(jsonMap, "微信号不存在！", null);
+                }
+            }else {
+                return setFailureMap(jsonMap, "微信号不能为空！", null);
+            }
+            Map<String, Object> data = new HashMap<String, Object>();
+            SessionUtils.removeValidateCode(request);
+            data.put("name",user0.getName()==null?"":user0.getName());//姓名
+            data.put("wx_ident",user0.getWx_ident()==null?"":user0.getWx_ident());//微信唯一标识 openid
+            data.put("sex",user0.getSex()==null?0:user0.getWx_ident());
+            data.put("birthday",user0.getBirthday()==null?"":user0.getBirthday());
+            data.put("integral",user0.getIntegral()==null?0:user0.getIntegral());//积分
+            data.put("tel",user0.getTel()==null?"":user0.getTel());//手机号
+            data.put("email",user0.getEmail()==null?"":user0.getEmail());//邮箱
+            data.put("createtime",user0.getCreatetime()==null?"":user0.getCreatetime());//注册时间
+            data.put("lasttime",user0.getLasttime()==null?"":user0.getLasttime());//最后一次登陆时间
+            data.put("login_num",user0.getLogin_num()==null?0:user0.getLogin_num());//登陆次数
+            data.put("state",user0.getState()==null?0:user0.getState());//是否可以登陆  1可以  2不可以
+            data.put("login_type",user0.getLogin_type()==null?0:user0.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+            data.put("lasttime",user0.getLasttime()==null?"":user0.getLasttime());
+            return setSuccessMap(jsonMap, "操作成功！", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+    }
 
 //    @ResponseBody
 //    @RequestMapping(value = "/decodeUserInfo")
