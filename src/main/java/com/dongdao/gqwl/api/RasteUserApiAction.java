@@ -247,7 +247,7 @@ public class RasteUserApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/registerWx.json")
-    public Map<String, Object> registerWx(String wx_ident,String tel,String imgurl,
+    public Map<String, Object> registerWx(String wx_ident,String tel,String imgurl,String name,
                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         Map<String,Object> data = new HashMap<String,Object>();
@@ -275,9 +275,11 @@ public class RasteUserApiAction extends BaseAction {
                     data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
                     return setFailureMap(jsonMap, "已登陆！", data);
                 }else{
+                    user = new RasteUser();
                     jsonMap.put("is_logged",0);
                 }
             }else{
+                user = new RasteUser();
                 jsonMap.put("is_logged",0);
             }
 
@@ -302,6 +304,9 @@ public class RasteUserApiAction extends BaseAction {
                     data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
                     data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
                     return setSuccessMap(jsonMap, "已登陆！", data);
+                }else{
+                    user = new RasteUser();
+                    user.setPicurl(imgurl);
                 }
             }else {
                 return setFailureMap(jsonMap, "微信号不能为空！", null);
@@ -313,6 +318,7 @@ public class RasteUserApiAction extends BaseAction {
             String openId = System.currentTimeMillis()+"";
             user.setCreatetime(DateUtil.getNowPlusTime());
             user.setWx_ident(openId);
+            user.setName(name==null?"":name);
             rasteUserService.insertSelective(user);
             SessionUtils.removeValidateCode(request);
 
