@@ -135,10 +135,7 @@ public class CardsApiAction extends BaseAction {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         RasteUser user= SessionUtils.getRasteUser(request);
         DdZrecord inget=new DdZrecord();
-        if(user!=null){
-            model.setR_uid(Long.parseLong(user.getId()+"") );
-            inget.setR_uid(model.getR_uid());
-        }
+        inget.setR_uid(model.getR_uid());
         if(model.getZannums()!=null){
             inget.setCardid(model.getCardid());
             int num=0;
