@@ -80,7 +80,7 @@ public class BrowseApiAction extends BaseAction {
                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {//                                              我的一公里
-            List<Map> datalist = ddbrowseService.queryByCards(1,user_id);
+            List<Map> datalist = ddbrowseService.queryByCards(user_id);
             for (Map b:datalist) {
                 if(b!=null&&b.get("creattime")!=null
                         &&!b.get("creattime").toString().equals("")){

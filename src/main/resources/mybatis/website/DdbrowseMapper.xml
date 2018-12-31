@@ -138,9 +138,8 @@
     select
       c.cardid,t.picpath,c.c_content,c.creattime
     from dd_cards c
-    left join dd_cardcon con on c.cardid = con.cardid
     left join dd_topic t on t.topid = c.topid
-    where t.topid=#{topid,jdbcType=INTEGER} and c.r_uid = #{r_uid,jdbcType=INTEGER}
+    where c.r_uid = #{r_uid,jdbcType=INTEGER}
     group by c.cardid order by c.creattime desc
   </select>
 
