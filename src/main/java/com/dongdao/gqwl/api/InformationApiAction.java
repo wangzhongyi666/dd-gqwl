@@ -107,10 +107,9 @@ public class InformationApiAction extends BaseAction {
             DdInformation info = new DdInformation();
             info.setInformation_id(information_id);
             info.setIs_see(2);
-            informationService.updateBySelective(info);
-            if(info!=null){
-                info.setUpdatetime(DateUtil.getFormattedMD(info.getUpdatetime()));
-            }
+
+            info.setUpdatetime(DateUtil.getNowPlusTime());
+            informationService.updateByPrimaryKeySelective(info);
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
