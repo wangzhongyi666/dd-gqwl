@@ -536,8 +536,8 @@ public class RasteUserApiAction extends BaseAction {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/decodeUserInfo")
-    public Map<String, Object> decodeUserInfo(String encryptedData, String iv, String code) {
+    @RequestMapping(value = "/decodeUserInfo.json")
+        public Map<String, Object> decodeUserInfo(String encryptedData, String iv, String code) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //登录凭证不能为空
