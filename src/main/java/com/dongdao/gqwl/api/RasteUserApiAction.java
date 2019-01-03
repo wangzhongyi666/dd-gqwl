@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -253,6 +254,7 @@ public class RasteUserApiAction extends BaseAction {
                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         Map<String,Object> data = new HashMap<String,Object>();
+        name= URLDecoder.decode(name, "UTF-8");
         //访问微信接口得到openid
         try {
             RasteUser user = new RasteUser();
@@ -264,7 +266,7 @@ public class RasteUserApiAction extends BaseAction {
                     jsonMap.put("r_uid",user.getId());
                     data.put("name",user.getName()==null?"":user.getName());//姓名
                     data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
-                    data.put("sex",user.getSex()==null?0:user.getWx_ident());
+                    data.put("sex",user.getSex()==null?0:user.getSex());
                     data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
                     data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
                     data.put("tel",user.getTel()==null?"":user.getTel());//手机号
@@ -294,7 +296,7 @@ public class RasteUserApiAction extends BaseAction {
                     jsonMap.put("r_uid",user.getId());
                     data.put("name",user.getName()==null?"":user.getName());//姓名
                     data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
-                    data.put("sex",user.getSex()==null?0:user.getWx_ident());
+                    data.put("sex",user.getSex()==null?0:user.getSex());
                     data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
                     data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
                     data.put("tel",user.getTel()==null?"":user.getTel());//手机号
@@ -327,7 +329,7 @@ public class RasteUserApiAction extends BaseAction {
             jsonMap.put("r_uid",user.getId());
             data.put("name",user.getName()==null?"":user.getName());//姓名
             data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
-            data.put("sex",user.getSex()==null?0:user.getWx_ident());
+            data.put("sex",user.getSex()==null?0:user.getSex());
             data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
             data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
             data.put("tel",user.getTel()==null?"":user.getTel());//手机号
@@ -517,7 +519,7 @@ public class RasteUserApiAction extends BaseAction {
             SessionUtils.removeValidateCode(request);
             data.put("name",user0.getName()==null?"":user0.getName());//姓名
             data.put("wx_ident",user0.getWx_ident()==null?"":user0.getWx_ident());//微信唯一标识 openid
-            data.put("sex",user0.getSex()==null?0:user0.getWx_ident());
+            data.put("sex",user0.getSex()==null?0:user0.getSex());
             data.put("birthday",user0.getBirthday()==null?"":user0.getBirthday());
             data.put("integral",user0.getIntegral()==null?0:user0.getIntegral());//积分
             data.put("tel",user0.getTel()==null?"":user0.getTel());//手机号

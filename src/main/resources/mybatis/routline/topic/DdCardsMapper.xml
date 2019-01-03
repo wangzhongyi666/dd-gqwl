@@ -104,7 +104,9 @@
     <if test="topid!= null and topid!=''">
       dd_cards.topid = #{topid,jdbcType=BIGINT} and
     </if>
-
+    <if test="filed3!= null and filed3!=''">
+      dd_cards.filed3 = #{filed3,jdbcType=INTEGER} and
+    </if>
     dd_cards.isdelete=1 and dd_cards.ispass=1
     order by creattime desc
     <if test="num1!=null and num2!=null">

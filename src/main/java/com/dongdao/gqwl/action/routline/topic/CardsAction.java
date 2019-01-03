@@ -147,11 +147,21 @@ public class CardsAction extends BaseAction {
     @RequestMapping("/passcards.do")
     public void passcards(DdCards model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        if(model.getIspass()==1){
-            model.setIspass(0);
-        }else{
-            model.setIspass(1);
+        if(model.getIspass()!=null){
+            if(model.getIspass()==1){
+                model.setIspass(0);
+            }else{
+                model.setIspass(1);
+            }
         }
+        else if(model.getFiled3()!=null){
+            if(model.getFiled3()==1){
+                model.setFiled3(0);
+            }else{
+                model.setFiled3(1);
+            }
+        }
+
         int num= cardsService.updateByPrimaryKeySelective(model);
 
         if(num==1){

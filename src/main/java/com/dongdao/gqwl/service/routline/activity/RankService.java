@@ -27,4 +27,20 @@ public class RankService<T> extends BaseService<T> {
     public List<Map> selectByAct(Long actid){
         return ddAuditMapper.selectByAct(actid);
     }
+
+    public int selectRank(Long r_uid){
+        return getMapper().selectRank(r_uid);
+    }
+
+    public List<Map> selectRuid(Long actid){
+        return getMapper().selectRuid(actid);
+    }
+
+    public List<Map> selectBefor(DdRank record){
+        return getMapper().selectBefor(record);
+    }
+
+    public List<Map> selectAfter(DdRank record){
+        return getMapper().selectAfter(record);
+    }
 }

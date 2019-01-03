@@ -1,6 +1,7 @@
 package com.dongdao.gqwl.service.gcolumn;
 
 import com.dongdao.gqwl.mapper.website.DdbrowseMapper;
+import com.dongdao.gqwl.model.routline.topic.DdZrecord;
 import com.dongdao.gqwl.model.website.Ddbrowse;
 import com.dongdao.gqwl.service.BaseService;
 import org.apache.ibatis.annotations.Param;
@@ -37,5 +38,9 @@ public class DdbrowseService<T> extends BaseService<T> {
 
     public void updateByCardsId(@Param("isdelete")Integer isdelete,@Param("cardid") Integer cardid){
         getMapper().updateByCardsId(1,cardid);
+    }
+
+    public Ddbrowse selectById(Ddbrowse record){
+        return getMapper().selectById(record);
     }
 }

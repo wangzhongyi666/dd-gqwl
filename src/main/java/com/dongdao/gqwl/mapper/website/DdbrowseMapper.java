@@ -1,6 +1,7 @@
 package com.dongdao.gqwl.mapper.website;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
+import com.dongdao.gqwl.model.routline.topic.DdZrecord;
 import com.dongdao.gqwl.model.website.Ddbrowse;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface DdbrowseMapper<T> extends BaseMapper {
     Map queryByCardsInfo(@Param("topid")Integer topid,@Param("cardid") Integer cardid);
 
     void updateByCardsId(@Param("isdelete")Integer isdelete,@Param("cardid") Integer cardid);
+
+    Ddbrowse selectById(Ddbrowse record);
 }
