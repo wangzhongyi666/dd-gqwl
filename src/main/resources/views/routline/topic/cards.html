@@ -117,20 +117,30 @@
                             }else if(row.isdelete==0){
                                 rowlist1[7]="已回收";
                             }
-                            rowlist1[8] = "";
+                            if(row.filed3==1){
+                                rowlist1[8]="已推荐";
+                            }else if(row.filed3==0){
+                                rowlist1[8]="未推荐";
+                            }
+                            rowlist1[9] = "";
                             if(purvupdate){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">查看内容</a>";
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">查看内容</a>";
                             }if(purvdelete){
                                 if(row.isdelete==1){
-                                    rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">回收</a>";
+                                    rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">回收</a>";
                                 }else if(row.isdelete==0){
-                                    rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">还原</a>";
+                                    rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">还原</a>";
                                 }
                             }if(purvpass&&row.ispass==0){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">审核</a>";
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">审核</a>";
 
                             }else if(purvpass&&row.ispass==1){
-                                rowlist1[8]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" a3="+row.ispass+" onclick=\"passcards(this)\" class=\"text-primary ml10\">撤销审核</a>";
+                            }if(purvpass&&row.filed3==0){
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+" a2="+row.isdelete+" a3="+row.filed3+" onclick=\"pushcards(this)\" class=\"text-primary ml10\">推荐</a>";
+
+                            }else if(purvpass&&row.filed3==1){
+                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.cardid+"  a2="+row.isdelete+" a3="+row.filed3+" onclick=\"pushcards(this)\" class=\"text-primary ml10\">撤销推荐</a>";
                             }
 
                         }else{
@@ -143,6 +153,7 @@
                             rowlist1[6]='';
                             rowlist1[7]='';
                             rowlist1[8]='';
+                            rowlist1[9]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -239,6 +250,7 @@
                     <th style="width: 170px;">分享数</th>
                     <th style="width: 170px;">评论数</th>
                     <th style="width: 170px;">回收状态</th>
+                    <th style="width: 170px;">是否推荐</th>
                     <th style="width: 170px;">操作</th>
                 </tr>
                 </thead>

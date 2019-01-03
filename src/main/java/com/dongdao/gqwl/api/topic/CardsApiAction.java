@@ -6,7 +6,9 @@ import com.dongdao.gqwl.model.routline.topic.DdCardcon;
 import com.dongdao.gqwl.model.routline.topic.DdCards;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.model.routline.topic.DdZrecord;
+import com.dongdao.gqwl.model.website.Ddbrowse;
 import com.dongdao.gqwl.model.website.RasteUser;
+import com.dongdao.gqwl.service.gcolumn.DdbrowseService;
 import com.dongdao.gqwl.service.routline.activity.IngetService;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CardsService;
@@ -46,6 +48,8 @@ public class CardsApiAction extends BaseAction {
     public TopicService topicService;
     @Autowired
     public ZrecordService zrecordService;
+    @Autowired
+    public DdbrowseService<Ddbrowse> ddbrowseService;
     //查询话题
     @Auth(verifyURL = false)
     @ResponseBody
@@ -101,10 +105,35 @@ public class CardsApiAction extends BaseAction {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         RasteUser user= SessionUtils.getRasteUser(request);
         HashMap<String,Object> card=cardsService.selectById(model);
+        if((Long)card.get("r_uid")!=model.getR_uid()){
+            Ddbrowse ddbrowse=new Ddbrowse();
+            if(model.getR_uid()!=null){
+                ddbrowse.setUser_id(Integer.parseInt(model.getR_uid()+""));
+                ddbrowse.setTopid(Integer.parseInt(card.get("cardid")+""));
+                ddbrowse=ddbrowseService.selectById(ddbrowse);
+                if(ddbrowse!=null){
+                    ddbrowse.setCreatetime(DateUtil.getNowPlusTime());
+                    ddbrowseService.updateByPrimaryKeySelective(ddbrowse);
+                }else{
+                    ddbrowse=new Ddbrowse();
+                    ddbrowse.setUser_id(Integer.parseInt(model.getR_uid()+""));
+                    ddbrowse.setTopid(Integer.parseInt(card.get("cardid")+"") );
+                    ddbrowse.setCreatetime(DateUtil.getNowPlusTime());
+                    ddbrowseService.insertSelective(ddbrowse);
+                }
+            }
+        }
+
         List<HashMap<String,Object>> hashMaps=cardconService.selectByType((Long)card.get("cardid"));
         DdZrecord inget=new DdZrecord();
         if(user!=null){
             inget.setR_uid(model.getR_uid());
+        }
+        if(model.getTopid()!=null&&model.getTopid()!=0){
+            DdTopic topic=new DdTopic();
+            topic.setTopid(model.getTopid());
+            topic.setOnlooks(0);
+            topicService.updateNums(topic);
         }
         inget.setCardid(model.getCardid());
         inget=zrecordService.selectById(inget);
@@ -117,7 +146,6 @@ public class CardsApiAction extends BaseAction {
         jsonMap.put("card",card);
 
         try {
-            jsonMap.put("pageSize",model.getNum2());
 
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
@@ -149,9 +177,13 @@ public class CardsApiAction extends BaseAction {
             }else{
                 model.setZannums(0);
                 inget.setCreattime(DateUtil.getNowPlusTime());
-                zrecordService.insertSelective(inget);
-                num=cardsService.updateNums(model);
-                msg="操作成功！";
+                if(model.getCardid()!=null&&model.getCardid()!=0){
+                    zrecordService.insertSelective(inget);
+                    num=cardsService.updateNums(model);
+                    msg="操作成功！";
+                }else{
+                    msg="操作失败！";
+                }
             }
             try {
 
@@ -203,7 +235,7 @@ public class CardsApiAction extends BaseAction {
                 if(model.getTopid()!=null&&model.getTopid()!=0){
                     DdTopic topic=new DdTopic();
                     topic.setTopid(model.getTopid());
-                    topic.setOnlooks(0);
+                    topic.setJoinnums(0);
                     topicService.updateNums(topic);
                 }
                     String filepath="";

@@ -3,6 +3,7 @@ package com.dongdao.gqwl.api;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.website.Ddbrowse;
 import com.dongdao.gqwl.service.gcolumn.DdbrowseService;
+import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import org.apache.log4j.Logger;
@@ -26,6 +27,8 @@ public class BrowseApiAction extends BaseAction {
 
     @Autowired
     public DdbrowseService<Ddbrowse> ddbrowseService;
+    @Autowired
+    public CardconService cardconService;
 
     //浏览记录
     @Auth(verifyURL = false)
@@ -37,7 +40,7 @@ public class BrowseApiAction extends BaseAction {
         try {
             List<Map> datalist = ddbrowseService.queryByBrowse(user_id);
             for (Map b:datalist) {
-                if(b!=null&&b.get("createtime")!=null
+           /*     if(b!=null&&b.get("createtime")!=null
                         &&!b.get("createtime").toString().equals("")){
                     if(b.get("createtime").toString().compareTo(DateUtil.getDateLong(DateUtil.getNextDay(new Date(),1)))<0){
                         b.put("createtime","今天");
@@ -45,6 +48,10 @@ public class BrowseApiAction extends BaseAction {
                         b.put("createtime",DateUtil.getFormattedMD(b.get("createtime").toString().substring(0,10)));
                     }
 
+                }*/
+                if(b!=null){
+                    List<HashMap<String,Object>> hashMaps=cardconService.selectByType((Long)b.get("cardid"));
+                    b.put("links",hashMaps);
                 }
             }
             return setSuccessMap(jsonMap, "操作成功！", datalist);
@@ -82,13 +89,17 @@ public class BrowseApiAction extends BaseAction {
         try {//                                              我的一公里
             List<Map> datalist = ddbrowseService.queryByCards(user_id);
             for (Map b:datalist) {
-                if(b!=null&&b.get("creattime")!=null
+           /*     if(b!=null&&b.get("creattime")!=null
                         &&!b.get("creattime").toString().equals("")){
                     if(b.get("creattime").toString().compareTo(DateUtil.getDateLong(DateUtil.getNextDay(new Date(),1)))<0){
                         b.put("creattime","今天");
                     }else{
                         b.put("creattime",DateUtil.getFormattedMD(b.get("creattime").toString().substring(0,10)));
                     }
+                }*/
+                if(b!=null){
+                    List<HashMap<String,Object>> hashMaps=cardconService.selectByType((Long)b.get("cardid"));
+                    b.put("links",hashMaps);
                 }
             }
             return setSuccessMap(jsonMap, "操作成功！", datalist);

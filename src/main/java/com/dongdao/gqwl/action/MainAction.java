@@ -246,4 +246,18 @@ public class MainAction extends BaseAction {
     public String home(HttpServletRequest request,HttpServletResponse response) {
         return "home";
     }
+
+
+    /**
+     * 首页tomcat默认页面
+     * @param request
+     * @param response
+     */
+    @Auth(verifyLogin=false,verifyURL=false)
+    @RequestMapping(value = "/tomcats.shtml")
+    public String tomcats(HttpServletRequest request, HttpServletResponse response) {
+        return "ROOT/index";
+    }
 }
+
+

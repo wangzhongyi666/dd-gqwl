@@ -126,6 +126,29 @@ function passcards(e){
         }
     });
 }
+//审核
+function pushcards(e){
+    var id = $(e).attr("a1");
+    var filed3 = $(e).attr("a3");
 
+    $.ajax({
+        url :'/cards/passcards.do',
+        type : 'POST',
+        timeout : 20000,
+        data:{
+            cardid:id,
+            filed3:filed3
+        },
+        async: false,
+        success : function(result) {
+            layer.alert(result.msg);
+            $(this).parents('.popbox-wrapper').animate({
+                opacity: 'hide',top: '0px'
+            }, "slow");
+            $('.popbox-container').fadeOut();
+            countlist($('#pageSizeInp').val());
+        }
+    });
+}
 
 /*]]>*/

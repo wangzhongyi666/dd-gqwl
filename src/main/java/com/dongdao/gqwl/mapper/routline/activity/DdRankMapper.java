@@ -22,4 +22,12 @@ public interface DdRankMapper<T> extends BaseMapper {
     DdRank selectById(Long r_uid);
 
     List<Map> selectByAct(Long actid);
+
+    int selectRank(Long r_uid);
+
+    List<Map> selectRuid(Long r_uid);
+
+    List<Map> selectBefor(DdRank record);
+
+    List<Map> selectAfter(DdRank record);
 }

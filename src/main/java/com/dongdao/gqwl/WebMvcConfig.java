@@ -24,7 +24,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     }
     public void addViewControllers( ViewControllerRegistry registry ) {
-        registry.addViewController( "/" ).setViewName( "forward:/guangqi/login.shtml" );
+        registry.addViewController( "/" ).setViewName( "forward:/guangqi/tomcats.shtml" );
     }
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

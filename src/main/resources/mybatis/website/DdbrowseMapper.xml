@@ -117,21 +117,19 @@
 
   <select id="queryByBrowse" resultType="map" parameterType="java.lang.Integer" >
     select
-    t.browse_id,p.picpath,p.t_content,t.createtime
-    from dd_browse t left join dd_topic p on t.topid = p.topid
-    where t.user_id = #{user_id,jdbcType=INTEGER} and p.isdelete = 0 order by createtime desc
+    t.browse_id,p.c_content,p.cardid,t.createtime
+    from dd_browse t left join dd_cards p on t.topid = p.cardid
+    where t.user_id = #{user_id,jdbcType=INTEGER} and p.isdelete = 1 order by t.createtime desc
   </select>
 
   <select id="queryByBrowseInfo" resultType="map" parameterType="java.lang.Integer" >
     select
-    u.picurl,u.name,c.creattime as createtime,p.t_content,d.filepath
+    u.picurl,u.name,t.creattime ,c.c_content
     from dd_browse t
-    left join dd_topic p on t.topid = p.topid
-    left join raste_user u on u.id = p.t_audit
-    left join dd_cards c on p.topid = c.topid
-    left join dd_cardcon d on d.cardid = c.cardid
+    left join raste_user u on t.user_id=u.id
+    left join dd_cards c on t.topid = c.cardid
 
-    where t.browse_id = #{browse_id,jdbcType=INTEGER} and p.isdelete = 0 group by browse_id
+    where t.user_id = #{user_id,jdbcType=INTEGER} and  group by t.creattime desc
   </select>
 
   <select id="queryByCards" resultType="map" >
@@ -145,7 +143,7 @@
 
   <select id="queryByCardsInfo" resultType="map" parameterType="java.lang.Integer" >
     select
-      u.name,u.picurl,c.creattime,t.picpath,c.c_content
+      u.name,u.picurl,c.creattime,t.picpath,c.c_content,c.cardid
     from dd_cards c
     left join dd_cardcon con on c.cardid = con.cardid
     left join dd_topic t on t.topid = c.topid
@@ -160,4 +158,12 @@
 
     where cardid = #{cardid,jdbcType=INTEGER}
   </update>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.Ddbrowse" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_browse
+        where user_id = #{user_id,jdbcType=INTEGER} and topid=#{topid,jdbcType=INTEGER}
+    </select>
+
 </mapper>

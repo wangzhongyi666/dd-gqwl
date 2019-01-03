@@ -2,10 +2,12 @@ package com.dongdao.gqwl.api.topic;
 
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.topic.DdCardcon;
+import com.dongdao.gqwl.model.routline.topic.DdCards;
 import com.dongdao.gqwl.model.routline.topic.DdComment;
 import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.model.website.RasteUser;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
+import com.dongdao.gqwl.service.routline.topic.CardsService;
 import com.dongdao.gqwl.service.routline.topic.CommentService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
 import com.dongdao.gqwl.utils.Auth;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,9 @@ public class CommentsAction extends BaseAction {
     public CardconService cardconService;
     @Autowired
     public TopicService topicService;
+    @Autowired
+    public CardsService cardsService;
+
     //查询话题
     @Auth(verifyURL = false)
     @ResponseBody
@@ -82,14 +88,20 @@ public class CommentsAction extends BaseAction {
     public Map<String, Object> addCards(DdComment model,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        RasteUser user= SessionUtils.getRasteUser(request);
-        model.setR_uid(Long.parseLong(user.getId()+"") );
+        //RasteUser user= SessionUtils.getRasteUser(request);
+        //model.setR_uid(Long.parseLong(user.getId()+"") );
+        if(model.getC_content()!=null){
+            model.setC_content(URLDecoder.decode(model.getC_content(), "UTF-8"));
+        }
         model.setCreattime(DateUtil.getNowPlusTime());
         model.setIsdelete(1);
         try {
             int num=commentService.insertSelective(model);
             if(num==1){
-
+                DdCards cards=new DdCards();
+                cards.setCardid(model.getCardid());
+                cards.setCommnums(0);
+                cardsService.updateNums(cards);
                 return setSuccessMap(jsonMap, "操作成功！", null);
             }else{
                 return setFailureMap(jsonMap, "操作失败！", null);

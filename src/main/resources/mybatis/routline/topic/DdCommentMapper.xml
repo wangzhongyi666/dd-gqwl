@@ -61,7 +61,7 @@
 
 
   <select id="selectAll" parameterType="com.dongdao.gqwl.model.routline.topic.DdComment"  resultType="HashMap">
-    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content, raste_user.name,raste_user.picurl from dd_comment
+    select dd_comment.r_uid ,dd_comment.commentid ,dd_comment.creattime,dd_comment.c_content,dd_comment.zannums, raste_user.name,raste_user.picurl from dd_comment
     left join raste_user on dd_comment.r_uid=raste_user.id
     where
     <if test="cardid!=null and cardid!=''">
