@@ -19,6 +19,26 @@ public class DdInformation extends BaseModel {
 
     private Integer is_see;
 
+    private String name;
+
+    private String tel;
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getInformation_id() {
         return information_id;
     }
