@@ -569,7 +569,7 @@ public class RasteUserApiAction extends BaseAction {
 
         //////////////// 2、对encryptedData加密数据进行AES解密 ////////////////
         try {
-            String result = AesCbcUtil.decrypt(encryptedData, session_key, iv, "UTF-8");
+            String result = AesCbcUtil.decrypt(encryptedData.replaceAll(" ","\\+"), session_key, iv, "UTF-8");
             if (null != result && result.length() > 0) {
                 map.put("status", 1);
 
