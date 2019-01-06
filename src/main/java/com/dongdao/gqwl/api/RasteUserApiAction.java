@@ -613,10 +613,11 @@ public class RasteUserApiAction extends BaseAction {
                     }
 
                     user.setState(1);
-                    String openId = System.currentTimeMillis()+"";
+
                     user.setCreatetime(DateUtil.getNowPlusTime());
-                    user.setWx_ident(openId);
-                    user.setName(name==null?"":name);
+                    user.setWx_ident(wx_ident);
+                    user.setPicurl(imgurl);
+                    user.setName(name==null?"无昵称":name);
                     rasteUserService.insertSelective(user);
                     SessionUtils.removeValidateCode(request);
 
