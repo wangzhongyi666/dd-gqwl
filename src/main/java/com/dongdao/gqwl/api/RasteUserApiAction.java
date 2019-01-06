@@ -255,8 +255,6 @@ public class RasteUserApiAction extends BaseAction {
         name=name.replaceAll(" ", "");
         if("".equals(name)){
             name="无昵称";
-        }else{
-            name= URLDecoder.decode(name, "UTF-8");
         }
 
         //访问微信接口得到openid
@@ -281,6 +279,14 @@ public class RasteUserApiAction extends BaseAction {
                     data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
                     data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
                     data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
+                    if(imgurl!=null){
+                        user.setPicurl(imgurl);
+                    }
+                    if(tel!=null){
+                        user.setTel(tel);
+                    }
+                    user.setName(name);
+                    rasteUserService.updateByWxIdent(user);
                     return setFailureMap(jsonMap, "已登陆！", data);
                 }else{
                     user = new RasteUser();
@@ -289,39 +295,9 @@ public class RasteUserApiAction extends BaseAction {
             }else{
                 user = new RasteUser();
                 jsonMap.put("is_logged",0);
+                return setFailureMap(jsonMap, "wx_ident为空！", data);
             }
 
-            if(imgurl!=null&&!imgurl.equals("")){
-                //user.setWx_ident(DateUtil.getNowPlusTime());
-                user.setPicurl(imgurl);
-                user = rasteUserService.queryByToLogin(user);
-                if(user!=null){
-                    jsonMap.put("is_logged",1);
-                    jsonMap.put("r_uid",user.getId());
-                    data.put("name",user.getName()==null?"":user.getName());//姓名
-                    data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
-                    data.put("sex",user.getSex()==null?0:user.getSex());
-                    data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
-                    data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
-                    data.put("tel",user.getTel()==null?"":user.getTel());//手机号
-                    data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
-                    data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
-                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
-                    data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
-                    data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
-                    data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
-                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());
-                    return setSuccessMap(jsonMap, "已登陆！", data);
-                }else{
-                    user = new RasteUser();
-                    user.setPicurl(imgurl);
-                }
-            }else {
-                return setFailureMap(jsonMap, "微信号不能为空！", null);
-            }
-            if(tel!=null&&!tel.equals("")){
-                user.setTel(tel);
-            }
             user.setState(1);
             String openId = System.currentTimeMillis()+"";
             user.setCreatetime(DateUtil.getNowPlusTime());
