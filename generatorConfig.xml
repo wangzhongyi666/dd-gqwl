@@ -18,22 +18,22 @@
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
-		 <javaModelGenerator targetPackage="com.dongdao.gqwl.model.website.job"   targetProject="src/main/java">
+		 <javaModelGenerator targetPackage="com.dongdao.gqwl.model.routline.activity"   targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-          <sqlMapGenerator targetPackage="mybatis.website.job"  targetProject="src/main/resources">
+          <sqlMapGenerator targetPackage="mybatis.routline.activity"  targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.dongdao.gqwl.mapper.website.job"
+                             targetPackage="com.dongdao.gqwl.mapper.routline.activity"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
        <!-- 要生成哪些表-->
 
 
-		<table schema="general" tableName="dd_job_from" domainObjectName="DdJob_from"
+		<table schema="general" tableName="dd_r_act" domainObjectName="DdRact"
 		    enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
 		    enableSelectByExample="false" selectByExampleQueryId="false" >
 		    <property name="useActualColumnNames" value="true"/>
