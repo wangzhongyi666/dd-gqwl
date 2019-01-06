@@ -519,7 +519,8 @@ public class RasteUserApiAction extends BaseAction {
 
     @ResponseBody
     @RequestMapping(value = "/decodeUserInfo.json")
-        public Map<String, Object> decodeUserInfo(String encryptedData, String iv, String code) {
+        public Map<String, Object> decodeUserInfo(String encryptedData, String iv, String code,
+                                                  HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         //登录凭证不能为空
@@ -560,12 +561,83 @@ public class RasteUserApiAction extends BaseAction {
                 userInfo.put("openId", userInfoJSON.get("openId"));
                 userInfo.put("nickName", userInfoJSON.get("nickName"));
                 userInfo.put("gender", userInfoJSON.get("gender"));
-                userInfo.put("city", userInfoJSON.get("city"));
-                userInfo.put("province", userInfoJSON.get("province"));
-                userInfo.put("country", userInfoJSON.get("country"));
+                //userInfo.put("city", userInfoJSON.get("city"));
+                //userInfo.put("province", userInfoJSON.get("province"));
+                //userInfo.put("country", userInfoJSON.get("country"));
                 userInfo.put("avatarUrl", userInfoJSON.get("avatarUrl"));
-                userInfo.put("unionId", userInfoJSON.get("unionId"));
-                return setSuccessMap(map, "解密成功！", userInfo);
+                //userInfo.put("unionId", userInfoJSON.get("unionId"));
+
+                String wx_ident = userInfo.get("openId").toString();
+                String name=userInfo.get("nickName").toString().replaceAll(" ", "");
+                if("".equals(name)){
+                    name="无昵称";
+                }
+                String imgurl = userInfo.get("avatarUrl").toString();
+                Map<String, Object> jsonMap = new HashMap<String, Object>();
+                Map<String, Object> data = new HashMap<String, Object>();
+                //访问微信接口得到openid
+                try {
+                    RasteUser user = new RasteUser();
+                    if(wx_ident!=null&&!wx_ident.equals("")){
+                        user.setWx_ident(wx_ident);
+                        user = rasteUserService.queryByToLogin(user);
+                        if(user!=null){
+                            jsonMap.put("is_logged",1);//是否登陆 0 否 ；1 是
+                            jsonMap.put("r_uid",user.getId());
+                            data.put("name",user.getName()==null?"":user.getName());//姓名
+                            data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
+                            data.put("sex",user.getSex()==null?0:user.getSex());
+                            data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
+                            data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
+                            data.put("tel",user.getTel()==null?"":user.getTel());//手机号
+                            data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
+                            data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
+                            data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
+                            data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
+                            data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
+                            data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+                            if(imgurl!=null){
+                                user.setPicurl(imgurl);
+                            }
+                            user.setName(name);
+                            rasteUserService.updateByWxIdent(user);
+                            return setFailureMap(jsonMap, "已登陆！", data);
+                        }else{
+                            user = new RasteUser();
+                            jsonMap.put("is_logged",0);
+                        }
+                    }else{
+                        user = new RasteUser();
+                        jsonMap.put("is_logged",0);
+                        return setFailureMap(jsonMap, "wx_ident为空！", data);
+                    }
+
+                    user.setState(1);
+                    String openId = System.currentTimeMillis()+"";
+                    user.setCreatetime(DateUtil.getNowPlusTime());
+                    user.setWx_ident(openId);
+                    user.setName(name==null?"":name);
+                    rasteUserService.insertSelective(user);
+                    SessionUtils.removeValidateCode(request);
+
+                    jsonMap.put("r_uid",user.getId());
+                    data.put("name",user.getName()==null?"":user.getName());//姓名
+                    data.put("wx_ident",user.getWx_ident()==null?"":user.getWx_ident());//微信唯一标识 openid
+                    data.put("sex",user.getSex()==null?0:user.getSex());
+                    data.put("birthday",user.getBirthday()==null?"":user.getBirthday());
+                    data.put("integral",user.getIntegral()==null?0:user.getIntegral());//积分
+                    data.put("tel",user.getTel()==null?"":user.getTel());//手机号
+                    data.put("email",user.getEmail()==null?"":user.getEmail());//邮箱
+                    data.put("createtime",user.getCreatetime()==null?"":user.getCreatetime());//注册时间
+                    data.put("lasttime",user.getLasttime()==null?"":user.getLasttime());//最后一次登陆时间
+                    data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
+                    data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
+                    data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+                    return setSuccessMap(jsonMap, "注册成功！", data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return setFailureMap(jsonMap, "注册失败！", null);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -573,6 +645,6 @@ public class RasteUserApiAction extends BaseAction {
             return setFailureMap(map, "解密失败！", null);
         }
         map.put("status", 0);
-        return setFailureMap(map, "解密失败！", null);
+        return setFailureMap(map, "注册失败！", null);
     }
 }
