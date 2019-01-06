@@ -62,26 +62,36 @@
 
 
   <select id="selectRank" resultType="java.lang.Integer"  parameterType="java.lang.Long">
-
-   select count(1) from dd_rank where integar>=(select integar from dd_rank where r_uid = #{r_uid,jdbcType=BIGINT})
-
-  </select>
+               SELECT rownum
+                from(SELECT
+                  @rownum := @rownum +1 AS rownum,
+                  e.r_uid
+                FROM  dd_rank e,
+                  (SELECT
+                    @rownum := 0) r
+                   ORDER BY  e.integar desc, e.creattime asc)b where r_uid=#{r_uid,jdbcType=BIGINT}
+                  </select>
 
   <select id="selectBefor" resultType="HashMap"  parameterType="com.dongdao.gqwl.model.routline.activity.DdRank">
     select
     dd_rank.randid, dd_rank.r_uid, dd_rank.actid, dd_rank.integar, raste_user.name,raste_user.picurl
     from dd_rank left join raste_user on dd_rank.r_uid=raste_user.id
-    where dd_rank.integar &gt;= #{integar,jdbcType=INTEGER} order by dd_rank.integar asc
-    limit 1,6
+    where dd_rank.integar &gt; #{integar,jdbcType=INTEGER} or (dd_rank.integar=#{integar,jdbcType=INTEGER} and dd_rank.creattime&lt;#{creattime,jdbcType=VARCHAR})
+
+    order by dd_rank.integar asc,dd_rank.creattime desc
+    limit 0,5
   </select>
 
   <select id="selectAfter" resultType="HashMap"  parameterType="com.dongdao.gqwl.model.routline.activity.DdRank">
     select
     dd_rank.randid, dd_rank.r_uid, dd_rank.actid, dd_rank.integar, raste_user.name,raste_user.picurl
     from dd_rank left join raste_user on dd_rank.r_uid=raste_user.id
-    where dd_rank.integar  &lt;= #{integar,jdbcType=INTEGER} order by dd_rank.integar desc
+    where dd_rank.integar  &lt; #{integar,jdbcType=INTEGER}
+    or (dd_rank.integar=#{integar,jdbcType=INTEGER} and dd_rank.creattime &gt;#{creattime,jdbcType=VARCHAR})
+
+    order by dd_rank.integar desc,dd_rank.creattime asc
     <if test="num2!=null">
-      limit 1,#{num2}
+      limit 0,#{num2}
     </if>
   </select>
 

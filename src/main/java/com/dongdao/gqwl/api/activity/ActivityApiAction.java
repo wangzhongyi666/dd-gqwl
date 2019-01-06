@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/activity")
@@ -107,7 +104,7 @@ public class ActivityApiAction extends BaseAction {
                      ranks.setActid(activity.getActid());
                      rankService.insertSelective(ranks);
                  }
-                 return setSuccessMap(jsonMap, "获得"+myinter+"积分！", null);
+                 return setSuccessMap(jsonMap, myinter+"", null);
              }else{
                  return setFailureMap(jsonMap, "操作失败！", null);
              }
@@ -139,8 +136,10 @@ public class ActivityApiAction extends BaseAction {
             int rank=rankService.selectRank(r_uid);
             List<HashMap<String,Object>> myrank=rankService.selectRuid(r_uid);
             List<HashMap<String,Object>> befors=rankService.selectBefor(ranks);
-            ranks.setNum2(6-befors.size());
+            ranks.setNum2(6-befors.size()-1);
             List<HashMap<String,Object>> afters=rankService.selectAfter(ranks);
+            Collections.reverse(befors);
+
             for(int i=0;i<myrank.size();i++){
                 myrank.get(i).put("ranks",rank);
             }for(int i=0;i<befors.size();i++){
@@ -148,10 +147,13 @@ public class ActivityApiAction extends BaseAction {
             }for(int i=0;i<afters.size();i++){
                 afters.get(i).put("ranks",rank+1+i);
             }
-
-            jsonMap.put("myranks",myrank);
-            jsonMap.put("beforranks",befors);
-            jsonMap.put("afterranks",afters);
+            List<HashMap<String,Object>> newsranks=new ArrayList<HashMap<String,Object>>();
+            newsranks.addAll(befors);
+            newsranks.addAll(myrank);
+            newsranks.addAll(afters);
+            jsonMap.put("ranks",newsranks);
+            /*jsonMap.put("beforranks",befors);
+            jsonMap.put("afterranks",afters);*/
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,21 +187,27 @@ public class ActivityApiAction extends BaseAction {
             ract.setR_uid(r_uid);
             ract.setCreattime(DateUtil.getCurrDate());
             ract=ractService.selectByPrimaryKey(ract);
-            if(ract!=null){
-                if(ract.getNums()>=3){
-                    msg="已经弹出三次！";
+            DdInget inget=ingetService.selectByUser(r_uid);
+            if(inget!=null){
+                msg="今天已经领取过了！";
+            }else {
+                if(ract!=null){
+                    if(ract.getNums()>=3){
+                        msg="已经弹出三次！";
+                    }else{
+                        ract.setNums(ract.getNums()+1);
+                        num= ractService.updateByPrimaryKeySelective(ract);
+                        msg="操作成功";
+                    }
                 }else{
-                    ract.setNums(ract.getNums()+1);
-                    num= ractService.updateByPrimaryKeySelective(ract);
+                    DdRact newract=new DdRact();
+                    newract.setR_uid(r_uid);
+                    newract.setCreattime(DateUtil.getCurrDate());
+                    num=ractService.insertSelective(newract);
                     msg="操作成功";
                 }
-            }else{
-                DdRact newract=new DdRact();
-                newract.setR_uid(r_uid);
-                newract.setCreattime(DateUtil.getCurrDate());
-                num=ractService.insertSelective(newract);
-                msg="操作成功";
             }
+
         }else{
             ractService.deleteByPrimaryKey(1);
             msg="不在活动时间";

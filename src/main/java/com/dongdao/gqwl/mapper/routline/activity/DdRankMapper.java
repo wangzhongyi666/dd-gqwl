@@ -2,6 +2,7 @@ package com.dongdao.gqwl.mapper.routline.activity;
 
 import com.dongdao.gqwl.mapper.BaseMapper;
 import com.dongdao.gqwl.model.routline.activity.DdRank;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public interface DdRankMapper<T> extends BaseMapper {
 
     List<Map> selectByAct(Long actid);
 
-    int selectRank(Long r_uid);
+    int selectRank(@Param(value = "r_uid") Long r_uid);
 
     List<Map> selectRuid(Long r_uid);
 

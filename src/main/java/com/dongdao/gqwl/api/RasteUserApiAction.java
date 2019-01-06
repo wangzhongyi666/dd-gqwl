@@ -254,7 +254,13 @@ public class RasteUserApiAction extends BaseAction {
                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         Map<String,Object> data = new HashMap<String,Object>();
-        name= URLDecoder.decode(name, "UTF-8");
+        name=name.replaceAll(" ", "");
+        if("".equals(name)){
+            name="无昵称";
+        }else{
+            name= URLDecoder.decode(name, "UTF-8");
+        }
+
         //访问微信接口得到openid
         try {
             RasteUser user = new RasteUser();

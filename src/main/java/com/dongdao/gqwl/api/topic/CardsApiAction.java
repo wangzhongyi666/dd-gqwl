@@ -75,6 +75,7 @@ public class CardsApiAction extends BaseAction {
                 }
                 List<HashMap<String,Object>> hashMaps=cardconService.selectByType((Long)cards.get(i).get("cardid"));
                 inget.setCardid((Long)cards.get(i).get("cardid"));
+                inget.setR_uid(model.getR_uid());
                 inget=zrecordService.selectById(inget);
                 if(inget!=null){
                     cards.get(i).put("iszan",true);
@@ -177,7 +178,7 @@ public class CardsApiAction extends BaseAction {
             }else{
                 model.setZannums(0);
                 inget.setCreattime(DateUtil.getNowPlusTime());
-                if(model.getCardid()!=null&&model.getCardid()!=0){
+                if(model.getR_uid()!=null&&model.getR_uid()!=0){
                     zrecordService.insertSelective(inget);
                     num=cardsService.updateNums(model);
                     msg="操作成功！";
