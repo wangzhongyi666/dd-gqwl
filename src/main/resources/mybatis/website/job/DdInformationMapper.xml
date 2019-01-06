@@ -10,15 +10,16 @@
     <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
     <result column="rank" property="rank" jdbcType="INTEGER" />
     <result column="is_see" property="is_see" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    information_id, info_type, title, content, sendee, updatetime, rank, is_see
+    t.information_id, t.info_type, t.title, t.content, t.sendee, t.updatetime, t.rank, t.is_see
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from dd_information
-    where information_id = #{information_id,jdbcType=INTEGER}
+    from dd_information t
+    where t.information_id = #{information_id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from dd_information
@@ -129,9 +130,16 @@
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />,u.`name`
     from dd_information t
-    where is_see != 2
+    left join raste_user u on u.id = t.sendee
+    where t.is_see != 2
+    <if test="tel!=null and tel!=''">
+      and (u.`tel` LIKE CONCAT('%', #{ tel }, '%') or u.`name` LIKE CONCAT('%', #{ tel }, '%'))
+    </if>
+    <if test="updatetime!=null and updatetime!=''">
+      and t.updatetime = #{updatetime}
+    </if>
     order by t.updatetime desc
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
@@ -140,6 +148,13 @@
   <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.job.DdInformation" >
     select count(0)
     from dd_information t
-    where is_see != 2
+    left join raste_user u on u.id = t.sendee
+    <if test="tel!=null and tel!=''">
+       and (u.`tel` LIKE CONCAT('%', #{ tel }, '%') or u.`name` LIKE CONCAT('%', #{ tel }, '%'))
+    </if>
+    <if test="updatetime!=null and updatetime!=''">
+      and t.updatetime = #{updatetime}
+    </if>
+    where t.is_see != 2
   </select>
 </mapper>

@@ -121,17 +121,17 @@
     <set >
 
       <if test="commnums != null" >
-      <if test="commnums ==0" >
+        <if test="commnums ==0" >
         commnums = commnums+1,
-      </if>
+        </if>
         <if test="commnums ==1" >
           commnums = commnums-1,
         </if>
       </if>
       <if test="zannums != null" >
-      <if test="zannums ==0" >
+        <if test="zannums ==0" >
           zannums =zannums+1,
-      </if>
+        </if>
         <if test="zannums ==1" >
           zannums =zannums-1,
         </if>

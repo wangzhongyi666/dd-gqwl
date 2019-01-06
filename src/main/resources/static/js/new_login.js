@@ -8,13 +8,13 @@ YiYa.login = function(){
 					YiYa.submitForm(form,function(data){
                         layer.closeAll('loading');
 						if(data.msg=="101"){
-							window.location= "/guangqi/main.shtml";
+							window.location= "${msUrl}/guangqi/main.shtml";
 				        }else{
 							if(data.success){
-							   window.location= "/guangqi/main.shtml";
-					        }else{
+                                window.location= "${msUrl}/guangqi/main.shtml";
+                            }else{
                                 layer.alert('登录出错', {icon: 5});
-					        }
+                            }
 						}
 					});
 
