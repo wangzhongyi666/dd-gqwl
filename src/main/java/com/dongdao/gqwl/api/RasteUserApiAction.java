@@ -596,7 +596,8 @@ public class RasteUserApiAction extends BaseAction {
                             data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
                             data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
                             data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
-                            
+                            data.put("picurl",imgurl);//头像
+
                             if(imgurl!=null){
                                 user.setPicurl(imgurl);
                             }
@@ -635,6 +636,7 @@ public class RasteUserApiAction extends BaseAction {
                     data.put("login_num",user.getLogin_num()==null?0:user.getLogin_num());//登陆次数
                     data.put("state",user.getState()==null?0:user.getState());//是否可以登陆  1可以  2不可以
                     data.put("login_type",user.getLogin_type()==null?0:user.getLogin_type());//登陆方式 1 网站登陆 2小程序登陆
+                    data.put("picurl",imgurl);//头像
                     return setSuccessMap(jsonMap, "注册成功！", data);
                 } catch (Exception e) {
                     e.printStackTrace();
