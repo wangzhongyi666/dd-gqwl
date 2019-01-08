@@ -18,6 +18,8 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/rasteuser")
@@ -299,9 +301,9 @@ public class RasteUserApiAction extends BaseAction {
             }
 
             user.setState(1);
-            String openId = System.currentTimeMillis()+"";
+            //String openId = System.currentTimeMillis()+"";
             user.setCreatetime(DateUtil.getNowPlusTime());
-            user.setWx_ident(openId);
+            user.setWx_ident(wx_ident);
             user.setName(name==null?"":name);
             rasteUserService.insertSelective(user);
             SessionUtils.removeValidateCode(request);
@@ -568,11 +570,16 @@ public class RasteUserApiAction extends BaseAction {
                 //userInfo.put("unionId", userInfoJSON.get("unionId"));
 
                 String wx_ident = userInfo.get("openId").toString();
+
                 String name=userInfo.get("nickName").toString().replaceAll(" ", "");
+
+                name = filterEmoji(name);
+
                 if("".equals(name)){
                     name="无昵称";
                 }
                 String imgurl = userInfo.get("avatarUrl").toString();
+                Integer sex = userInfo.get("gender")==null?0:Integer.parseInt(userInfo.get("gender").toString());
                 Map<String, Object> jsonMap = new HashMap<String, Object>();
                 Map<String, Object> data = new HashMap<String, Object>();
                 //访问微信接口得到openid
@@ -601,7 +608,8 @@ public class RasteUserApiAction extends BaseAction {
                             if(imgurl!=null){
                                 user.setPicurl(imgurl);
                             }
-                            user.setName(name);
+                            user.setName(user.getName());
+                            user.setSex(sex);
                             rasteUserService.updateByWxIdent(user);
                             return setFailureMap(jsonMap, "已登陆！", data);
                         }else{
@@ -620,6 +628,7 @@ public class RasteUserApiAction extends BaseAction {
                     user.setWx_ident(wx_ident);
                     user.setPicurl(imgurl);
                     user.setName(name==null?"无昵称":name);
+                    user.setSex(sex);
                     rasteUserService.insertSelective(user);
                     SessionUtils.removeValidateCode(request);
 
@@ -650,5 +659,19 @@ public class RasteUserApiAction extends BaseAction {
         }
         map.put("status", 0);
         return setFailureMap(map, "注册失败！", null);
+    }
+
+    public static String filterEmoji(String source) {
+        if (source == null) {
+            return source;
+        }
+        Pattern emoji = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Matcher emojiMatcher = emoji.matcher(source);
+        if (emojiMatcher.find()) {
+            source = emojiMatcher.replaceAll("*");
+            return source;
+        }
+        return source;
     }
 }

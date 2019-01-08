@@ -7,6 +7,8 @@
     <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
     <result column="createtime" property="createtime" jdbcType="VARCHAR" />
     <result column="wx_ident" property="wx_ident" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     suggestion_id, user_id, suggestion, t.createtime
@@ -84,7 +86,7 @@
 
   <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.DdSuggestions" >
     select
-    <include refid="Base_Column_List" />,u.wx_ident
+    <include refid="Base_Column_List" />,u.wx_ident,u.name,u.tel
     from dd_suggestions t left join raste_user u on u.id = t.user_id
     where 1=1
     <if test="createtime != null and createtime != ''" >
