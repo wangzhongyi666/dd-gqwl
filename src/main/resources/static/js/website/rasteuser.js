@@ -12,7 +12,77 @@ $(document).ready(function() {
         $(this).parent().addClass("active");
         getlist1($(this).text(),$('#pageSizeInp').val());
     });
+});
+function sendInformation(e){
+    shadboxFun('sendInformation');
+}
 
+function saveInformation1(e){
+    var info_type = $("#info_type").val();
+    if(info_type==null||info_type==0&&info_type=="0"){
+        layer.alert("请选择消息类型！");
+        return;
+    }
+    var title = $("#title").val();
+    if(title==null||title==""){
+        layer.alert("标题不能为空！");
+        return;
+    }
+    var content = $("#content").val();
+    if(content==null&&content==""){
+        layer.alert("消息内容不能为空！");
+        return;
+    }
+
+    var user_idss = document.getElementsByName("user_id");
+    var objarray = user_idss.length;
+    var userIds = "";
+    for (i = 0; i < objarray; i++) {
+        if (user_idss[i].checked == true) {
+            userIds += user_idss[i].value + ",";
+        }
+    }
+    // if(userIds==""||userIds==","){
+    //     layer.alert("请选择发送人！");
+    //     return;
+    // }
+    layer.confirm('确定要发送消息嘛？', {
+        btn: ['确定','取消'] //按钮
+    }, function(){
+        $.ajax({
+            url :'/information/addinformation.do',
+            type : 'POST',
+            timeout : 20000,
+            data:{
+                userIds:userIds,
+                info_type:info_type,
+                title:title,
+                content:content
+
+
+            },
+            async: false,
+            success : function(result) {
+                layer.alert(result.result_msg);
+                $(e).parents('.popbox-wrapper').animate({
+                    opacity: 'hide',top: '0px'
+                }, "slow");
+
+                $('.popbox-container').fadeOut();
+                countlist($('#pageSizeInp').val());
+            }
+        });
+    }, function(){
+        return;
+    });
+}
+
+$("#all").click(function(){
+    if($(this).is(':checked')){
+        checkboxed1("user_id");
+    }else{
+        uncheckboxed1("user_id");
+    }
 });
 
 function countlist(pageSize){
@@ -209,6 +279,26 @@ function checkEmail(str){
         return true;
     }else{
         return false;
+    }
+}
+
+function checkboxed1(objName){
+    var objNameList=document.getElementsByName(objName);
+
+    if(null!=objNameList){
+        for(var i=0;i<objNameList.length;i++){
+            objNameList[i].checked="checked";
+        }
+    }
+}
+
+function uncheckboxed1(objName){
+    var objNameList=document.getElementsByName(objName);
+
+    if(null!=objNameList){
+        for(var i=0;i<objNameList.length;i++){
+            objNameList[i].checked="";
+        }
     }
 }
 /*]]>*/
