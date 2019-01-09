@@ -72,22 +72,23 @@
                         const rowlist1=[];
                         if(i<datalist.length){
                             var row=datalist[i];
-                            rowlist1[0]=row.id;
-                            rowlist1[1]=row.name;
-                            rowlist1[2]=row.tel;
-                            rowlist1[3]=row.email;
-                            rowlist1[4]=row.createtime;
-                            rowlist1[5]=row.lasttime;
-                            rowlist1[6]=row.login_num;
+                            rowlist1[0]="<input value='"+row.id+"' name='user_id' type=\"checkbox\" onclick='checkboxed1("+row.id+")'/>";
+                            rowlist1[1]=row.id;
+                            rowlist1[2]=row.name;
+                            rowlist1[3]=row.tel;
+                            rowlist1[4]=row.email;
+                            rowlist1[5]=row.createtime;
+                            rowlist1[6]=row.lasttime;
+                            rowlist1[7]=row.login_num;
                             if(row.state==1){
-                                rowlist1[7]='是';
+                                rowlist1[8]='是';
                             }else{
-                                rowlist1[7]='否';
+                                rowlist1[8]='否';
                             }
                             if(row.login_type==1){
-                                rowlist1[8]='官网';
+                                rowlist1[9]='官网';
                             }else{
-                                rowlist1[8]='小程序';
+                                rowlist1[9]='小程序';
                             }
                             var rowlist9 = "";
                             /*if(updateview){
@@ -101,7 +102,7 @@
                                 }
 
                             }
-                            rowlist1[9] = rowlist9;
+                            rowlist1[10] = rowlist9;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
@@ -113,7 +114,7 @@
                             rowlist1[7]='';
                             rowlist1[8]='';
                             rowlist1[9]='';
-
+                            rowlist1[10]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -139,17 +140,23 @@
                     <input type="text" class="form-control" name="jname" id="jname" placeholder="手机号" />
                     <span class="fa fa-search"></span>
                 </div>
-                <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;" type="button" value="搜索" />
+                <input class="btn btn-primary btn-lg btn-radius pull-right mr30"
+                       id="sendInformationButton" onclick="sendInformation(this);" style="width:120px;" type="button" value="发送消息" />
+
+                <input class="btn btn-primary btn-lg btn-radius pull-right mr30"
+                       id="searchbtn" style="width:100px;" type="button" value="搜索" />
             </div>
         </form>
     </div>
     <!--<div class="clearfix" id="addUser">
         <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0)"  onclick="getTree(this)">添加信息</a>
     </div>-->
+    <div class="ml10"><input id="all" type="checkbox" /><label class="ml5 mr30">全选</label></div>
     <div id="tabdiv" style="overflow:auto">
         <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
             <thead>
             <tr>
+                <th style="width:30px;"></th>
                 <th style="width: 170px;">序号</th>
                 <th style="width: 170px;">姓名</th>
                 <th style="width: 170px;">手机号</th>
@@ -215,7 +222,53 @@
             </div>
         </div>
     </div>
+    <div class="popbox-wrapper safebox" id="sendInformation">
+        <div class="popbox-body">
+            <div class="safe_nav">
+                <span class="pull-right fa fa-close popbox-close fontS20"></span>
+                <span class="fontS16">编辑消息</span>
+            </div>
+            <div class="detail_box">
+                <ul class="addbox pb60">
+                    <!--<div id="androiddiv">-->
+                    <form id="informationform"  enctype='multipart/form-data'  class='ui-form' method='post'>
+                        <li style="float:left;">
+                            <span>消息类型</span>
+                            <i >
+                                <div class="col-md-2">
+                                    <select class="form-control" id="info_type" name="info_type">
+                                        <option value="">-请选择-</option>
+                                        <option value="1">客服</option>
+                                        <option value="2">公告</option>
+                                        <option value="3">其他</option>
+                                    </select>
+                                </div>
+                            </i>
+                        </li>
 
+                        <li style="float:left;">
+                            <i >
+                                <span>标题</span><input type="text" id="title" name="title" class="txt txt1" placeholder="请输入标题"/>
+                            </i>
+
+                        </li>
+                        <li style="float:left;">
+                            <i >
+                                <span>消息内容</span><input style="width:450px;" name="content" id="content" class="txt txt1" type="text"/>
+                            </i>
+                        </li>
+
+                    </form>
+                    <!--</div>-->
+                    <li style="margin-left:140px;float:left;">
+                        <input style="width:160px;" class="btn btn-primary btn-lg btn-radius mr10" type="button"
+                               onclick="saveInformation1(this)" id="saveInformation" value="保存"/>
+                        <!--<input style="width:160px;" class="btn btn-warning btn-lg btn-radius mr10" type="submit" onclick="qxApp()" value="取消"/>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 

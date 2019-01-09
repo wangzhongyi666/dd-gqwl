@@ -113,22 +113,33 @@ public class InformationAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/addinformation.do")
-    public Map<String, Object> addinformation(Integer sendee,Integer info_type,String title,String content,
+    public Map<String, Object> addinformation(String userIds,Integer info_type,String title,String content,
                                                  HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
-            if (sendee == null) {
-                return setFailureMap(jsonMap, "消息接收人不能为空！", null);
+//            if (userIds == null || userIds.equals("")) {
+//                return setFailureMap(jsonMap, "消息接收人不能为空！", null);
+//            }
+
+            if(userIds!=null&&!userIds.equals("")){
+                String[] userIdss = userIds.split(",");
+                for (String sendee : userIdss){
+                    if(sendee!=null&&!sendee.equals("")){
+                        DdInformation info = new DdInformation();
+                        info.setSendee(Integer.parseInt(sendee));
+                        info.setInfo_type(info_type);
+                        info.setTitle(title);
+                        info.setContent(content);
+                        info.setUpdatetime(DateUtil.getNowPlusTime());
+                        info.setIs_see(0);
+                        info.setRank(0);
+                        informationService.insertSelective(info);
+                    }
+                }
+            }else{
+
             }
-            DdInformation info = new DdInformation();
-            info.setSendee(sendee);
-            info.setInfo_type(info_type);
-            info.setTitle(title);
-            info.setContent(content);
-            info.setUpdatetime(DateUtil.getNowPlusTime());
-            info.setIs_see(0);
-            info.setRank(0);
-            informationService.insertSelective(info);
+
             return setSuccessMap(jsonMap, "操作成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
