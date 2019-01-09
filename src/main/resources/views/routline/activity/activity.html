@@ -98,13 +98,6 @@
                             rowlist1[9] = "";
                             if(purvupdate){
                                 rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+"  a2="+row.ispass+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
-                            }if(purvdelete){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
-                            }if(purvpass&&row.ispass==0){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+"  onclick=\"passactivity(this)\" class=\"text-primary ml10\">审核</a>";
-
-                            }else if(purvpass&&row.ispass==1){
-                                rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+"  a2="+row.ispass+" onclick=\"passactivity(this)\" class=\"text-primary ml10\">撤销审核</a>";
                             }if(isrank){
                                 rowlist1[9]+="<a href=\"javascript:void(0)\" a1="+row.actid+" a2="+row.ispass+"  onclick=\"openranks(this)\" class=\"text-primary ml10\">排行榜</a>";
                             }

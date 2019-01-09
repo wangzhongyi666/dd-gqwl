@@ -127,7 +127,7 @@ public class CardsApiAction extends BaseAction {
 
         List<HashMap<String,Object>> hashMaps=cardconService.selectByType((Long)card.get("cardid"));
         DdZrecord inget=new DdZrecord();
-        if(user!=null){
+        if(model.getR_uid()!=null){
             inget.setR_uid(model.getR_uid());
         }
         if(model.getTopid()!=null&&model.getTopid()!=0){

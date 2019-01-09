@@ -138,7 +138,7 @@ public class ActivityApiAction extends BaseAction {
             List<HashMap<String,Object>> befors=rankService.selectBefor(ranks);
             ranks.setNum2(6-befors.size()-1);
             List<HashMap<String,Object>> afters=rankService.selectAfter(ranks);
-            Collections.reverse(befors);
+
 
             for(int i=0;i<myrank.size();i++){
                 myrank.get(i).put("ranks",rank);
@@ -147,6 +147,7 @@ public class ActivityApiAction extends BaseAction {
             }for(int i=0;i<afters.size();i++){
                 afters.get(i).put("ranks",rank+1+i);
             }
+            Collections.reverse(befors);
             List<HashMap<String,Object>> newsranks=new ArrayList<HashMap<String,Object>>();
             newsranks.addAll(befors);
             newsranks.addAll(myrank);
