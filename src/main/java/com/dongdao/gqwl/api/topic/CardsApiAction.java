@@ -141,6 +141,7 @@ public class CardsApiAction extends BaseAction {
         if(inget!=null){
             card.put("iszan",true);
         }else{
+
             card.put("iszan",false);
         }
         card.put("links",hashMaps);
