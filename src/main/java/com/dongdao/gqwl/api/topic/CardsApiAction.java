@@ -1,5 +1,6 @@
 package com.dongdao.gqwl.api.topic;
 
+import com.dongdao.gqwl.UserConstants;
 import com.dongdao.gqwl.action.BaseAction;
 import com.dongdao.gqwl.model.routline.activity.DdInget;
 import com.dongdao.gqwl.model.routline.topic.DdCardcon;
@@ -14,10 +15,7 @@ import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CardsService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
 import com.dongdao.gqwl.service.routline.topic.ZrecordService;
-import com.dongdao.gqwl.utils.Auth;
-import com.dongdao.gqwl.utils.DateUtil;
-import com.dongdao.gqwl.utils.SessionUtils;
-import com.dongdao.gqwl.utils.VerifyFormat;
+import com.dongdao.gqwl.utils.*;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/cards")
@@ -102,7 +99,7 @@ public class CardsApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/carddetail.json")
     public Map<String, Object> onecard(DdCards model,
-                                        HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         RasteUser user= SessionUtils.getRasteUser(request);
         HashMap<String,Object> card=cardsService.selectById(model);
@@ -141,7 +138,6 @@ public class CardsApiAction extends BaseAction {
         if(inget!=null){
             card.put("iszan",true);
         }else{
-
             card.put("iszan",false);
         }
         card.put("links",hashMaps);
@@ -161,7 +157,7 @@ public class CardsApiAction extends BaseAction {
     @ResponseBody
     @RequestMapping("/addnums.json")
     public Map<String, Object> addNums(DdCards model,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         RasteUser user= SessionUtils.getRasteUser(request);
         DdZrecord inget=new DdZrecord();
@@ -217,10 +213,21 @@ public class CardsApiAction extends BaseAction {
     public Map<String, Object> addCards(DdCards model,int filenum, @RequestParam("file")MultipartFile files,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-
+        String filed1="";
         try {
             int num=0;
             if(filenum==1){
+                Set<String> s = BadWordUtils.words;
+                Map<String,String> map = BadWordUtils.wordMap;
+                System.out.println("敏感词的数量：" + BadWordUtils.wordMap.size());
+                String string=model.getC_content();
+                if(string!=null&&!"".equals(string)){
+                    Set<String> set = BadWordUtils.getBadWord(string, 2);
+                    if(set.size()>0){
+
+                        return setFailureMap1(jsonMap, "包含敏感词！", null);
+                    }
+                }
                 RasteUser user= SessionUtils.getRasteUser(request);
                 if(user!=null){
                     model.setR_uid(Long.parseLong(user.getId()+"") );
@@ -234,36 +241,66 @@ public class CardsApiAction extends BaseAction {
             }
 
             if(num==1){
-                if(model.getTopid()!=null&&model.getTopid()!=0){
+           /*     if(model.getTopid()!=null&&model.getTopid()!=0){
                     DdTopic topic=new DdTopic();
                     topic.setTopid(model.getTopid());
                     topic.setJoinnums(0);
                     topicService.updateNums(topic);
-                }
-                    String filepath="";
+                }*/
+                String filepath="";
 
-                    filepath=uploadifys(files,"cards",response,request);
-                    DdCardcon cardcon=new DdCardcon();
-                    cardcon.setFilepath(filepath);
-                    if(filenum==1){
-                        cardcon.setCardid(model.getCardid());
-                    }else{
-                        cardcon.setCardid(model.getCardid());
-                    }
-                    if(model.getType()!=null){
-                        cardcon.setFiled2(model.getType());
-                    }
-                    cardconService.insertSelective(cardcon);
-                    jsonMap.put("cardid",model.getCardid());
-                    return setSuccessMap(jsonMap, "操作成功！", null);
+                filepath=uploadifys(files,"cards",response,request);
+                DdCardcon cardcon=new DdCardcon();
+                cardcon.setFilepath(filepath);
+                if(filenum==1){
+                    cardcon.setCardid(model.getCardid());
                 }else{
-                    return setFailureMap(jsonMap, "操作失败！", null);
+                    cardcon.setCardid(model.getCardid());
                 }
+                if(model.getType()!=null){
+                    cardcon.setFiled2(model.getType());
+                    if(model.getType()==2){
+                        filed1= getpicpath(cardcon);
+                        if(filed1!=null&&!"".equals(filed1)){
+                            cardcon.setFiled1(filed1);
+                        }
+                    }
+                }
+                cardconService.insertSelective(cardcon);
+                jsonMap.put("cardid",model.getCardid());
+                jsonMap.put("filed1",filed1);
+                return setSuccessMap(jsonMap, "操作成功！", null);
+            }else{
+                return setFailureMap(jsonMap, "操作失败！", null);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             return setFailureMap(jsonMap, "操作失败！", null);
         }
+    }
+
+
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/deletecards.json")
+    public Map<String,Object> deletecards(DdCards model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        model.setIsdelete(0);
+        DdCards myCard=(DdCards)cardsService.selectByPrimaryKey(model.getCardid());
+        DdTopic topic=new DdTopic();
+        topic.setTopid(myCard.getTopid());
+        topic.setJoinnums(1);
+        topicService.updateNums(topic);
+        int num= cardsService.updateByPrimaryKeySelective(model);
+        if(num==1){
+            return setSuccessMap(jsonMap, "操作成功！", null);
+        }else{
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+
+
+
     }
 
     /*********************uploadify上传方法***************************/
@@ -285,4 +322,90 @@ public class CardsApiAction extends BaseAction {
 
     }
 
+
+    public static boolean processImg(String veido_path, String picpath)
+            throws IOException {
+        System.err.println(veido_path);
+        /*
+         * File file = new File(veido_path); if (!file.exists()) {
+         * System.err.println("路径[" + veido_path + "]对应的视频文件不存在!"); return
+         * false; }
+         */
+        List<String> commands = new java.util.ArrayList<String>();
+        /*
+         * commands.add(PropertiesUtil.relativeValue(CommonString.PROPERTIESPATH,
+         * "FFMPEG_PATH"));
+         */
+        commands.add( UserConstants.VPNGPATH );
+        commands.add("-i");
+        commands.add(veido_path);
+        commands.add("-y");
+        commands.add("-f");
+        commands.add("image2");
+        commands.add("-ss");
+        commands.add("3");// 这个参数是设置截取视频多少秒时的画面
+        commands.add("-t");
+        commands.add("0.01");
+        // commands.add("-s");
+        // commands.add("340x340");
+        // commands.add(veido_path.substring(0,
+        // veido_path.lastIndexOf(".")).replaceFirst("vedio", "file") + ".jpg");
+        commands.add(picpath);
+        try {
+            ProcessBuilder builder = new ProcessBuilder();
+            builder.command(commands);
+            builder.start();
+            System.out.println("截取成功");
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * 截取视频图片返回预览图
+     * @param
+     * @return
+     */
+    public String getpicpath(DdCardcon musicact) {
+        String filePath;
+        StringBuffer picname = new StringBuffer();
+        StringBuffer picPath = new StringBuffer();
+        String filepaht = musicact.getFilepath();
+        //为空就返回空串
+        if(filepaht==null&&"".equals(filepaht)){
+            return "";
+        }
+        try {
+            filePath =  UserConstants.FTPPATH  + filepaht;
+            /*filePath = "D:\\youyang\\FTP_file" + filepaht;*/
+            System.err.println(filePath);
+            picname.append("/cards/");
+            picname.append(DateUtil.getNowShortDate());
+            picname.append(String.valueOf((Math.random() * 10000000)).substring(0, 6));
+            picname.append(".jpg");
+            picPath.append(UserConstants.UPLOADPATH+ File.separator+UserConstants.UPLOADFOLDER );
+            //picPath.append(PropertiesUtil.relativeValue(CommonString.PROPERTIESPATH, "pic"));
+		/*	picPath.append("d:\\youyang");
+			picPath.append("/uploads/");*/
+            picPath.append(picname);
+            System.err.println(picPath.toString());
+            // 截取图片保存
+            boolean isture=processImg(filePath, picPath.toString());
+		/*    if(isture){
+		    	try {
+					CreatePh.createImgThumbnail(picPath.toString(),340,440,picPath.toString());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return picname.toString();
+    }
 }
