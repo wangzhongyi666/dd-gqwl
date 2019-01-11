@@ -554,6 +554,7 @@ input[type="checkbox"]:checked {background:url(../images/check2.png) no-repeat;	
     line-height: 34px;
 }
 .uploadImg1{cursor:pointer; overflow:hidden;position:relative;width: 120px;height: 120px;float: left;}
+.uploadImg2{cursor:pointer; overflow:hidden;position:relative;width: 320px;height: 240px;float: left;}
 .webfile{ cursor:pointer;position:absolute; z-index:100;left:0;top:0;width: 120px;height: 120px;opacity:0;filter:alpha(opacity=0);}
 .webe{cursor:pointer;position: absolute;display: inline-block;width: 120px;height:120px;}
 
