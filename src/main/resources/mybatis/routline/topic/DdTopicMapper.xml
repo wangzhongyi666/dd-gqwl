@@ -64,7 +64,12 @@
         onlooks = onlooks+1,
       </if>
       <if test="joinnums != null" >
+      <if test="joinnums ==0" >
         joinnums = joinnums+1,
+      </if>
+        <if test="joinnums ==1" >
+          joinnums = joinnums-1,
+        </if>
       </if>
 
     </set>

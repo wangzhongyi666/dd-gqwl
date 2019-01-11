@@ -22,7 +22,7 @@
 
   <select id="selectByType" resultType="HashMap" parameterType="java.lang.Long" >
     select
-    filepath
+    filepath,filed1
     from dd_cardcon
     where cardid = #{cardid,jdbcType=BIGINT}
   </select>

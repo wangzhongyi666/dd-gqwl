@@ -10,10 +10,7 @@ import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CardsService;
 import com.dongdao.gqwl.service.routline.topic.CommentService;
 import com.dongdao.gqwl.service.routline.topic.TopicService;
-import com.dongdao.gqwl.utils.Auth;
-import com.dongdao.gqwl.utils.DateUtil;
-import com.dongdao.gqwl.utils.SessionUtils;
-import com.dongdao.gqwl.utils.VerifyFormat;
+import com.dongdao.gqwl.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +26,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/comments")
@@ -92,16 +90,22 @@ public class CommentsAction extends BaseAction {
         //model.setR_uid(Long.parseLong(user.getId()+"") );
         if(model.getC_content()!=null){
             model.setC_content(URLDecoder.decode(model.getC_content(), "UTF-8"));
+            Set<String> s = BadWordUtils.words;
+            Map<String,String> map = BadWordUtils.wordMap;
+            System.out.println("敏感词的数量：" + BadWordUtils.wordMap.size());
+            String string=model.getC_content();
+            if(string!=null&&!"".equals(string)){
+                Set<String> set = BadWordUtils.getBadWord(string, 2);
+                if(set.size()>0){
+                    return setFailureMap1(jsonMap, "包含敏感词！", null);
+                }
+            }
         }
         model.setCreattime(DateUtil.getNowPlusTime());
         model.setIsdelete(1);
         try {
             int num=commentService.insertSelective(model);
             if(num==1){
-                DdCards cards=new DdCards();
-                cards.setCardid(model.getCardid());
-                cards.setCommnums(0);
-                cardsService.updateNums(cards);
                 return setSuccessMap(jsonMap, "操作成功！", null);
             }else{
                 return setFailureMap(jsonMap, "操作失败！", null);

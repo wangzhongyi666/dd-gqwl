@@ -8,6 +8,7 @@ import com.dongdao.gqwl.model.routline.topic.DdTopic;
 import com.dongdao.gqwl.model.website.news.DdNewstype;
 import com.dongdao.gqwl.service.routline.topic.CardconService;
 import com.dongdao.gqwl.service.routline.topic.CardsService;
+import com.dongdao.gqwl.service.routline.topic.TopicService;
 import com.dongdao.gqwl.utils.Auth;
 import com.dongdao.gqwl.utils.DateUtil;
 import com.dongdao.gqwl.utils.HtmlUtil;
@@ -36,7 +37,8 @@ public class CardsAction extends BaseAction {
     public CardsService cardsService;
     @Autowired
     public CardconService  cardconService;
-
+    @Autowired
+    public TopicService topicService;
     @RequestMapping(value = "/cards.shtml")
     @Auth(verifyLogin = false, verifyURL = false)
     public ModelAndView sysUser(HttpServletRequest request, HttpServletResponse response) {
@@ -92,13 +94,22 @@ public class CardsAction extends BaseAction {
     @RequestMapping("/deletecards.do")
     public void deletecards(DdCards model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        DdCards myCard=(DdCards)cardsService.selectByPrimaryKey(model.getCardid());
+        DdTopic topic=new DdTopic();
         if(model.getIsdelete()==1){
             model.setIsdelete(0);
+            topic.setTopid(myCard.getTopid());
+            topic.setJoinnums(1);
+            topicService.updateNums(topic);
         }else if(model.getIsdelete()==0){
             model.setIsdelete(1);
+            topic.setTopid(myCard.getTopid());
+            topic.setJoinnums(0);
+            topicService.updateNums(topic);
         }
         int num= cardsService.updateByPrimaryKeySelective(model);
         if(num==1){
+
             jsonMap.put("msg", "操作成功！");
         }else{
             jsonMap.put("msg", "操作失败！");
@@ -147,11 +158,20 @@ public class CardsAction extends BaseAction {
     @RequestMapping("/passcards.do")
     public void passcards(DdCards model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        model=(DdCards) cardsService.selectByPrimaryKey(model);
+        DdTopic topic=new DdTopic();
         if(model.getIspass()!=null){
             if(model.getIspass()==1){
                 model.setIspass(0);
+
+                topic.setTopid(model.getTopid());
+                topic.setJoinnums(1);
+                topicService.updateNums(topic);
             }else{
                 model.setIspass(1);
+                topic.setTopid(model.getTopid());
+                topic.setJoinnums(0);
+                topicService.updateNums(topic);
             }
         }
         else if(model.getFiled3()!=null){

@@ -28,7 +28,7 @@
     <if test="cardid != null" >
       cardid = #{cardid,jdbcType=BIGINT} and
     </if>
-    1=1
+    1=1 limit 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_zrecord

@@ -13,6 +13,9 @@ public final class UserConstants {
 
   public static final String FTPPATH= URLUtils.getUrlMap().get("FTP");
 
+  public static final String VPNGPATH= URLUtils.getUrlMap().get("VPNGPATH");
+
+  public static final String BADWORDS= URLUtils.getUrlMap().get("BADWORDS");
   /**
    * 系统管理员
    */

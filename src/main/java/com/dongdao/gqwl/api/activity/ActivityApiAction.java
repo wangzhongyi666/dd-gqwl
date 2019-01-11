@@ -81,6 +81,14 @@ public class ActivityApiAction extends BaseAction {
                maxinter+=ingets.get(i).getIntegar();
            }
            DdActivity activity=(DdActivity)activityService.selectByPrimaryKey(model.getActid());
+           SimpleDateFormat timestampFormat=new SimpleDateFormat("yyyy-MM-dd");
+           Date begintime = timestampFormat.parse(activity.getBegintime());
+           Date endtime=timestampFormat.parse(activity.getEndtime());
+           Date nowdate=new Date();
+
+            if(nowdate.getTime()<begintime.getTime()&&nowdate.getTime()>endtime.getTime()){
+                return setSuccessMap(jsonMap, "活动期限已过！", null);
+            }
            if(maxinter>=activity.getMaxinter()){
                return setSuccessMap(jsonMap, "来晚啦，积分已被抢空！明天再来！！", null);
            }else{

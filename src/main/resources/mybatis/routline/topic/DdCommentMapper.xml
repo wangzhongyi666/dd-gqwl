@@ -32,7 +32,7 @@
       <bind name="creattime" value="'%'+creattime+'%'" />
       dd_comment.creattime like #{creattime,jdbcType=VARCHAR} and
     </if>
-    dd_comment.isdelete=1
+    1=1
     order by dd_comment.creattime desc
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
@@ -56,7 +56,7 @@
       <bind name="creattime" value="'%'+creattime+'%'" />
       creattime like #{creattime,jdbcType=VARCHAR} and
     </if>
-    isdelete=1
+    1=1
   </select>
 
 

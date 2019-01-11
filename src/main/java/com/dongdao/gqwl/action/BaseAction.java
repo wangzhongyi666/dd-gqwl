@@ -138,8 +138,8 @@ public class BaseAction {
 
     public Map<String, Object> setFailureMap1(Map<String, Object> jsonMap,
                                              String msg, Object data) {
-        jsonMap.put("code", -1);
-        jsonMap.put("msg", msg);
+        jsonMap.put("result_code", -1);
+        jsonMap.put("result_msg", msg);
         if (data != null)
             jsonMap.put("subCd", data);
         return jsonMap;

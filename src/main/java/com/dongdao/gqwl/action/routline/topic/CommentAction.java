@@ -76,10 +76,18 @@ public class CommentAction extends BaseAction {
     @RequestMapping("/deletecomment.do")
     public void deletecomment(DdComment model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
+        model=(DdComment)commentService.selectByPrimaryKey(model);
+        DdCards card=new DdCards();
         if(model.getIsdelete()==1){
             model.setIsdelete(0);
+            card.setCardid(model.getCardid());
+            card.setCommnums(1);
+            cardsService.updateNums(card);
         }else if(model.getIsdelete()==0){
             model.setIsdelete(1);
+            card.setCardid(model.getCardid());
+            card.setCommnums(0);
+            cardsService.updateNums(card);
         }
         int num= commentService.updateByPrimaryKeySelective(model);
         if(num==1){
