@@ -154,7 +154,7 @@
 
   <update id="updateByCardsId" parameterType="java.lang.Integer" >
     update dd_cards
-    set isdelete = #{isdelete,jdbcType=INTEGER},
+    set isdelete = #{isdelete,jdbcType=INTEGER}
 
     where cardid = #{cardid,jdbcType=INTEGER}
   </update>
