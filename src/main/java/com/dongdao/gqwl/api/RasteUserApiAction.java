@@ -402,10 +402,10 @@ public class RasteUserApiAction extends BaseAction {
             }
             rasteUserService.updateByWxIdent(user);
             //SessionUtils.removeValidateCode(request);
-            return setSuccessMap(jsonMap, "注册成功！", null);
+            return setSuccessMap(jsonMap, "修改成功！", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return setFailureMap(jsonMap, "注册失败！", null);
+            return setFailureMap(jsonMap, "修改失败！", null);
         }
     }
 

@@ -12,15 +12,15 @@
     <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
     <link rel="stylesheet" href="../../static/css/css.css"/>
     <link rel="stylesheet" href="../../static/css/paging.css"/>
-    <script src="../../static/js/commons/jquery.min.js"></script>
-    <script src="../../static/js/commons/jquery.form.js"></script>
-    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
-    <script src="../../static/js/commons/bootstrap.min.js"></script>
-    <script src="../../static/js/commons/common.js"></script>
-    <script src="../../static/js/commons/paging.js"></script>
+    <script src="/static/js/commons/jquery.min.js"></script>
+    <script src="/static/js/commons/jquery.form.js"></script>
+    <script src="/static/js/commons/jquery.easyui.min.js"></script>
+    <script src="/static/js/commons/bootstrap.min.js"></script>
+    <script src="/static/js/commons/common.js"></script>
+    <script src="/static/js/commons/paging.js"></script>
 
-    <script src="../../static/js/layer/layer.js"></script>
-    <script src="../../static/js/routline/topic/cards.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="/static/js/routline/topic/cards.js"></script>
     <script src="/static/js/commons/bootstrap-treeview.js" ></script>
     <script type="text/javascript" src="../../static/js/commons/laydate/laydate.js"></script>
 
@@ -174,37 +174,44 @@
             },
             async: false,
             success : function(result) {
-              console.log(result);
-              $('#c_content').val(result.card.c_content);
-                var picitems="";
-              if(result.card.type==1){
+                  console.log("result",result);
+                  $('#c_content').val(result.card.c_content);
+                  var picitems="";
+                  var imgs = 0;
+                  var strimgs = "";
                   for(var i=0;i<result.cardcon.length;i++){
-                      picitems+='<i >\n' +
-                          '<div class="uploadImg1">\n' +
-                          '<input  class="webfile" name="file1" id="logo" onchange="imgChange(1,1,this)" size="1" />\n' +
-                          '<em id="qianimg'+i+'"></em>\n' +
-                          '<input id="qianinp1" name="qianinp" type="hidden"/>\n' +
-                          '</div>\n' +
-                          '</i>';
-                      console.log("#qianimg"+i)
-
+                      console.log(result.cardcon[i].filed2);
+                      if(result.cardcon[i].filed2 == 1){
+                          picitems+='<i style="width: 320px;height: 240px;">\n' +
+                                        '<div class="uploadImg2">\n' +
+                                            '<input class="webfile" name="file1" id="logo'+imgs+'" size="1" />\n' +
+                                            '<em id="qianimg'+imgs+'" style="width: 320px;height: 240px;"></em>\n' +
+                                            '<input id="qianinp'+imgs+'" name="qianinp" type="hidden"/>\n' +
+                                        '</div>\n' +
+                                    '</i>';
+                          imgs++;
+                          strimgs +=result.cardcon[i].filepath+",";
+                      }
+                      if(result.cardcon[i].filed2 == 2){
+                              picitems+='<i style="width: 320px;height: 240px;">\n' +
+                                            '<video width="320" height="240" controls>\n' +
+                                                '<source src=\'/FTP'+result.cardcon[i].filepath+'\' type="video/mp4">\n' +
+                                                '<object data=\'/FTP'+result.cardcon[i].filepath+'\' width="320" height="240">\n' +
+                                                '</object> \n' +
+                                            '</video>'
+                                        '</i>';
+                      }
                   }
-                  $('#myfile').html(picitems);
-                  for(var i=0;i<result.cardcon.length;i++){
-                      $("#qianimg"+i).css('background',"url(/uploads/"+result.cardcon[i].filepath+") center center no-repeat");
+                $('#myfile').html(picitems);
+                console.log(imgs);
+                  for(var i=0;i<imgs;i++){
+
+                      $("#qianimg"+i).css('background',"url(/uploads/"+strimgs.split(",")[i]+") center center no-repeat");
                       $("#qianimg"+i).css('background-size',"100% 100%");
                   }
-              }else if(result.card.type==2){
-                  picitems+='<video width="320" height="240" controls>\n' +
-                      '  <source src=\'/FTP/'+result.cardcon[0].filepath+'\' type="video/mp4">\n' +
-                      '  <object data=\'/FTP/'+result.cardcon[0].filepath+'\' width="320" height="240">\n' +
-                      '  </object> \n' +
-                      '</video>';
-                  $('#myfile').html(picitems);
-              }
 
             }
-    });
+        });
 
     }
 
@@ -280,23 +287,18 @@
                     <span class="pull-right fa fa-close popbox-close fontS20"></span>
                     <span class="fontS16">一公里内容</span>
                 </div>
-                <div class="detail_box">
+                <div class="detail_box" style="height: 500px;overflow-x:hidden;">
                     <ul class="addbox pb60">
                         <!--<div id="androiddiv">-->
                         <form id="massageform"  enctype='multipart/form-data'  class='ui-form' method='post'>
                             <input name="cardid" id="cardid" type="hidden"/>
 
                             <li style="float:left;">
-                                <textarea rows="3" style="width:450px;height: 50px" name="c_content" id="c_content" class="txt txt1" type="text"></textarea>
+                                <textarea rows="3" style="width:450px;height: 50px;margin-left:53px;" name="c_content" id="c_content" class="txt txt1" type="text"></textarea>
                             </li>
-                            <li id="myfile" style="text-align:center;overflow-x:auto;width: 450px">
-
-
+                            <li id="myfile" style="text-align:center;width: 450px">
 
                             </li>
-
-
-
                         </form>
                         <!--</div>-->
                         <!--<li style="margin-left:140px;float:left;">
