@@ -138,6 +138,7 @@
     from dd_cards c
     left join dd_topic t on t.topid = c.topid
     where c.r_uid = #{r_uid,jdbcType=INTEGER}
+    and c.isdelete=1
     group by c.cardid order by c.creattime desc
   </select>
 
