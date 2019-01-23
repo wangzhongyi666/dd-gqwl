@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class SuggestionsApiAction extends BaseAction {
           DdSuggestions sugg = new DdSuggestions();
           sugg.setUser_id(user0.getId());
           sugg.setCreatetime(DateUtil.getNowPlusTime());
+          suggestion = URLDecoder.decode(suggestion, "UTF-8");
           sugg.setSuggestion(suggestion);
           suggestionsService.insertSelective(sugg);
           return setSuccessMap(jsonMap, "操作成功！", null);
