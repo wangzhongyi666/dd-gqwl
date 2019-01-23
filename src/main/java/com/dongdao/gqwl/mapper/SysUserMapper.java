@@ -37,7 +37,7 @@ public interface SysUserMapper<T> extends BaseMapper<T>{
     List<SysUser> queryByList(SysUserModel model);
 
     @Select("<script>select count(0) from sys_user t " +
-            "LEFT JOIN sys_role r ON t.jid = r.id LEFT JOIN sys_dept d ON t.deptId = d.deptId where 1=1 " +
+            "LEFT JOIN sys_role r ON t.jid = r.id LEFT JOIN sys_dept d ON t.deptId = d.deptId where state = 0 " +
             "<if test=\"deptId != null and deptId != ''\">and t.deptId = #{deptId}</if> " +
             "<if test=\"ename != null and ename != ''\"> and (t.nickName like CONCAT('%', #{ename}, '%') or t.email like CONCAT('%', #{ename}, '%'))</if></script> ")
     Integer queryByCount(SysUserModel model);
