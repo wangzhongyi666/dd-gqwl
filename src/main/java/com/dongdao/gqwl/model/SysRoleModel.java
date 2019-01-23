@@ -15,7 +15,14 @@ public class SysRoleModel extends BaseModel{
     private String update_time;
     private Integer objId;
     private Integer relType;
+    private String jdesc;
+    public String getJdesc() {
+        return jdesc;
+    }
 
+    public void setJdesc(String jdesc) {
+        this.jdesc = jdesc;
+    }
 
     public Integer getObjId() {
         return objId;

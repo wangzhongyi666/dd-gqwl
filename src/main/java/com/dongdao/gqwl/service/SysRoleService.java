@@ -37,4 +37,8 @@ public class SysRoleService<T> extends BaseService<T> {
     public void deleteRelByRoleId(@Param("roleId")Integer roleId){
         getMapper().deleteRelByRoleId(roleId);
     }
+
+    public int updateRole(SysRoleModel model){
+       return getMapper().updateRole(model);
+    }
 }

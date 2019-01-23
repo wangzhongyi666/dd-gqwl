@@ -361,12 +361,15 @@ public class SysAction extends BaseAction {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         String[] menulist=menustr.split(",");
         model.setJsign(model.getJname());
+        model.setJdesc(model.getJname());
         model.setCreate_time(DateUtil.getNowPlusTime());
         model.setUpdate_time(DateUtil.getNowPlusTime());
         if(model.getId()==0){
             sysMenuService.addRole(model);
 
         }else{
+
+            sysRoleService.updateRole(model);
             sysRoleService.deleteRelByRoleId(model.getId());
         }
         if(menulist!=null && menulist.length>0){

@@ -30,4 +30,12 @@ public interface SysRoleMapper<T> extends BaseMapper<T>{
     @Delete("delete from sys_role_rel where roleId = #{roleId} and relType=0")
     void deleteRelByRoleId(@Param("roleId")Integer roleId);
 
+
+    @Delete("<script>update sys_role set id = id " +
+            "<if test=\"jname != null and jname != ''\">,jname = #{jname}</if> " +
+            "<if test=\"jdesc != null and jdesc != ''\">,jdesc = #{jdesc}</if> " +
+            "<if test=\"update_time != null\">,update_time = #{update_time}</if> " +
+            " where id = #{id}</script>")
+    int updateRole(SysRoleModel model);
+
 }
