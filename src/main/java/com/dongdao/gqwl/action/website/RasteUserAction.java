@@ -37,10 +37,9 @@ public class RasteUserAction extends BaseAction {
 
     @RequestMapping("/rasteuserDataList.do")
     public void audiDataList(RasteUser model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        List<RasteUser> dataList = rasteUserService.queryByList(model);
         model.setNum1(model.getPageSize() * (model.getPageNum() - 1));
         model.setNum2(model.getPageSize());
+        List<RasteUser> dataList = rasteUserService.queryByList(model);
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         jsonMap.put("rows", dataList);
         HtmlUtil.writerJson(response, jsonMap);
