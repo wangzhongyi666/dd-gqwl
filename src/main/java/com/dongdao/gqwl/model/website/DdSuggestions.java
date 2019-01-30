@@ -18,6 +18,8 @@ public class DdSuggestions extends BaseModel {
 
     private String tel;
 
+    private int types;
+
     public String getTel() {
         return tel;
     }
@@ -73,5 +75,13 @@ public class DdSuggestions extends BaseModel {
 
     public void setCreatetime(String createtime) {
         this.createtime = createtime == null ? null : createtime.trim();
+    }
+
+    public int getTypes() {
+        return types;
+    }
+
+    public void setTypes(int types) {
+        this.types = types;
     }
 }

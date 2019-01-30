@@ -50,6 +50,7 @@ public class SuggestionsApiAction extends BaseAction {
           sugg.setCreatetime(DateUtil.getNowPlusTime());
           suggestion = URLDecoder.decode(suggestion, "UTF-8");
           sugg.setSuggestion(suggestion);
+          sugg.setTypes(1);
           suggestionsService.insertSelective(sugg);
           return setSuccessMap(jsonMap, "操作成功！", null);
        }catch (Exception e) {
@@ -58,4 +59,33 @@ public class SuggestionsApiAction extends BaseAction {
         }
 
     }
+
+    //提交意见
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/addcom.json")
+    public Map<String, Object>  addcom(String wx_ident,String suggestion,HttpServletRequest request, HttpServletResponse response) throws Exception{
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        try {
+            if (wx_ident == null||wx_ident.equals("")) {
+                return setFailureMap(jsonMap, "消息接收人不能为空！", null);
+            }
+            RasteUser user = new RasteUser();
+            user.setWx_ident(wx_ident);
+            RasteUser user0 = rasteUserService.queryByToLogin(user);
+            DdSuggestions sugg = new DdSuggestions();
+            sugg.setUser_id(user0.getId());
+            sugg.setCreatetime(DateUtil.getNowPlusTime());
+            suggestion = URLDecoder.decode(suggestion, "UTF-8");
+            sugg.setSuggestion(suggestion);
+            sugg.setTypes(2);
+            suggestionsService.insertSelective(sugg);
+            return setSuccessMap(jsonMap, "操作成功！", null);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return setFailureMap(jsonMap, "操作失败！", null);
+        }
+
+    }
+
 }

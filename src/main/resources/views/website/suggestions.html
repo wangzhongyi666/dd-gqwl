@@ -74,8 +74,13 @@
                             rowlist1[0]=row.suggestion_id;
                             rowlist1[1]=row.name;
                             rowlist1[2]=row.tel;
-                            rowlist1[3]=row.suggestion;
-                            rowlist1[4]=row.createtime;
+                            if(row.types==1){
+                                rowlist1[3]="意见反馈";
+                            }else if(row.types==2){
+                                rowlist1[3]="投诉信息";
+                            }
+                            rowlist1[4]=row.suggestion;
+                            rowlist1[5]=row.createtime;
                             var rowlist4 = "";
                             if(showview){
                                 rowlist4+="<a href=\"javascript:void(0)\" a1="+row.suggestion_id+" onclick=\"showSugges(this)\" class=\"text-primary ml10\">查看反馈</a>";
@@ -83,13 +88,15 @@
                             if(updateview){
                                 rowlist4+="<a href=\"javascript:void(0)\" a1="+row.suggestion_id+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
                             }
-                            rowlist1[5] = rowlist4;
+                            rowlist1[6] = rowlist4;
                         }else{
                             rowlist1[0]='';
                             rowlist1[1]='';
                             rowlist1[2]='';
                             rowlist1[3]='';
                             rowlist1[4]='';
+                            rowlist1[5]='';
+                            rowlist1[6]='';
                         }
                         rowlist[i]=rowlist1;
                     }
@@ -125,6 +132,7 @@
                 <th style="width: 60px;">序号</th>
                 <th style="width: 120px;">微信号</th>
                 <th style="width: 120px;">手机号</th>
+                <th style="width: 120px;">类型</th>
                 <th>意见反馈</th>
                 <th style="width: 120px;">创建时间</th>
                 <th style="width: 120px;">操作</th>

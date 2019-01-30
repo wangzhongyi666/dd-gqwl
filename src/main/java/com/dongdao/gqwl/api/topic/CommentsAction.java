@@ -106,6 +106,10 @@ public class CommentsAction extends BaseAction {
         try {
             int num=commentService.insertSelective(model);
             if(num==1){
+                DdCards card=new DdCards();
+                card.setCardid(model.getCardid());
+                card.setCommnums(0);
+                cardsService.updateNums(card);
                 return setSuccessMap(jsonMap, "操作成功！", null);
             }else{
                 return setFailureMap(jsonMap, "操作失败！", null);

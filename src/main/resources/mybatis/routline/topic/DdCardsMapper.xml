@@ -79,7 +79,7 @@
 
   <select id="selectById" parameterType="com.dongdao.gqwl.model.routline.topic.DdCards"  resultType="HashMap">
     select
-    dd_cards.cardid, dd_cards.topid, dd_cards.r_uid, dd_cards.creattime, dd_cards.commnums, dd_cards.zannums, dd_cards.sharenums,dd_cards.c_content,raste_user.name,raste_user.picurl from dd_cards
+    dd_cards.cardid, dd_cards.topid,dd_cards.ispass, dd_cards.r_uid, dd_cards.creattime, dd_cards.commnums, dd_cards.zannums, dd_cards.sharenums,dd_cards.c_content,raste_user.name,raste_user.picurl from dd_cards
 
     left join raste_user on dd_cards.r_uid=raste_user.id
     where

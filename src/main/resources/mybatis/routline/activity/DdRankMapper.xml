@@ -27,7 +27,7 @@
     <if test="actid!= null and actid!=''">
       dd_rank.actid = #{actid,jdbcType=BIGINT} and
     </if>
-    1=1 order by dd_rank.creattime desc
+    1=1 order by dd_rank.integar desc,dd_rank.creattime desc
     <if test="num1!=null and num2!=null">
       limit #{num1},#{num2}
     </if>
