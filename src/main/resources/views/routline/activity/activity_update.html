@@ -126,6 +126,13 @@
             <td><input type='text' id='maxinter' name="maxinter"
                        style="width: 200px" required="true" th:value="${ACTIVITY.maxinter}" /><span>  编辑每日最大积分数量，超过此数量今日将不再发放积分，明日重新计算</span></td>
       </tr>
+
+        <tr>
+            <td>活动最大积分数</td>
+            <td><input type='text' id='allinter' name="allinter"
+                       style="width: 200px" required="true" th:value="${ACTIVITY.allinter}" /><span>  编辑最大积分数量，超过此数量将不再发放积分算</span></td>
+        </tr>
+
         <tr>
             <td>是否审核</td>
             <td> <select  id="ispass" name="ispass"  style="width: 200px" required="true" >

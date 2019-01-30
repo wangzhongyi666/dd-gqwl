@@ -158,9 +158,10 @@ public class CardsAction extends BaseAction {
     @RequestMapping("/passcards.do")
     public void passcards(DdCards model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
-        model=(DdCards) cardsService.selectByPrimaryKey(model);
+
         DdTopic topic=new DdTopic();
         if(model.getIspass()!=null){
+            model=(DdCards) cardsService.selectByPrimaryKey(model);
             if(model.getIspass()==1){
                 model.setIspass(0);
 
