@@ -1,5 +1,9 @@
 package com.dongdao.gqwl.utils;
 
+
+
+import org.apache.commons.lang.StringUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -7,10 +11,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.StringUtils;
-import sun.io.ByteToCharConverter;
-import sun.io.CharToByteConverter;
 
 
 /**
@@ -64,8 +64,7 @@ public class StringUtil
 	{
 		try
 		{
-			CharToByteConverter toByte = CharToByteConverter.getConverter("GBK");
-			byte[] orig = toByte.convertAll(s.toCharArray());
+			byte[] orig = s.getBytes();
 			char[] dest = new char[orig.length];
 			for (int i = 0; i < orig.length; i++)
 				dest[i] = (char) (orig[i] & 0xFF);
@@ -74,6 +73,7 @@ public class StringUtil
 		catch (Exception e)
 		{
 			System.out.println(e);
+
 			return s;
 		}
 	}
@@ -86,8 +86,7 @@ public class StringUtil
 	{
 		try
 		{
-			CharToByteConverter toByte = CharToByteConverter.getConverter("UTF-8");
-			byte[] orig = toByte.convertAll(s.toCharArray());
+			byte[] orig = s.getBytes();
 			char[] dest = new char[orig.length];
 			for (int i = 0; i < orig.length; i++)
 				dest[i] = (char) (orig[i] & 0xFF);
@@ -113,8 +112,7 @@ public class StringUtil
 			dest[i] = (byte) (orig[i] & 0xFF);
 		try
 		{
-			ByteToCharConverter toChar = ByteToCharConverter.getConverter("GBK");
-			return new String(toChar.convertAll(dest));
+			return new String(dest);
 		}
 		catch (Exception e)
 		{
@@ -226,7 +224,7 @@ public class StringUtil
 	
 	/**
 	 * 判断一个字符串是否为 NUll 或为空
-	 * @param inStr inStr
+	 * @param
 	 * @return boolean
 	 */	
 	public static boolean checkNotNull(String str){
@@ -731,7 +729,7 @@ public class StringUtil
 	 * @param value 
 	 * @return
 	 */
-	public static List<String> StringToList(String value,String exp)
+	public static List<String> StringToList(String value, String exp)
 	{	List<String> resultList = new ArrayList<String>();
 		String[] vals = split(value , exp);
 		for(String val  : vals){
@@ -894,7 +892,7 @@ public class StringUtil
 	
 	/**
 	 * 编码转换，从unicode转换为GBK
-	 * @param str 输入字符串
+	 * @param
 	 * @return str编码转换后的字符串
 	 * @throws UnsupportedEncodingException
 	 */
@@ -910,7 +908,7 @@ public class StringUtil
 	}
 	/**
 	 * 编码转换，从GBK转换为unicode
-	 * @param str 输入字符串
+	 * @param 
 	 * @return str 编码转换后的字符串
 	 * @throws UnsupportedEncodingException
 	 */
