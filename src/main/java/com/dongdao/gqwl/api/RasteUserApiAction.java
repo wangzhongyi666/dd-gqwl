@@ -534,9 +534,10 @@ public class RasteUserApiAction extends BaseAction {
 
         //小程序唯一标识   (在微信小程序管理后台获取)wxef2c55c20cf92aee
         //612c3524c9472ed2fab4e88a38d4b96d
+                         //"wxef2c55c20cf92aee"
         String wxspAppid = "wxef2c55c20cf92aee";
         //小程序的 app secret (在微信小程序管理后台获取)
-        String wxspSecret = "612c3524c9472ed2fab4e88a38d4b96d";
+        String wxspSecret = "ca2d4773f204886c07a4e0c9975a3558";
         //授权（必填）
         String grant_type = "authorization_code";
 
@@ -548,10 +549,13 @@ public class RasteUserApiAction extends BaseAction {
         //解析相应内容（转换成json对象）
         JSONObject json = JSONObject.fromObject(sr);
         //获取会话密钥（session_key）
-        String session_key = json.get("session_key").toString();
+        System.out.print("json ="+json);
         //用户的唯一标识（openid）
         String openid = (String) json.get("openid");
+        System.out.print("openid= "+openid);
 
+        String session_key = json.get("session_key").toString();
+        System.out.print("session_key= "+session_key);
         //////////////// 2、对encryptedData加密数据进行AES解密 ////////////////
         try {
             String result = AesCbcUtil.decrypt(encryptedData.replaceAll(" ","\\+"), session_key, iv, "UTF-8");

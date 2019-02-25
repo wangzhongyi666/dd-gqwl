@@ -1,15 +1,9 @@
 package com.dongdao.gqwl.api.topic;
 
 import com.dongdao.gqwl.action.BaseAction;
-import com.dongdao.gqwl.model.routline.topic.DdCardcon;
-import com.dongdao.gqwl.model.routline.topic.DdCards;
-import com.dongdao.gqwl.model.routline.topic.DdComment;
-import com.dongdao.gqwl.model.routline.topic.DdTopic;
+import com.dongdao.gqwl.model.routline.topic.*;
 import com.dongdao.gqwl.model.website.RasteUser;
-import com.dongdao.gqwl.service.routline.topic.CardconService;
-import com.dongdao.gqwl.service.routline.topic.CardsService;
-import com.dongdao.gqwl.service.routline.topic.CommentService;
-import com.dongdao.gqwl.service.routline.topic.TopicService;
+import com.dongdao.gqwl.service.routline.topic.*;
 import com.dongdao.gqwl.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +36,8 @@ public class CommentsAction extends BaseAction {
     public TopicService topicService;
     @Autowired
     public CardsService cardsService;
+    @Autowired
+    public ZrecordService zrecordService;
 
     //查询话题
     @Auth(verifyURL = false)
@@ -59,8 +55,24 @@ public class CommentsAction extends BaseAction {
         try {
             List<Map<String, Object>> comments=commentService.selectAll(model);
             for(int i=0;i<comments.size();i++){
+                DdZrecord inget=new DdZrecord();
+                if(model.getR_uid()!=null){
+                    inget.setR_uid(model.getR_uid());
+                }
+                inget.setStatus(2);
+                inget.setCardid((Long)comments.get(i).get("commentid"));
+                inget=zrecordService.selectById(inget);
                 List<HashMap<String,Object>> hashMaps=commentService.selectByType((Long)comments.get(i).get("commentid"));
-
+                if(inget!=null){
+                    comments.get(i).put("iszan",true);
+                }else{
+                    comments.get(i).put("iszan",false);
+                }
+                inget =new DdZrecord();
+                inget.setStatus(2);
+                inget.setCardid((Long)comments.get(i).get("commentid"));
+                int nums=zrecordService.selectByCard(inget);
+                comments.get(i).put("zannums",nums);
                 comments.get(i).put("tcomments",hashMaps);
             }
             jsonMap.put("comments",comments );
@@ -145,5 +157,57 @@ public class CommentsAction extends BaseAction {
             return setFailureMap(jsonMap, "操作失败！", null);
         }
     }
+
+
+
+    //点赞量+1
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/addzan.json")
+    public Map<String, Object> addZan(DdComment model,
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+        RasteUser user= SessionUtils.getRasteUser(request);
+        DdZrecord inget=new DdZrecord();
+        inget.setR_uid(model.getR_uid());
+
+            inget.setCardid(model.getCommentid());
+
+            int num=1;
+            String msg="";
+            DdZrecord inget2=(DdZrecord)zrecordService.selectById(inget);
+            if(inget2!=null){
+                model.setZannums(1);
+                 zrecordService.delete(inget2);
+
+                msg="取消成功！";
+            }else{
+                model.setZannums(0);
+                inget.setCreattime(DateUtil.getNowPlusTime());
+                inget.setStatus(2);
+                if(model.getR_uid()!=null&&model.getR_uid()!=0){
+                    num= zrecordService.insertSelective(inget);
+
+                    msg="操作成功！";
+                }else{
+                    msg="操作失败！";
+                }
+            }
+            try {
+
+                if(num==1){
+                    return setSuccessMap(jsonMap, msg, null);
+                }else{
+                    return setFailureMap(jsonMap, "操作失败！", null);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return setFailureMap(jsonMap, "操作失败！", null);
+            }
+
+
+    }
+
 
 }

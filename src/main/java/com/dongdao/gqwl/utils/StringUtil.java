@@ -908,7 +908,7 @@ public class StringUtil
 	}
 	/**
 	 * 编码转换，从GBK转换为unicode
-	 * @param 
+	 * @param
 	 * @return str 编码转换后的字符串
 	 * @throws UnsupportedEncodingException
 	 */

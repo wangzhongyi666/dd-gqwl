@@ -17,4 +17,6 @@ public interface DdZrecordMapper<T> extends BaseMapper {
     int updateByPrimaryKey(DdZrecord record);
 
     DdZrecord selectById(DdZrecord record);
+
+    int selectByCard(DdZrecord zrecord);
 }

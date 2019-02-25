@@ -21,4 +21,8 @@ public class ZrecordService<T> extends BaseService<T> {
     public DdZrecord selectById(DdZrecord record){
         return getMapper().selectById(record);
     }
+
+    public int selectByCard(DdZrecord zrecord){
+        return getMapper().selectByCard(zrecord);
+    }
 }

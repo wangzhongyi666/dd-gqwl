@@ -28,8 +28,27 @@
     <if test="cardid != null" >
       cardid = #{cardid,jdbcType=BIGINT} and
     </if>
+    <if test="status != null" >
+      status = #{status,jdbcType=BIGINT} and
+    </if>
     1=1 limit 1
   </select>
+
+  <select id="selectByCard" resultType="java.lang.Integer" parameterType="com.dongdao.gqwl.model.routline.topic.DdZrecord" >
+    select
+    count(*)
+    from dd_zrecord
+    where
+
+    <if test="cardid != null" >
+      cardid = #{cardid,jdbcType=BIGINT} and
+    </if>
+    <if test="status != null" >
+      status = #{status,jdbcType=BIGINT} and
+    </if>
+    1=1
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from dd_zrecord
     where zrecordid = #{zrecordid,jdbcType=BIGINT}
