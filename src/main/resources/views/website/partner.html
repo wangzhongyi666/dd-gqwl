@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>合作伙伴</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <script src="../../static/js/website/partner.js"></script>
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script src="/static/js/commons/laydate/laydate.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+
+    $(function () {
+        laydate.render({
+            elem: '#creattime',
+            // type: 'month',
+            format: 'yyyy-MM-dd',
+            show: false
+        });
+        $(".pagebtn").on('click', function () {
+            $(".active").removeClass("active");
+            $(this).parent().addClass("active");
+            alert($(this).text() + "," + $('#pageSizeInp').val());
+            getlist($(this).text(), $('#pageSizeInp').val());
+        });
+
+    })
+    function getlist(pageNum,pageSize){
+      /*  // <![CDATA
+        var menus = [[${menuList}]];
+        alert(menus);
+        // ]]>*/
+
+        var isdeletes="/partner/deletepartner.do";
+        var isupdate="/partner/updatepartner.do";
+
+        var purvdelete = isPurview(isdeletes);
+        console.log("==========================")
+        console.log(purvdelete)
+        var purvupdate = isPurview(isupdate);
+       
+        var purvdelete = isPurview(isdeletes);
+        var ptype=$("#ptype").val();
+        var phone=$("#phone").val();
+        var creattime=$("#creattime").val();
+            $.ajax({
+            url :'/partner/partnerDataList.do',
+            ptype : 'POST',
+            timeout : 20000,
+            data:{
+                phone:phone,
+                ptype:ptype,
+                creattime:creattime,
+                pageNum:pageNum,
+                pageSize:pageSize
+            },
+            async: false,
+            success : function(result) {
+                var datalist=result.rows;
+                const  rowlist=[];
+                if(datalist!=null &&  datalist.length>0){
+                    for(var i=0;pageSize>i;i++){
+                        const rowlist1=[];
+                        if(i<datalist.length){
+                            var row=datalist[i];
+                            if(row.ptype==1){
+                                rowlist1[0]="个人";
+                            }else if(row.ptype==2){
+                                rowlist1[0]="公司";
+                            }
+                            rowlist1[1]=row.componyname;
+                            rowlist1[2]=row.partnername;
+                            rowlist1[3]=row.phone;
+                            rowlist1[4]=row.email;
+                            rowlist1[5]=row.creattime;
+                            rowlist1[6] = "";
+                            if(purvupdate){
+                                rowlist1[6]+="<a href=\"javascript:void(0)\" a1="+row.partner+"  a2="+row.phone+" onclick=\"opentabs(this)\" class=\"text-primary ml10\">编辑</a>";
+                            }if(purvdelete){
+                                rowlist1[6]+="<a href=\"javascript:void(0)\" a1="+row.partner+" a2="+row.phone+" onclick=\"deleteType(this)\" class=\"text-primary ml10\">删除</a>";
+                            }
+                             rowlist1[6]+="<a href=\"javascript:void(0)\" a1="+row.filepath+"  onclick=\"newtabs(this)\" class=\"text-primary ml10\">查看文件</a>";
+                        }else{
+                            rowlist1[0]='';
+                            rowlist1[1]='';
+                            rowlist1[2]='';
+                            rowlist1[3]='';
+                            rowlist1[4]='';
+                            rowlist1[5]='';
+                            rowlist1[6]='';
+                        }
+                        rowlist[i]=rowlist1;
+                    }
+                }
+                createTable(rowlist,"picDataList");
+            }
+        });
+    } function newtabs(e) {
+        var newhref = $(e).attr("a1");
+        if(newhref!=null&&newhref!=undefined&&newhref!=""&&newhref!="null"){
+            window.open("/FTP"+newhref);
+        }
+        else{
+            layer.alert("暂无文件");
+        }
+    }
+    function opentabs(e) {
+        var id = $(e).attr("a1");
+        window.parent.opentab('/partner/partner_update.shtml?partner='+id,'编辑合作伙伴')
+    }
+
+</script>
+<body>
+    <div class="rightIframe pull-right">
+    	<div class="sopen"></div>
+        <div class="menu fontS20">合作伙伴</div>
+        <div class="search">
+        	<div class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-md-1 control-label">手机号</label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" value="" id="phone"/>
+                        </div>
+                        <label class="col-md-1 control-label">注册时间</label>
+                        <div class="col-md-2">
+                            <input type="text" class="laydate-icon form-control" value="" id="creattime"/>
+                        </div>
+                        <label class="col-md-1 control-label">合作来源</label>
+                        <div class="col-md-2">
+                            <select class="form-control" id="ptype" name="ptype">
+                                <option value="">-请选择-</option>
+                                <option value="1">个人</option>
+                                <option value="2">公司</option>
+                            </select>
+                        </div>
+
+                        <input class="btn btn-primary btn-lg btn-radius pull-right mr30" id="searchbtn" style="width:100px;margin-right: 50px;    padding: 5px 5px;" ptype="button" value="搜索" />
+                    </div>
+
+                </form>
+            </div>
+
+        <div class="clearfix" id="addcontent">
+            <a style="width:130px;" a1="0" class="btn btn-primary btn-lg btn-radius pull-right mr30 mt20" href="javascript:void(0);" onclick="window.parent.opentab('/partner/partner_add.shtml','添加介绍')">添加介绍</a>
+            </div>
+        <div id="tabdiv" style="overflow:auto">
+            <table class="table table-bordered table-striped text-center mt20" style="width: 851px;">
+                <thead>
+                <tr>
+                    <th style="width: 170px;">合作来源</th>
+                    <th style="width: 170px;">公司名称</th>
+                    <th style="width: 170px;">联系人姓名</th>
+                    <th style="width: 170px;">联系电话</th>
+                    <th style="width: 170px;">联系邮箱</th>
+                    <th style="width: 170px;">发布时间</th>
+                    <th style="width: 170px;">操作人</th>
+
+                </tr>
+                </thead>
+                <tbody id="picDataList">
+
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" id="pageSizeInp"/>
+        <div>
+            <div class="box" id="box">
+
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function isPurview(btnUrl){
+        var btn = $("#ifWd",parent.document).attr("src");
+        var btnsUrl = [[${session.session_menubtn_map}]];
+        return is_purview(btn,btnUrl,btnsUrl,[[${msUrl}]]);
+    }
+
+    $(function(){
+        var addcontent = '/partner/addpartner.do';
+        var addpurview = isPurview(addcontent);
+        if(!addpurview){
+            $("#addcontent").css("display","none");
+        }
+    })
+
+    /*]]>*/
+
+
+</script>
+</html>

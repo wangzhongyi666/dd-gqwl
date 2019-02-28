@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<!--<head th:replace="common/common_header :: common_header(~{::title},~{::link})">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>编辑合作伙伴</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="../../static/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap-treeview.css"/>
+    <link rel="stylesheet" href="../../static/css/css.css"/>
+    <link rel="stylesheet" href="../../static/css/paging.css"/>
+    <script src="../../static/js/commons/jquery.min.js"></script>
+
+    <script src="../../static/js/commons/jquery.form.js"></script>
+    <script src="../../static/js/commons/jquery.easyui.min.js"></script>
+    <script src="../../static/js/commons/bootstrap.min.js"></script>
+    <script src="../../static/js/commons/common.js"></script>
+    <script src="../../static/js/commons/paging.js"></script>
+
+    <script src="../../static/js/layer/layer.js"></script>
+    <!--<script src="../../static/js/source/partner.js"></script>-->
+    <script src="/static/js/commons/bootstrap-treeview.js" ></script>
+    <script ptype="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.config.js"></script>
+    <script ptype="text/javascript" charset="utf-8" src="../../static/ueditor/ueditor.all.min.js"> </script>
+
+    <!-- Uploadify文件上传 -->
+    <link href="../../static/js/uploadify/uploadify.css"   rel="stylesheet" ptype="text/css" />
+
+    <script ptype="text/javascript"  src="../../static/js/uploadify/swfobject.js"></script>
+    <script ptype="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.min.js"></script>
+    <script ptype="text/javascript"  src="../../static/js/uploadify/jquery.uploadify.js"></script>
+    <script ptype="text/javascript"  src="../../static/js/source/uploadfile.js"></script>
+    <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+
+    <![endif]-->
+</head>
+
+<script th:inline="javascript">
+   $(function(){
+
+       $('#domainInfoForm').form({
+           url : '/partner/updatepartner.do',
+           onSubmit : function() {
+
+           },
+           success : function(data) {
+               var obj = JSON.parse(data);
+
+               if (obj.msg=="操作成功！") {
+                   layer.alert('编辑成功');
+                   window.parent.opentab('/partner/partner.shtml','合作伙伴');
+               }  else {
+                   layer.alert('编辑失败');
+               }
+           }
+       });
+       var firObj=$("#ptype");
+
+       if(1==[[${PARTNER.ptype}]]){
+           firObj.append("<option value='1' selected = 'selected'>个人</option><option value='2' >企业</option>");
+       }else{
+           firObj.append("<option value='2' selected = 'selected'>企业</option><option value='1' >个人</option>");
+
+       }
+
+   });
+
+   
+
+
+</script>
+<body>
+
+
+<form id='domainInfoForm' method="post" action=""
+      encptype="multipart/form-data">
+    <input  type="hidden" name="partner"  id="partner" th:value="${PARTNER.partner}"/>
+    <table border=0
+           style="margin-top: 20px; overflow:scroll;  border-collapse: separate; border-spacing: 15px; margin-left: 20px;height: 100%;">
+
+        <tr>
+            <td>公司名称</td>
+            <td>
+                <input type='text' id='componyname' name="componyname"
+                       style="width: 200px" required="true" th:value="${PARTNER.componyname}" />
+            </td>
+        </tr>
+        <tr>
+            <td>联系人</td>
+            <td>
+                <input type='text' id='partnername' name="partnername"
+                       style="width: 200px"  th:value="${PARTNER.partnername}"    />
+            </td>
+        </tr>
+        <tr>
+            <td>来源</td>
+            <td>
+                <select  id="ptype" name="ptype"  style="width: 200px" required="true" >
+                    <option value="">-请选择-</option>
+
+                </select>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>手机号</td>
+            <td><input type='text' id='phone' name="phone"
+                       style="width: 200px" required="true" th:value="${PARTNER.phone}"  /></td>
+      </tr>
+        <tr>
+            <td>邮箱</td>
+            <td><input type='text' id='email' name="email"
+                       style="width: 200px" required="true" th:value="${PARTNER.email}"  /></td>
+        </tr>
+
+        <tr>
+            <td>简介</td>
+            <td><textarea type='text' id='introduction' name="introduction"
+                       style="width: 200px" required="true" th:text="${PARTNER.introduction}" ></textarea></td>
+        </tr>
+
+
+
+
+
+
+
+    </table>
+
+
+    <div class="newbtn" style="float:left;margin-left: 120px; margin-top: 20px">
+        <input type="reset" class="btn btn-sm btn-info reset radius2 "
+               onclick="window.parent.opentab('/partner/partner.shtml','合作伙伴');"
+               value="返回" /> <input type="submit" class="btn btn-sm btn-info  "
+                                    value="确认">
+    </div>
+    <div class="clr"></div>
+
+</form>
+
+</body>
+
+</html>

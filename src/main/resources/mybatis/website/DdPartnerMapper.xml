@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dongdao.gqwl.mapper.website.DdPartnerMapper" >
+  <resultMap id="BaseResultMap" type="com.dongdao.gqwl.model.website.DdPartner" >
+    <id column="partner" property="partner" jdbcType="BIGINT" />
+    <result column="ptype" property="ptype" jdbcType="INTEGER" />
+    <result column="componyname" property="componyname" jdbcType="VARCHAR" />
+    <result column="partnername" property="partnername" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="filepath" property="filepath" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    partner, ptype, componyname, partnername, phone, email, introduction, filepath, creattime, 
+    isdelete
+  </sql>
+
+  <select id="queryByList" resultMap="BaseResultMap" parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    select
+    <include refid="Base_Column_List" />
+    from dd_partner where
+    <if test="creattime != null and creattime != ''" >
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime} and
+    </if>
+    <if test="ptype != null and ptype != ''" >
+      ptype = #{ptype} and
+    </if>
+    <if test="phone != null and phone != ''" >
+      phone = #{phone} and
+    </if>
+    isdelete=1
+    order by creattime desc
+    <if test="num1!=null and num2!=null">
+      limit #{num1},#{num2}
+    </if>
+  </select>
+  <select id="queryByCount" resultType="int"  parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    select count(0) from dd_partner
+    where
+    <if test="creattime != null and creattime != ''" >
+      <bind name="creattime" value="'%'+creattime+'%'" />
+      creattime like #{creattime} and
+    </if>
+    <if test="ptype != null and ptype != ''" >
+      ptype = #{ptype} and
+    </if>
+    <if test="phone != null and phone != ''" >
+      phone = #{phone} and
+    </if>
+    isdelete=1
+
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_partner
+    where partner = #{partner,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dd_partner
+    where partner = #{partner,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    insert into dd_partner (partner, ptype, componyname, 
+      partnername, phone, email, 
+      introduction, filepath, creattime, 
+      isdelete)
+    values (#{partner,jdbcType=BIGINT}, #{ptype,jdbcType=INTEGER}, #{componyname,jdbcType=VARCHAR}, 
+      #{partnername,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{introduction,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR}, #{creattime,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    insert into dd_partner
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partner != null" >
+        partner,
+      </if>
+      <if test="ptype != null" >
+        ptype,
+      </if>
+      <if test="componyname != null" >
+        componyname,
+      </if>
+      <if test="partnername != null" >
+        partnername,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="filepath != null" >
+        filepath,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partner != null" >
+        #{partner,jdbcType=BIGINT},
+      </if>
+      <if test="ptype != null" >
+        #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="componyname != null" >
+        #{componyname,jdbcType=VARCHAR},
+      </if>
+      <if test="partnername != null" >
+        #{partnername,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    update dd_partner
+    <set >
+      <if test="ptype != null" >
+        ptype = #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="componyname != null" >
+        componyname = #{componyname,jdbcType=VARCHAR},
+      </if>
+      <if test="partnername != null" >
+        partnername = #{partnername,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        filepath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where partner = #{partner,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dongdao.gqwl.model.website.DdPartner" >
+    update dd_partner
+    set ptype = #{ptype,jdbcType=INTEGER},
+      componyname = #{componyname,jdbcType=VARCHAR},
+      partnername = #{partnername,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      filepath = #{filepath,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER}
+    where partner = #{partner,jdbcType=BIGINT}
+  </update>
+</mapper>
