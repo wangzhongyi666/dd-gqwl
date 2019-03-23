@@ -47,7 +47,7 @@ public class PartnerApiAction extends BaseAction {
     @Auth(verifyURL = false)
     @ResponseBody
     @RequestMapping("/addPartner.json")
-    public Map<String, Object> addCards(DdPartner model,  @RequestParam("file")MultipartFile files,
+    public Map<String, Object> addCards(DdPartner model,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
@@ -66,21 +66,15 @@ public class PartnerApiAction extends BaseAction {
         }else{
             return setSuccessMap(jsonMap, "邮箱不能为空！", null);
         }
-        if(files.getSize()<2048){
-            return setSuccessMap(jsonMap, "文件大小超出限制！", null);
-        }
-        String myFileName = files.getOriginalFilename();
-        String extensionName = myFileName.substring(myFileName.lastIndexOf(".") + 1);
-        if(!extensionName.equals("doc")&&!extensionName.equals("docx")&&!extensionName.equals("pdf")&&!extensionName.equals("PDF")){
-            return setSuccessMap(jsonMap, "文件格式错误！", null);
-        }
+
+
         model.setIsdelete(1);
         model.setCreattime(DateUtil.getNowPlusTime());
-        String filepath= uploadifys(files,"partner",response,request);
-        if(filepath!=null){
-            model.setFilepath(filepath);
+        /*String filepath= uploadifys(files,"partner",response,request);
+        if(filepath!=null){*/
+            //model.setFilepath(filepath);
             partnerService.insertSelective(model);
-        }
+       /* }*/
             return setSuccessMap(jsonMap, "操作成功！", null);
 
 
@@ -89,6 +83,41 @@ public class PartnerApiAction extends BaseAction {
             return setFailureMap(jsonMap, "操作失败！", null);
         }
     }
+
+
+
+    //上传文件
+    @Auth(verifyURL = false)
+    @ResponseBody
+    @RequestMapping("/addPfile.json")
+    public Map<String, Object> addPfile(@RequestParam("file")MultipartFile files,
+                                        HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> jsonMap = new HashMap<String, Object>();
+           try{
+               if(files.getSize()<2048){
+                   return setSuccessMap(jsonMap, "文件大小超出限制！", null);
+               }
+               String myFileName = files.getOriginalFilename();
+               String extensionName = myFileName.substring(myFileName.lastIndexOf(".") + 1);
+               if(!extensionName.equals("doc")&&!extensionName.equals("docx")&&!extensionName.equals("pdf")&&!extensionName.equals("PDF")){
+                   return setSuccessMap(jsonMap, "文件格式错误！", null);
+               }
+
+               String filepath= uploadifys(files,"partner",response,request);
+               if(filepath!=null&&!"".equals(filepath)){
+                   jsonMap.put("filepath",filepath);
+               }
+           }catch(Exception e){
+               e.printStackTrace();
+               return setFailureMap(jsonMap, "操作失败！", null);
+          }
+
+            return setSuccessMap(jsonMap, "操作成功！", null);
+
+
+        }
+
+
 
 
     public static boolean isPhone(String phone) {
