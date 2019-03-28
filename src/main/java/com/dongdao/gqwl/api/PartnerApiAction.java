@@ -49,6 +49,8 @@ public class PartnerApiAction extends BaseAction {
     @RequestMapping("/addPartner.json")
     public Map<String, Object> addCards(DdPartner model,
                                         HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.err.print(model);
+        System.err.print(model.toString());
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         try {
         if(model.getPhone()!=null){
